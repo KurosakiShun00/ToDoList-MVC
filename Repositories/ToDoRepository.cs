@@ -4,7 +4,7 @@ using ToDoList_MVC.Models;
 
 namespace ToDoList_MVC.Repositories
 {
-    public class ToDoRepository : IToDoRepositories
+    public class ToDoRepository : IToDoRepository
     {
         private readonly ToDoDB _context;
 

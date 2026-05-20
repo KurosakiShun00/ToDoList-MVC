@@ -8,8 +8,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<ToDoDB>(opt => opt.UseInMemoryDatabase("TodoList"));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-builder.Services.AddScoped<IToDoRepositories, ToDoRepository>();
-builder.Services.AddScoped<IToDoServices, ToDoService>();
+builder.Services.AddScoped<IToDoRepository, ToDoRepository>();
+builder.Services.AddScoped<IToDoService, ToDoService>();
 builder.Services.AddControllers();
 
 var app = builder.Build();

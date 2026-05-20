@@ -8,9 +8,9 @@ namespace ToDoList_MVC.Controllers
     [ApiController]
     public class ToDoController : ControllerBase
     {
-        private readonly IToDoServices _todoService;
+        private readonly IToDoService _todoService;
 
-        public ToDoController(IToDoServices todoService)
+        public ToDoController(IToDoService todoService)
         {
             _todoService = todoService;
         }

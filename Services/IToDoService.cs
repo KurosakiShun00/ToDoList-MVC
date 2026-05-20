@@ -2,7 +2,7 @@
 
 namespace ToDoList_MVC.Services
 {
-    public interface IToDoServices
+    public interface IToDoService
     {
 
         Task<IEnumerable<ToDoDTO>> GetAllAsync();

@@ -2,7 +2,7 @@
 
 namespace ToDoList_MVC.Repositories
 {
-    public interface IToDoRepositories
+    public interface IToDoRepository
     {
 
         Task<IEnumerable<ToDo>> GetAllAsync();
