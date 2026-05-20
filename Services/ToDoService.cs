@@ -68,6 +68,7 @@ namespace ToDoList_MVC.Services
             if(task == null) return false;
 
             await _repository.DeleteAsync(task);
+            await _repository.SaveChangesAsync();
             return true;
         }
     }

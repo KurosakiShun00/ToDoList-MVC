@@ -8,6 +8,7 @@
 
         public bool IsCompleted { get; set; }
 
+        public ToDoDTO() { }
         public ToDoDTO(ToDo to_do) =>
             (Id, Name, IsCompleted) = (to_do.Id, to_do.Name, to_do.IsCompleted);
     }

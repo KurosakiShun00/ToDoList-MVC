@@ -4,7 +4,7 @@ using ToDoList_MVC.Services;
 using ToDoList_MVC.Models;
 namespace ToDoList_MVC.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     public class ToDoController : ControllerBase
     {
@@ -15,7 +15,7 @@ namespace ToDoList_MVC.Controllers
             _todoService = todoService;
         }
 
-        //GET api/todo <-- perorso
+        //GET todo <-- perorso
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
