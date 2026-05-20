@@ -3,7 +3,7 @@ using ToDoList_MVC.Repositories;
 
 namespace ToDoList_MVC.Services
 {
-    public class ToDoService
+    public class ToDoService : IToDoServices
     {
         private readonly IToDoRepositories _repository;
             public ToDoService(IToDoRepositories repo)
