@@ -34,7 +34,7 @@ Content-Type: {{ContentType}}
 
 {
   "name": "comprare biscotti",
-  "isCompleted": false
+  "isCompleted": true
 }
 
 ### todo aggiunto alla lista id 2
@@ -58,13 +58,13 @@ Content-Type: {{ContentType}}
   "isCompleted": false
 }
 
-### cancello id 1
+### cancello lista id 1
 DELETE {{Host}}/api/lists/1
 
 ### get finale vediamo
 GET {{Host}}/api/lists
 
-###
+### test sui singoli todos
 PUT {{Host}}/api/todos/1
 Content-Type: {{ContentType}}
 {
@@ -73,3 +73,13 @@ Content-Type: {{ContentType}}
 }
 ###
 DELETE {{Host}}/api/todos/2
+
+###
+
+GET {{Host}}/api/todos/2
+
+###
+GET {{Host}}/api/todos
+
+###
+GET {{Host}}/api/todos/completed

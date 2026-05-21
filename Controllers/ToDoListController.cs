@@ -2,6 +2,7 @@
 using ToDoList_MVC.Models;
 using ToDoList_MVC.Services;
 
+//da notare che non è più prevista la creazione di un todo che non appartenga ad una lista
 namespace ToDoList_MVC.Controllers
 {
     [ApiController]
@@ -54,7 +55,36 @@ namespace ToDoList_MVC.Controllers
             return Ok(createdToDo);
         }
 
-        //#####
+        //##### TODO SINGOLI
+        [HttpGet("~/api/todos")]
+        public async Task<IActionResult> GetAll()
+        {
+            var todos = await _toDoService.GetAllAsync();
+
+            return Ok(todos);
+        }
+
+        [HttpGet("~/api/todos/completed")]
+        public async Task<IActionResult> GetCompleted()
+        {
+            var completedTodos = await _toDoService.GetCompleteAsync();
+            return Ok(completedTodos);
+        }
+
+        [HttpGet("~/api/todos/{id}")]
+        public async Task<IActionResult> GetById(int id)
+        {
+            var todo = await _toDoService.GetByIdAsync(id);
+
+            if (todo == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(todo);
+        }
+
+
         [HttpPut("~/api/todos/{ToDoId}")]
         public async Task<IActionResult> UpdateToDo(int ToDoId, ToDoDTO newToDo)
         {
@@ -76,6 +106,9 @@ namespace ToDoList_MVC.Controllers
 
             return Ok();
         }
+
+
+
         //#####
 
         [HttpDelete("{id}")]
