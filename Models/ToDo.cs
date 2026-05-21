@@ -9,5 +9,8 @@ namespace ToDoList_MVC.Models
 
         public bool IsCompleted { get; set; }
 
+        //fk
+
+        public int ToDoListId { get; set; }
     }
 }
