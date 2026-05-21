@@ -17,7 +17,7 @@ namespace ToDoList_MVC.Controllers
 
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ToDoList>>> GetLists()
+        public async Task<ActionResult<IEnumerable<ToDoListDTO>>> GetLists()
         {
             var lists = await _todoListService.GetAllListsAsync();
             return Ok(lists);
@@ -40,7 +40,7 @@ namespace ToDoList_MVC.Controllers
 
 
         [HttpPost("{listId}/todos")]
-        public async Task<IActionResult> AddToDoToList(int listId, ToDo newToDo)
+        public async Task<IActionResult> AddToDoToList(int listId, ToDoDTO newToDo)
         {
             var createdToDo = await _todoListService.AddToDoToListAsync(listId, newToDo);
 

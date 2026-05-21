@@ -11,9 +11,11 @@ namespace ToDoList_MVC.Services
         _repository = repository;
         }
 
-        public async Task<IEnumerable<ToDoList>> GetAllListsAsync()
+        public async Task<IEnumerable<ToDoListDTO>> GetAllListsAsync()
         {
-            return await _repository.GetAllAsync();
+            var listFromDB = await _repository.GetAllAsync();
+
+            return listFromDB.Select(list => new ToDoListDTO(list));
         }
         public async Task<ToDoList> CreateListAsync(ToDoList newList)
         {
@@ -21,16 +23,21 @@ namespace ToDoList_MVC.Services
             await _repository.SaveChangesAsync();
             return newList;
         }
-        public async Task<ToDo?> AddToDoToListAsync(int listId, ToDo newToDo)
+        public async Task<ToDo?> AddToDoToListAsync(int listId, ToDoDTO newToDo)
         {
             var exists = await _repository.ListExistsAsync(listId);
             if (!exists) return null;
 
-            newToDo.ToDoListId = listId;
+            var _ToDo = new ToDo
+            {
+                Name = newToDo.Name,
+                IsCompleted = newToDo.IsCompleted,
+                ToDoListId = listId
+            };
 
-            await _repository.AddToDoAsync(newToDo);
+            await _repository.AddToDoAsync(_ToDo);
             await _repository.SaveChangesAsync();
-            return newToDo;
+            return _ToDo;
 
         }
         public async Task<bool> DeleteListAsync(int id)
