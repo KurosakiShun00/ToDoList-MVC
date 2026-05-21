@@ -1,0 +1,65 @@
+﻿@Host = https://localhost:7006
+@ContentType = application/json
+
+###crea lista
+POST {{Host}}/api/lists
+Content-Type: {{ContentType}}
+
+{
+  "name": "spesa"
+}
+### crea altra lista
+POST {{Host}}/api/lists
+Content-Type: {{ContentType}}
+
+{
+  "name": "lavoro"
+}
+
+### lista di liste :D
+GET {{Host}}/api/lists
+
+### aggiungo todo alla lista id 1
+POST {{Host}}/api/lists/1/todos
+Content-Type: {{ContentType}}
+
+{
+  "name": "comprare latte",
+  "isCompleted": false
+}
+
+### altro todo alla lista id 1
+POST {{Host}}/api/lists/1/todos
+Content-Type: {{ContentType}}
+
+{
+  "name": "comprare biscotti",
+  "isCompleted": false
+}
+
+### todo aggiunto alla lista id 2
+POST {{Host}}/api/lists/2/todos
+Content-Type: {{ContentType}}
+
+{
+  "name": "mandare e mails",
+  "isCompleted": true
+}
+
+### lista di liste di nuovo
+GET {{Host}}/api/lists
+
+### provo a distruggere tutto
+POST {{Host}}/api/lists/999/todos
+Content-Type: {{ContentType}}
+
+{
+  "name": "",
+  "isCompleted": false
+}
+
+### cancello id 1
+DELETE {{Host}}/api/lists/1
+
+### get finale vediamo
+GET {{Host}}/api/lists
