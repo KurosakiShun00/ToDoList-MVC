@@ -28,7 +28,7 @@ namespace ToDoList_MVC.Controllers
 
 
         [HttpPost]
-        public async Task<ActionResult<ToDoList>> CreateList(ToDoList newList)
+        public async Task<ActionResult<ToDoList>> CreateTodoListDto(ToDoList newList)
         {
             var createdList = await _todoListService.CreateListAsync(newList);
 
@@ -49,14 +49,14 @@ namespace ToDoList_MVC.Controllers
 
             if (createdToDo == null)
             {
-                return NotFound();
+                return BadRequest();
             }
 
             return Ok(createdToDo);
         }
 
         //##### TODO SINGOLI
-        [HttpGet("~/api/todos")]
+        [HttpGet("todos/all")]
         public async Task<IActionResult> GetAll()
         {
             var todos = await _toDoService.GetAllAsync();
@@ -64,14 +64,14 @@ namespace ToDoList_MVC.Controllers
             return Ok(todos);
         }
 
-        [HttpGet("~/api/todos/completed")]
+        [HttpGet("todos/completed")]
         public async Task<IActionResult> GetCompleted()
         {
             var completedTodos = await _toDoService.GetCompleteAsync();
             return Ok(completedTodos);
         }
 
-        [HttpGet("~/api/todos/{id}")]
+        [HttpGet("todos/{id}")]
         public async Task<IActionResult> GetById(int id)
         {
             var todo = await _toDoService.GetByIdAsync(id);
@@ -84,15 +84,15 @@ namespace ToDoList_MVC.Controllers
             return Ok(todo);
         }
 
-
-        [HttpPut("~/api/todos/{ToDoId}")]
+        //se aggiungo l'id della lista posso controllare se appartiene a quella listae dare una bad request nel caso no
+        [HttpPut("todos/{ToDoId}")]
         public async Task<IActionResult> UpdateToDo(int ToDoId, ToDoDTO newToDo)
         {
-            var isUpdated = await _toDoService.UpdateAsync(ToDoId, newToDo);
+            var Updated = await _toDoService.UpdateAsync(ToDoId, newToDo);
 
-            if (!isUpdated) return NotFound();
+            if (!Updated) return BadRequest();
 
-            return NoContent();
+            return Ok(Updated);
 
         }
 

@@ -13,27 +13,27 @@ namespace ToDoList_MVC.Repositories
 
         public async Task<IEnumerable<ToDoList>> GetAllAsync()
         {
-            return await _context.toDosLists.Include(l => l.ToDos).ToListAsync();
+            return await _context.ToDosLists.Include(l => l.ToDos).ToListAsync();
         }
         public async Task<ToDoList?> GetByIdAsync(int id)
         {
-            return await _context.toDosLists.FindAsync(id);
+            return await _context.ToDosLists.FindAsync(id);
         }
         public async Task<bool> ListExistsAsync(int id)
         {
-            return await _context.toDosLists.AnyAsync(l => l.Id == id); 
+            return await _context.ToDosLists.AnyAsync(l => l.Id == id); 
         }
         public async Task AddListAsync(ToDoList newList)
         {
-            await _context.toDosLists.AddAsync(newList);
+            await _context.ToDosLists.AddAsync(newList);
         }
         public async Task AddToDoAsync(ToDo newToDo)
         {
-            await _context.toDos.AddAsync(newToDo);
+            await _context.ToDos.AddAsync(newToDo);
         }
         public void DeleteList(ToDoList list)
         {
-            _context.toDosLists.Remove(list);
+            _context.ToDosLists.Remove(list);
         }
         public async Task SaveChangesAsync()
         {

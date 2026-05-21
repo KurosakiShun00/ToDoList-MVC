@@ -7,7 +7,7 @@ namespace ToDoList_MVC.Data
     {
         public ToDoDB(DbContextOptions<ToDoDB> options) : base(options) { }
 
-        public DbSet<ToDo>  toDos => Set<ToDo>();
-        public DbSet<ToDoList> toDosLists => Set<ToDoList>();
+        public DbSet<ToDo>  ToDos => Set<ToDo>();
+        public DbSet<ToDoList> ToDosLists => Set<ToDoList>();
     }
 }
