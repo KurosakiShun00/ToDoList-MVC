@@ -5,9 +5,9 @@ namespace ToDoList_MVC.Services
 {
     public class ToDoListService : IToDoListService
     {
-        private readonly ToDoListRepository _repository;
+        private readonly IToDoListRepository _repository;
 
-        public ToDoListService(ToDoListRepository repository) {
+        public ToDoListService(IToDoListRepository repository) {
         _repository = repository;
         }
 
