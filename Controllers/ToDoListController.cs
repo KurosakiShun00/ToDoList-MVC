@@ -9,10 +9,12 @@ namespace ToDoList_MVC.Controllers
     public class ToDoListsController : ControllerBase
     {
         private readonly IToDoListService _todoListService;
+        private readonly IToDoService _toDoService;
 
-        public ToDoListsController(IToDoListService todoListService)
+        public ToDoListsController(IToDoListService todoListService, IToDoService toDoService)
         {
             _todoListService = todoListService;
+            _toDoService = toDoService;
         }
 
 
@@ -52,6 +54,29 @@ namespace ToDoList_MVC.Controllers
             return Ok(createdToDo);
         }
 
+        //#####
+        [HttpPut("~/api/todos/{ToDoId}")]
+        public async Task<IActionResult> UpdateToDo(int ToDoId, ToDoDTO newToDo)
+        {
+            var isUpdated = await _toDoService.UpdateAsync(ToDoId, newToDo);
+
+            if (!isUpdated) return NotFound();
+
+            return NoContent();
+
+        }
+
+        [HttpDelete("~/api/todos/{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var isDeleted = await _toDoService.DeleteAsync(id);
+
+            if (!isDeleted) return NotFound();
+
+
+            return Ok();
+        }
+        //#####
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteList(int id)

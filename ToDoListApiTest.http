@@ -63,3 +63,13 @@ DELETE {{Host}}/api/lists/1
 
 ### get finale vediamo
 GET {{Host}}/api/lists
+
+###
+PUT {{Host}}/api/todos/1
+Content-Type: {{ContentType}}
+{
+    "name": "Fatto"
+
+}
+###
+DELETE {{Host}}/api/todos/2
