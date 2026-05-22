@@ -9,7 +9,7 @@ namespace ToDoList_MVC.Services
         Task<IEnumerable<ToDoDTO>> GetCompleteAsync();
         Task<ToDoDTO?> GetByIdAsync(int id);
         Task<ToDoDTO> CreateAsync(ToDoDTO to_do_dto);
-        Task<bool> UpdateAsync(int id, ToDoDTO to_do_dto);
+        Task<ToDoDTO?> UpdateAsync(int id, ToDoDTO to_do_dto);
         Task<bool> DeleteAsync(int id);
 
     }

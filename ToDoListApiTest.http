@@ -1,14 +1,14 @@
 ﻿@Host = https://localhost:7006
 @ContentType = application/json
 
-###crea lista
 POST {{Host}}/api/lists
 Content-Type: {{ContentType}}
 
 {
   "name": "spesa"
 }
-### crea altra lista
+
+###
 POST {{Host}}/api/lists
 Content-Type: {{ContentType}}
 
@@ -16,10 +16,10 @@ Content-Type: {{ContentType}}
   "name": "lavoro"
 }
 
-### lista di liste :D
+###
 GET {{Host}}/api/lists
 
-### aggiungo todo alla lista id 1
+###
 POST {{Host}}/api/lists/1/todos
 Content-Type: {{ContentType}}
 
@@ -28,58 +28,50 @@ Content-Type: {{ContentType}}
   "isCompleted": false
 }
 
-### altro todo alla lista id 1
+###
 POST {{Host}}/api/lists/1/todos
 Content-Type: {{ContentType}}
 
 {
   "name": "comprare biscotti",
-  "isCompleted": true
+  "isCompleted": false
 }
 
-### todo aggiunto alla lista id 2
+###
 POST {{Host}}/api/lists/2/todos
 Content-Type: {{ContentType}}
 
 {
-  "name": "mandare e mails",
+  "name": "mandare e-mails",
   "isCompleted": true
 }
 
-### lista di liste di nuovo
+###
 GET {{Host}}/api/lists
 
-### provo a distruggere tutto
-POST {{Host}}/api/lists/999/todos
+###
+PUT {{Host}}/api/lists/1/todos/1
 Content-Type: {{ContentType}}
 
 {
-  "name": "",
-  "isCompleted": false
+  "name": "comprare biscotti al cioccolato",
+  "isCompleted": true
 }
 
-### cancello lista id 1
-DELETE {{Host}}/api/lists/1
+###
+GET {{Host}}/api/lists/1/todos/2
 
-### get finale vediamo
+###
+DELETE {{Host}}/api/lists/1/todos/2
+
+###
+GET {{Host}}/api/lists/todos/all
+
+###
+GET {{Host}}/api/lists/todos/completed
+
+###
+DELETE {{Host}}/api/lists/2
+
+###
 GET {{Host}}/api/lists
-
-### test sui singoli todos
-PUT {{Host}}/api/todos/1
-Content-Type: {{ContentType}}
-{
-    "name": "Fatto"
-
-}
-###
-DELETE {{Host}}/api/todos/2
-
-###
-
-GET {{Host}}/api/todos/2
-
-###
-GET {{Host}}/api/todos
-
-###
-GET {{Host}}/api/todos/completed

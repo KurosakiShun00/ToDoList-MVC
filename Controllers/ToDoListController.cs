@@ -2,7 +2,6 @@
 using ToDoList_MVC.Models;
 using ToDoList_MVC.Services;
 
-//da notare che non è più prevista la creazione di un todo che non appartenga ad una lista
 namespace ToDoList_MVC.Controllers
 {
     [ApiController]
@@ -18,7 +17,6 @@ namespace ToDoList_MVC.Controllers
             _toDoService = toDoService;
         }
 
-
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ToDoListDTO>>> GetLists()
         {
@@ -26,41 +24,28 @@ namespace ToDoList_MVC.Controllers
             return Ok(lists);
         }
 
-
         [HttpPost]
         public async Task<ActionResult<ToDoList>> CreateTodoListDto(ToDoList newList)
         {
             var createdList = await _todoListService.CreateListAsync(newList);
-
-            if (createdList == null)
-            {
-                return BadRequest();
-            }
-
+            if (createdList == null) return BadRequest();
 
             return Ok(createdList);
         }
 
-
-        [HttpPost("{listId}/todos")]
-        public async Task<IActionResult> AddToDoToList(int listId, ToDoDTO newToDo)
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteList(int id)
         {
-            var createdToDo = await _todoListService.AddToDoToListAsync(listId, newToDo);
+            var deleted = await _todoListService.DeleteListAsync(id);
+            if (!deleted) return NotFound();
 
-            if (createdToDo == null)
-            {
-                return BadRequest();
-            }
-
-            return Ok(createdToDo);
+            return NoContent();
         }
 
-        //##### TODO SINGOLI
         [HttpGet("todos/all")]
         public async Task<IActionResult> GetAll()
         {
             var todos = await _toDoService.GetAllAsync();
-
             return Ok(todos);
         }
 
@@ -71,57 +56,40 @@ namespace ToDoList_MVC.Controllers
             return Ok(completedTodos);
         }
 
-        [HttpGet("todos/{id}")]
-        public async Task<IActionResult> GetById(int id)
+        [HttpPost("{listId}/todos")]
+        public async Task<IActionResult> AddToDoToList(int listId, ToDoDTO newToDo)
+        {
+            var createdToDo = await _todoListService.AddToDoToListAsync(listId, newToDo);
+            if (createdToDo == null) return BadRequest();
+
+            return Ok(createdToDo);
+        }
+
+        [HttpGet("{listId}/todos/{id}")]
+        public async Task<IActionResult> GetById(int listId, int id)
         {
             var todo = await _toDoService.GetByIdAsync(id);
-
-            if (todo == null)
-            {
-                return NotFound();
-            }
+            if (todo == null) return NotFound();
 
             return Ok(todo);
         }
 
-        //se aggiungo l'id della lista posso controllare se appartiene a quella listae dare una bad request nel caso no
-        [HttpPut("todos/{ToDoId}")]
-        public async Task<IActionResult> UpdateToDo(int ToDoId, ToDoDTO newToDo)
+        [HttpPut("{listId}/todos/{toDoId}")]
+        public async Task<IActionResult> UpdateToDo(int listId, int toDoId, ToDoDTO newToDo)
         {
-            var Updated = await _toDoService.UpdateAsync(ToDoId, newToDo);
+            var updated = await _toDoService.UpdateAsync(toDoId, newToDo);
+            if (updated == null) return BadRequest();
 
-            if (!Updated) return BadRequest();
-
-            return Ok(Updated);
-
+            return Ok(updated);
         }
 
-        [HttpDelete("~/api/todos/{id}")]
-        public async Task<IActionResult> Delete(int id)
+        [HttpDelete("{listId}/todos/{id}")]
+        public async Task<IActionResult> Delete(int listId, int id)
         {
             var isDeleted = await _toDoService.DeleteAsync(id);
-
-            if (!isDeleted) return NotFound();
-
+            if (!isDeleted) return BadRequest();
 
             return Ok();
-        }
-
-
-
-        //#####
-
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteList(int id)
-        {
-            var deleted = await _todoListService.DeleteListAsync(id);
-
-            if (!deleted)
-            {
-                return NotFound();
-            }
-
-            return NoContent();
         }
     }
 }

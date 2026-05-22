@@ -55,10 +55,9 @@ namespace ToDoList_MVC.Services
             var task = await _repository.GetByIdAsync(id);
             if(task == null) return null;
 
-            var task_2 = new ToDoDTO(task);
-
             task.Name = to_do_dto.Name;
             task.IsCompleted = to_do_dto.IsCompleted;
+            var task_2 = new ToDoDTO(task);
 
             await _repository.SaveChangesAsync();
             return task_2;
