@@ -77,7 +77,7 @@ namespace ToDoList_MVC.Controllers
         [HttpPut("{listId}/todos/{toDoId}")]
         public async Task<IActionResult> UpdateToDo(int listId, int toDoId, ToDoDTO newToDo)
         {
-            var updated = await _toDoService.UpdateAsync(toDoId, newToDo);
+            var updated = await _toDoService.UpdateAsync(listId,toDoId, newToDo);
             if (updated == null) return BadRequest();
 
             return Ok(updated);
@@ -86,7 +86,7 @@ namespace ToDoList_MVC.Controllers
         [HttpDelete("{listId}/todos/{id}")]
         public async Task<IActionResult> Delete(int listId, int id)
         {
-            var isDeleted = await _toDoService.DeleteAsync(id);
+            var isDeleted = await _toDoService.DeleteAsync(listId,id);
             if (!isDeleted) return BadRequest();
 
             return Ok();
