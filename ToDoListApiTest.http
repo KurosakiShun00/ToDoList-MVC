@@ -1,4 +1,4 @@
-﻿@Host = https://localhost:7006
+﻿@Host = http://localhost:5231
 @ContentType = application/json
 
 POST {{Host}}/api/lists
