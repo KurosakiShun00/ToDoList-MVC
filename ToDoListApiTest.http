@@ -1,0 +1,77 @@
+﻿@Host = https://localhost:7006
+@ContentType = application/json
+
+POST {{Host}}/api/lists
+Content-Type: {{ContentType}}
+
+{
+  "name": "spesa"
+}
+
+###
+POST {{Host}}/api/lists
+Content-Type: {{ContentType}}
+
+{
+  "name": "lavoro"
+}
+
+###
+GET {{Host}}/api/lists
+
+###
+POST {{Host}}/api/lists/1/todos
+Content-Type: {{ContentType}}
+
+{
+  "name": "comprare latte",
+  "isCompleted": false
+}
+
+###
+POST {{Host}}/api/lists/1/todos
+Content-Type: {{ContentType}}
+
+{
+  "name": "comprare biscotti",
+  "isCompleted": false
+}
+
+###
+POST {{Host}}/api/lists/2/todos
+Content-Type: {{ContentType}}
+
+{
+  "name": "mandare e-mails",
+  "isCompleted": true
+}
+
+###
+GET {{Host}}/api/lists
+
+###
+PUT {{Host}}/api/lists/1/todos/1
+Content-Type: {{ContentType}}
+
+{
+  "name": "comprare biscotti al cioccolato",
+  "isCompleted": true
+}
+
+###
+GET {{Host}}/api/lists/1/todos/2
+
+###
+DELETE {{Host}}/api/lists/1/todos/2
+
+###
+GET {{Host}}/api/lists/todos/all
+
+###
+GET {{Host}}/api/lists/todos/completed
+
+###
+DELETE {{Host}}/api/lists/2
+
+###
+GET {{Host}}/api/lists
