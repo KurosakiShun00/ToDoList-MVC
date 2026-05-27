@@ -83,6 +83,15 @@ namespace ToDoList_MVC.Controllers
             return Ok(updated);
         }
 
+        [HttpPatch("{listId}/todos/{toDoId}")]
+        public async Task<IActionResult> PatchToDo(int listId, int toDoId, ToDoPatch toDoPatch)
+        {
+            var isPatched = await _toDoService.PatchAsync(listId, toDoId, toDoPatch);
+            if(!isPatched) return BadRequest();
+
+            return NoContent();
+        }
+
         [HttpDelete("{listId}/todos/{id}")]
         public async Task<IActionResult> Delete(int listId, int id)
         {
