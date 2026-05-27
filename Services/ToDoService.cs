@@ -64,6 +64,26 @@ namespace ToDoList_MVC.Services
             return task_2;
         }
 
+        public async Task<bool> PatchAsync(int listId, int id, ToDoPatch to_do_patch)
+        {
+            var task = await _repository.GetByIdAsync(id);
+            if (task == null || task.ToDoListId != listId) return false;
+
+            if(to_do_patch.Name != null)
+            {
+                task.Name = to_do_patch.Name;
+            }
+
+            if (to_do_patch.IsCompleted.HasValue)
+            {
+                task.IsCompleted = to_do_patch.IsCompleted.Value;
+            }
+
+            await _repository.SaveChangesAsync();
+            return true;
+
+        }
+
         public async Task<bool> DeleteAsync(int listId, int id)
         {
             var task = await _repository.GetByIdAsync(id);

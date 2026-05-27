@@ -10,6 +10,7 @@ namespace ToDoList_MVC.Services
         Task<ToDoDTO?> GetByIdAsync(int id);
         Task<ToDoDTO> CreateAsync(ToDoDTO to_do_dto);
         Task<ToDoDTO?> UpdateAsync(int listId, int id, ToDoDTO to_do_dto);
+        Task<bool>PatchAsync(int listId, int id, ToDoPatch toDoPatch);
         Task<bool> DeleteAsync(int listId, int id);
 
     }

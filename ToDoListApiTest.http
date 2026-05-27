@@ -75,3 +75,21 @@ DELETE {{Host}}/api/lists/2
 
 ###
 GET {{Host}}/api/lists
+
+###
+PATCH {{Host}}/api/lists/1/todos/2
+Content-Type: {{ContentType}}
+
+{
+  "name": "patch completata"
+}
+
+###
+PATCH {{Host}}/api/lists/1/todos/2
+Content-Type: {{ContentType}}
+
+{
+  "isCompleted": true
+}
+
+
