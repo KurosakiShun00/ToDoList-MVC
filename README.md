@@ -1,6 +1,6 @@
 # .NET Todo List API
 
-[![GitHub license](https://img.shields.io/github/license/KurosakiShun00/ToDoList-MVC)](https://github.com/KurosakiShun00/ToDoList-MVC/blob/main/LICENSE)
+[![GitHub license](https://img.shields.io/github/license/KurosakiShun00/ToDoList-MVC)](https://github.com/KurosakiShun00/ToDoList-MVC/blob/Develop/LICENSE)
 [![GitHub stars](https://img.shields.io/github/stars/KurosakiShun00/ToDoList-MVC)](https://github.com/KurosakiShun00/ToDoList-MVC/stargazers)
 
 > Un'API RESTful per la gestione di una lista di attività (Todo List), sviluppata in .NET come progetto di esercizio.
