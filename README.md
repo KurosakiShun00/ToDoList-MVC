@@ -1,6 +1,6 @@
 # .NET Todo List API
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/KurosakiShun00/ToDoList-MVC/blob/main/LICENSE)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/KurosakiShun00/ToDoList-MVC/blob/Develop/LICENSE)
 [![GitHub stars](https://img.shields.io/github/stars/KurosakiShun00/ToDoList-MVC)](https://github.com/KurosakiShun00/ToDoList-MVC/stargazers)
 
 > Un'API RESTful per la gestione di una lista di attività (Todo List), sviluppata in .NET come progetto di esercizio.
