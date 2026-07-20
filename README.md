@@ -3,9 +3,9 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/KurosakiShun00/ToDoList-MVC/blob/Develop/LICENSE)
 [![GitHub stars](https://img.shields.io/github/stars/KurosakiShun00/ToDoList-MVC)](https://github.com/KurosakiShun00/ToDoList-MVC/stargazers)
 
-> Un'API RESTful per la gestione di una lista di attività (Todo List), sviluppata in .NET come progetto di esercizio.
+> Un'API RESTful per la gestione di una lista di attività (Todo List), sviluppata in .NET come esercizio.
 
-Il progetto utilizza un **Database In-Memory**, il che significa che non è richiesta alcuna configurazione o installazione di database esterni (come SQL Server). I dati vengono salvati temporaneamente nella memoria RAM e si azzerano a ogni riavvio dell'applicazione.
+Il progetto utilizza per ora un **Database In-Memory**, il che significa che non è richiesta alcuna configurazione o installazione di database esterni (come SQL Server). I dati vengono salvati temporaneamente nella memoria RAM e si azzerano a ogni riavvio dell'applicazione.
 
 ---
 
@@ -21,7 +21,7 @@ Il progetto utilizza un **Database In-Memory**, il che significa che non è rich
 
 ## ✨ Caratteristiche principali
 
-*   **Operazioni CRUD complete:** Creazione, lettura, aggiornamento e cancellazione dei task.
+*   **Operazioni CRUD complete:** Creazione, lettura, aggiornamento e cancellazione dei task all'interno di liste.
 *   **Database In-Memory:** Avvio immediato senza configurazioni di stringhe di connessione.
 *   **Documentazione Swagger:** Interfaccia grafica integrata per esplorare e testare gli endpoint direttamente dal browser.
 
