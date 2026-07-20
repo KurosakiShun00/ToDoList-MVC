@@ -1,0 +1,35 @@
+@{
+    ViewData["Title"] = "Index";
+    Layout = "_Layout";
+}
+
+<div class="container my-5">
+
+    <div class="p-5 mb-4 bg-white rounded-3 shadow-sm border">
+        <div class="container-fluid py-3 text-center">
+            <h1 class="display-5 fw-bold text-primary">Benvenuto</h1>
+            <p>
+                TEST TODOLIST DATABASE
+            </p>
+        </div>
+    </div>
+
+    <div class="row row-cols-3">
+        <div class="col">
+            <div class="card h-100 shadow-sm text-center">
+                <div class="card-body">
+                    <h5 class="card-title">LISTE</h5>
+                    <a asp-controller="ToDoLists" asp-action="Index" class="btn btn-primary" role="button">
+                        MOSTRA LISTE
+                    </a>
+                    <hr/>
+                    <a asp-controller="ToDoLists" asp-action="Create" class="btn btn-primary" role="button">
+                        NUOVA LISTA
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+
+</div>
+</div>
