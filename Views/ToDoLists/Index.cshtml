@@ -1,18 +1,45 @@
-@model TModel
+@model List<ToDoList_MVC.ViewModels.ToDoListsListViewModel>;
 
 @{
-    Layout = null;
+    ViewData["Title"] = "Index";
+    Layout = "_Layout";
 }
 
-<!DOCTYPE html>
-
-<html>
-<head>
-    <title>title</title>
-</head>
-<body>
-<div>
-      
+<div class="d-flex align-items-center justify-content-between mb-4 gap-3">
+    <a asp-controller="ToDoLists" asp-action="Create" class="btn btn-primary" role="button">
+        Crea Nuovo
+    </a>
+    <h2 class="display-6">To Do Lists</h2>
 </div>
-</body>
-</html>
+
+
+<table class="table">
+    <thead class="thead-dark">
+        <tr>
+            <th scope="col">Nome</th>
+            <th scope="col">Numero To Do</th>
+            <th scope="col">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var ToDoList in Model)
+        {
+            <tr>
+                <td>@ToDoList.Name</td>
+                <td>@ToDoList.ToDos.Count()</td>
+
+                <td class="text-nowrap">
+                    <a asp-controller="ToDoLists" asp-action="Details" asp-route-id="@ToDoList.Id" class="btn btn-primary " role="button">
+                        Details
+                    </a>
+                    <a asp-controller="ToDoLists" asp-action="Edit" asp-route-id="@ToDoList.Id" class="btn btn-primary" role="button">
+                        Edit
+                    </a>
+                    <a asp-controller="ToDoLists" asp-action="Delete" asp-route-id="@ToDoList.Id" class="btn btn-danger" role="button">
+                        Delete
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
