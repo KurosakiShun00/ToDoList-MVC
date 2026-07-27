@@ -25,6 +25,7 @@
         <th scope="col">Id Attività</th>
         <th scope="col">Nome Attività</th>
         <th scope="col">Stato Attività</th>
+        <th scope="col">Azioni</th>
     </tr>
     </thead>
     <tbody>
@@ -34,6 +35,10 @@
             <td>@line.Id</td>
             <td>@line.Name</td>
             <td>@(line.IsCompleted ? "Completata" : "Da Completare")</td>
+            <td><a asp-controller="ToDoLists" asp-action="Index" class="btn btn-primary" role="button">
+                ← Torna alla Lista
+            </a></td>
+            <td></td>
         </tr>
     }
     </tbody>

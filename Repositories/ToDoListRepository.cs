@@ -35,10 +35,26 @@ namespace ToDoList_MVC.Repositories
             return await _context.ToDosLists.FirstOrDefaultAsync(l => l.Id == id);
         }
 
+        public async Task<ToDo?> GetToDoAsync(int id)
+        {
+            return await _context.ToDos.FindAsync(id);
+        }
         public async Task AddToDoAsync(ToDo newToDo)
         {
             await _context.ToDos.AddAsync(newToDo);
         }
+
+        public async Task UpdateToDoAsync(int id, ToDo newToDo)
+        {
+             _context.ToDos.Update(newToDo);
+             await _context.SaveChangesAsync();
+        }
+        
+        public void DeleteToDoAsync(ToDo toDo)
+        {
+            _context.ToDos.Remove(toDo);
+        }
+        
         public void DeleteList(ToDoList list)
         {
             _context.ToDosLists.Remove(list);

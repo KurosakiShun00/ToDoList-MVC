@@ -56,6 +56,37 @@ namespace ToDoList_MVC.Services
 
         }
 
+        public async Task<ToDoDTO?> UpdateToDoAsync(int id, ToDoDTO updateToDoDTO)
+        {
+            if (id != updateToDoDTO.Id) return null;
+
+            var updateToDo = new ToDo()
+            {
+                Id = updateToDoDTO.Id,
+                Name = updateToDoDTO.Name,
+                IsCompleted = updateToDoDTO.IsCompleted,
+            };
+            
+            await _repository.UpdateToDoAsync(id, updateToDo);
+            
+            var resultDTO = await _repository.GetToDoAsync(updateToDoDTO.Id);
+            if(resultDTO == null) return null;
+
+            var result = new ToDoDTO(resultDTO);
+            
+            return result;
+        }
+
+        public async Task<bool> DeleteToDoAsync(int id)
+        {
+            var toDo = await _repository.GetToDoAsync(id);
+            if (toDo == null) return false;
+
+            _repository.DeleteToDoAsync(toDo);
+            await _repository.SaveChangesAsync();
+            return true;
+        }
+
         public async Task<ToDoList?> UpdateListAsync(int id, ToDoListDTO updatedListDTO)
         {
             if (!(await _repository.ListExistsAsync(id))|| id != updatedListDTO.Id) return null;
