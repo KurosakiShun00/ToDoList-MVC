@@ -14,7 +14,7 @@ namespace ToDoList_MVC.Models
         
         public ToDoDTO() { }
         public ToDoDTO(ToDo to_do) =>
-            (Id, Name, IsCompleted) = (to_do.Id, to_do.Name, to_do.IsCompleted);
+            (Id, Name, IsCompleted, ToDoListId) = (to_do.Id, to_do.Name, to_do.IsCompleted, to_do.ToDoListId);
 
         public ToDoDTO(ToDoCreateViewModel viewModel)
         {

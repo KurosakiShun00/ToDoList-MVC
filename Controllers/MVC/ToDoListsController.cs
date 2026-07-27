@@ -179,4 +179,33 @@ public class ToDoListsController : Controller
 
                     return RedirectToAction(nameof(Index));
                 }
+                
+                public async Task<IActionResult> EditToDo(int id)
+                {
+                    var item = await _service.GetToDoAsync(id);
+                    if (item == null) return NotFound();
+                    var viewModel = new ToDoEditViewModel
+                    {
+                        Id = item.Id,
+                        Name = item.Name,
+                        IsCompleted = item.IsCompleted
+                    };
+                    return View(viewModel);
+
+                }
+                
+                [HttpPost]
+                [ValidateAntiForgeryToken]
+                public async Task<IActionResult> EditToDo(int id, ToDoEditViewModel viewModel)
+                {
+                    viewModel.Id = id; 
+                    if (!ModelState.IsValid) return View(viewModel);
+
+                    var new_toDo = new Models.ToDoDTO(viewModel);
+
+                    var updated = await _service.UpdateToDoAsync(id, new_toDo);
+                    if (updated == null) return NotFound();
+                    
+                    return RedirectToAction(nameof(Details), new { id = updated.ToDoListId });
+                }
     }

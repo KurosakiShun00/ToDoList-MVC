@@ -46,7 +46,6 @@ namespace ToDoList_MVC.Repositories
 
         public async Task UpdateToDoAsync(int id, ToDo newToDo)
         {
-             _context.ToDos.Update(newToDo);
              await _context.SaveChangesAsync();
         }
         

@@ -35,10 +35,12 @@
             <td>@line.Id</td>
             <td>@line.Name</td>
             <td>@(line.IsCompleted ? "Completata" : "Da Completare")</td>
-            <td><a asp-controller="ToDoLists" asp-action="Index" class="btn btn-primary" role="button">
-                ← Torna alla Lista
+            <td><a asp-controller="ToDoLists" asp-action="EditToDo" asp-route-id = "@line.Id" class="btn btn-primary" role="button">
+                Modifica Attività
             </a></td>
-            <td></td>
+            <td><a asp-controller="ToDoLists" asp-action="DeleteToDo" asp-route-id = "@line.Id" class="btn btn-primary" role="button">
+                Elimina Attività
+            </a></td>
         </tr>
     }
     </tbody>
