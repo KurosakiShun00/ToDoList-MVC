@@ -17,7 +17,7 @@ namespace ToDoList_MVC.Repositories
         }
         public async Task<ToDoList?> GetByIdAsync(int id)
         {
-            return await _context.ToDosLists.FindAsync(id);
+            return await _context.ToDosLists.Include(l => l.ToDos).FirstOrDefaultAsync(l => l.Id == id);
         }
         public async Task<bool> ListExistsAsync(int id)
         {
@@ -27,10 +27,33 @@ namespace ToDoList_MVC.Repositories
         {
             await _context.ToDosLists.AddAsync(newList);
         }
+
+        public async Task<ToDoList?> UpdateListAsync(int id, ToDoList updateList)
+        {
+             _context.ToDosLists.Update( updateList);
+             await _context.SaveChangesAsync();
+            return await _context.ToDosLists.FirstOrDefaultAsync(l => l.Id == id);
+        }
+
+        public async Task<ToDo?> GetToDoAsync(int id)
+        {
+            return await _context.ToDos.FindAsync(id);
+        }
         public async Task AddToDoAsync(ToDo newToDo)
         {
             await _context.ToDos.AddAsync(newToDo);
         }
+
+        public async Task UpdateToDoAsync(int id, ToDo newToDo)
+        {
+             await _context.SaveChangesAsync();
+        }
+        
+        public void DeleteToDoAsync(ToDo toDo)
+        {
+            _context.ToDos.Remove(toDo);
+        }
+        
         public void DeleteList(ToDoList list)
         {
             _context.ToDosLists.Remove(list);

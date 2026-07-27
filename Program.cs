@@ -20,7 +20,6 @@ builder.Services.AddValidatorsFromAssemblyContaining<Program>();
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddScoped<IToDoRepository, ToDoRepository>();
-builder.Services.AddScoped<IToDoService, ToDoService>();
 builder.Services.AddScoped<IToDoListRepository, ToDoListRepository>();
 builder.Services.AddScoped<IToDoListService, ToDoListService>();
 

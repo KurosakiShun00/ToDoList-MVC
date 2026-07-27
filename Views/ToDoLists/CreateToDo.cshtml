@@ -1,0 +1,48 @@
+@model ToDoList_MVC.ViewModels.ToDo.ToDoCreateViewModel;
+
+@{
+    ViewData["Title"] = "ToDo Create";
+    Layout = "_Layout";
+}
+
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white py-3">
+                    <h2 class="mb-0 h4">Nuova Attività per la lista <b>@Model.ListName</b> </h2>
+                </div>
+
+                <div class="card-body p-4">
+                    <form asp-controller="ToDoLists" asp-action="CreateToDo" method="post">
+                        <input type="hidden" asp-for="ToDoListId" />
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="Name" class="form-label fw-bold">Nome Attività</label>
+                                <input asp-for="Name" class="form-control" />
+                                <span asp-validation-for="Name" class="text-danger small"></span>
+                            </div>
+                        </div>
+
+                        <hr />
+
+                        <div class="d-flex justify-content-between align-items-center">
+                            <a asp-controller="ToDoLists" asp-action="Index" class="btn btn-outline-secondary">
+                                Annulla
+                            </a>
+                            <button type="submit" class="btn btn-success px-4">
+                                Salva Ordine
+                            </button>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+}
