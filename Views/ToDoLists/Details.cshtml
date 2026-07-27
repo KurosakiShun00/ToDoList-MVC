@@ -38,9 +38,11 @@
             <td><a asp-controller="ToDoLists" asp-action="EditToDo" asp-route-id = "@line.Id" class="btn btn-primary" role="button">
                 Modifica Attività
             </a></td>
-            <td><a asp-controller="ToDoLists" asp-action="DeleteToDo" asp-route-id = "@line.Id" class="btn btn-primary" role="button">
-                Elimina Attività
-            </a></td>
+            <td><form asp-controller="ToDoLists" asp-action="DeleteToDo" asp-route-id="@line.Id" method="post" class="d-inline">
+                <button type="submit" class="btn btn-danger btn-sm">
+                    Elimina
+                </button>
+            </form></td>
         </tr>
     }
     </tbody>

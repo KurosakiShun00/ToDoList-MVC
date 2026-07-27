@@ -22,6 +22,16 @@
         </tr>
     </thead>
     <tbody>
+    @if (Model.Count == 0)
+    {
+        <tr>
+            <td colspan="3" class="text-center text-muted py-4 fw-bold">
+                NON HAI LISTE, CREANE UNA PER VISUALIZZARLA QUA
+            </td>
+        </tr>
+    }
+    else
+    {
         @foreach (var ToDoList in Model)
         {
             <tr>
@@ -29,7 +39,7 @@
                 <td>@ToDoList.ToDos.Count()</td>
 
                 <td class="text-nowrap">
-                    <a asp-controller="ToDoLists" asp-action="Details" asp-route-id="@ToDoList.Id" class="btn btn-primary " role="button">
+                    <a asp-controller="ToDoLists" asp-action="Details" asp-route-id="@ToDoList.Id" class="btn btn-primary" role="button">
                         Details
                     </a>
                     <a asp-controller="ToDoLists" asp-action="Edit" asp-route-id="@ToDoList.Id" class="btn btn-primary" role="button">
@@ -41,5 +51,6 @@
                 </td>
             </tr>
         }
+    }
     </tbody>
 </table>

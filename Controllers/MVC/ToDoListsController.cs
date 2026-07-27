@@ -108,7 +108,9 @@ public class ToDoListsController : Controller
             var new_toDo = new ToDoDTO(viewModel);
 
             await _service.AddToDoToListAsync(new_toDo.ToDoListId, new_toDo);
-            return RedirectToAction(nameof(Index));
+
+                    
+            return RedirectToAction(nameof(Details), new {id =  new_toDo.ToDoListId});
         }
 
         // GET: /Customers/Edit/5
@@ -135,7 +137,7 @@ public class ToDoListsController : Controller
             var new_list = new Models.ToDoListDTO(viewModel);
 
             await _service.UpdateListAsync(id, new_list);
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Details), new {id =  id});
         }
 
         
@@ -188,7 +190,8 @@ public class ToDoListsController : Controller
                     {
                         Id = item.Id,
                         Name = item.Name,
-                        IsCompleted = item.IsCompleted
+                        IsCompleted = item.IsCompleted,
+                        ToDoListId = item.ToDoListId
                     };
                     return View(viewModel);
 
@@ -207,5 +210,30 @@ public class ToDoListsController : Controller
                     if (updated == null) return NotFound();
                     
                     return RedirectToAction(nameof(Details), new { id = updated.ToDoListId });
+                }
+                
+    
+                
+                [HttpPost]
+                [ValidateAntiForgeryToken]
+                public async Task<IActionResult> DeleteToDo(int id)
+                {
+
+                    bool isDeleted = await _service.DeleteToDoAsync(id);
+
+                    if (!isDeleted)
+                    {
+                        return NotFound();
+                    }
+
+                    string? referer = Request.Headers["Referer"].ToString();
+
+                    if (!string.IsNullOrEmpty(referer))
+                    {
+                        return Redirect(referer);
+                    }
+
+                    
+                    return RedirectToAction(nameof(Index));
                 }
     }
