@@ -1,7 +1,7 @@
-@model ToDoList_MVC.ViewModels.ToDoListsCreateViewModel;
+@model ToDoList_MVC.ViewModels.ToDo.ToDoCreateViewModel;
 
 @{
-    ViewData["Title"] = "List Create";
+    ViewData["Title"] = "ToDo Create";
     Layout = "_Layout";
 }
 
@@ -11,15 +11,15 @@
 
             <div class="card shadow-sm">
                 <div class="card-header bg-primary text-white py-3">
-                    <h2 class="mb-0 h4">Nuova Lista</h2>
+                    <h2 class="mb-0 h4">Nuova Attività per la lista <b>@Model.ListName</b> </h2>
                 </div>
 
                 <div class="card-body p-4">
-                    <form asp-controller="ToDoLists" asp-action="Create" method="post">
-
+                    <form asp-controller="ToDoLists" asp-action="CreateToDo" method="post">
+                        <input type="hidden" asp-for="ToDoListId" />
                         <div class="row">
                             <div class="col-md-6 mb-3">
-                                <label asp-for="Name" class="form-label fw-bold">Nome</label>
+                                <label asp-for="Name" class="form-label fw-bold">Nome Attività</label>
                                 <input asp-for="Name" class="form-control" />
                                 <span asp-validation-for="Name" class="text-danger small"></span>
                             </div>

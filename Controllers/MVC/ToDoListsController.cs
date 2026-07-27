@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using ToDoList_MVC.Models;
 using ToDoList_MVC.Services;
 using ToDoList_MVC.ViewModels;
+using ToDoList_MVC.ViewModels.ToDo;
 
 namespace ToDoList_MVC.Controllers.MVC;
 
@@ -75,6 +76,40 @@ public class ToDoListsController : Controller
             return RedirectToAction(nameof(Index));
         }
 
+        public async Task<IActionResult> CreateToDo(int id)
+        {
+            var list = await _service.GetByIdAsync(id);
+            if(list == null) return NotFound();
+            var listName = list.Name;
+
+            var viewModel = new ToDoCreateViewModel()
+            {
+                ToDoListId = id,
+                ListName = listName
+            };
+            
+            return View(viewModel);
+        }
+        
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateToDo(ToDoCreateViewModel viewModel)
+        {
+            if (!ModelState.IsValid)
+            {
+                if (string.IsNullOrEmpty(viewModel.ListName))
+                {
+                    var list = await _service.GetByIdAsync(viewModel.ToDoListId);
+                    viewModel.ListName = list?.Name;
+                }
+                return View(viewModel);
+            }
+
+            var new_toDo = new ToDoDTO(viewModel);
+
+            await _service.AddToDoToListAsync(new_toDo.ToDoListId, new_toDo);
+            return RedirectToAction(nameof(Index));
+        }
 
         // GET: /Customers/Edit/5
         public async Task<IActionResult> Edit(int id)
@@ -89,7 +124,7 @@ public class ToDoListsController : Controller
             return View(viewModel);
 
         }
-
+        
         // POST: /Customers/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -103,38 +138,39 @@ public class ToDoListsController : Controller
             return RedirectToAction(nameof(Index));
         }
 
-/*
-                // GET: /Customers/Delete/5
-                public async Task<IActionResult> Delete(string id)
+        
+                public async Task<IActionResult> Delete(int id)
                 {
 
-                    var item = await _service.GetByIDAsync(id);
+                    var item = await _service.GetByIdAsync(id);
                     if (item == null) return NotFound();
-                    var viewModel = new CustomersDetailViewModel
+                    var ToDos = new List<ToDoListLineViewModel>();
+                    foreach (var ToDo in item.ToDos)
                     {
-                        Id = item.Id,
-                        CompanyName = item.CompanyName,
-                        ContactName = item.ContactName,
-                        ContactTitle = item.ContactTitle,
-                        Address = item.Address,
-                        City = item.City,
-                        Region = item.Region,
-                        PostalCode = item.PostalCode,
-                        Country = item.Country,
-                        Phone = item.Phone,
-                        Fax = item.Fax
+                        ToDos.Add(new ToDoListLineViewModel
+                        {
+                            Id = ToDo.Id,
+                            Name = ToDo.Name,
+                            IsCompleted = ToDo.IsCompleted
+                        });
+                    }
+
+                    var viewModel = new ToDoListsDetailsViewModel()
+                    {
+                        Id               = item.Id,
+                        Name           = item.Name,
+                        ToDos = ToDos
                     };
                     return View(viewModel);
 
                 }
-
-                // POST: /Customers/Delete/5
+                
                 [HttpPost, ActionName("Delete")]
                 [ValidateAntiForgeryToken]
-                public async Task<IActionResult> DeleteConfirmed(string id)
+                public async Task<IActionResult> DeleteConfirmed(int id)
                 {
 
-                    bool isDeleted = await _service.DeleteAsync(id);
+                    bool isDeleted = await _service.DeleteListAsync(id);
 
                     if (!isDeleted)
                     {
@@ -144,6 +180,3 @@ public class ToDoListsController : Controller
                     return RedirectToAction(nameof(Index));
                 }
     }
-
-    */
-}

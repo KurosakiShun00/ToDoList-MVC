@@ -1,4 +1,6 @@
-﻿namespace ToDoList_MVC.Models
+﻿using ToDoList_MVC.ViewModels.ToDo;
+
+namespace ToDoList_MVC.Models
 {
     public class ToDoDTO
     {
@@ -8,8 +10,24 @@
 
         public bool IsCompleted { get; set; }
 
+        public int ToDoListId { get; set; }
+        
         public ToDoDTO() { }
         public ToDoDTO(ToDo to_do) =>
             (Id, Name, IsCompleted) = (to_do.Id, to_do.Name, to_do.IsCompleted);
+
+        public ToDoDTO(ToDoCreateViewModel viewModel)
+        {
+            Name = viewModel.Name;
+            IsCompleted = false;
+            ToDoListId = viewModel.ToDoListId;
+        }     
+        public ToDoDTO(ToDoEditViewModel viewModel)
+        {
+            Id = viewModel.Id;
+            Name = viewModel.Name;
+            IsCompleted = viewModel.IsCompleted;
+            ToDoListId = viewModel.ToDoListId;
+        }
     }
 }
