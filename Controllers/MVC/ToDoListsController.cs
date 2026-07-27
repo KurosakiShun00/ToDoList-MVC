@@ -33,24 +33,27 @@ public class ToDoListsController : Controller
 
 
 
-        /*
-        public async Task<IActionResult> Details(string id)
+        
+        public async Task<IActionResult> Details(int id)
         {
-            var item = await _service.GetByIDAsync(id);
+            var item = await _service.GetByIdAsync(id);
             if (item == null) return NotFound();
-            var viewModel = new CustomersDetailViewModel
+            var ToDos = new List<ToDoListLineViewModel>();
+            foreach (var ToDo in item.ToDos)
+            {
+                ToDos.Add(new ToDoListLineViewModel
+                {
+                    Id = ToDo.Id,
+                    Name = ToDo.Name,
+                    IsCompleted = ToDo.IsCompleted
+                });
+            }
+
+            var viewModel = new ToDoListsDetailsViewModel()
             {
                Id               = item.Id,
-               CompanyName      = item.CompanyName,
-               ContactName      = item.ContactName,
-               ContactTitle     = item.ContactTitle,
-               Address          = item.Address,
-               City             = item.City,
-               Region           = item.Region,
-               PostalCode       = item.PostalCode,
-               Country          = item.Country,
-               Phone            = item.Phone,
-               Fax              = item.Fax
+               Name           = item.Name,
+               ToDos = ToDos
     };
             return View(viewModel);
         }
@@ -62,35 +65,26 @@ public class ToDoListsController : Controller
         // POST: /Customers/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(CustomersCreateViewModel viewModel)
+        public async Task<IActionResult> Create(ToDoListsCreateViewModel viewModel)
         {
             if (!ModelState.IsValid) return View(viewModel);
 
-            var new_product = new Models.CustomerDTO(viewModel);
+            var new_list = new ToDoListDTO(viewModel);
 
-            await _service.CreateAsync(new_product);
+            await _service.CreateListAsync(new_list);
             return RedirectToAction(nameof(Index));
         }
 
 
         // GET: /Customers/Edit/5
-        public async Task<IActionResult> Edit(string id)
+        public async Task<IActionResult> Edit(int id)
         {
-            var item = await _service.GetByIDAsync(id);
+            var item = await _service.GetByIdAsync(id);
             if (item == null) return NotFound();
-            var viewModel = new CustomersEditViewModel
+            var viewModel = new ToDoListsEditViewModel
             {
                 Id = item.Id,
-                CompanyName = item.CompanyName,
-                ContactName = item.ContactName,
-                ContactTitle = item.ContactTitle,
-                Address = item.Address,
-                City = item.City,
-                Region = item.Region,
-                PostalCode = item.PostalCode,
-                Country = item.Country,
-                Phone = item.Phone,
-                Fax = item.Fax
+                Name = item.Name
             };
             return View(viewModel);
 
@@ -99,17 +93,17 @@ public class ToDoListsController : Controller
         // POST: /Customers/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, CustomersEditViewModel viewModel)
+        public async Task<IActionResult> Edit(int id, ToDoListsEditViewModel viewModel)
         {
             if (!ModelState.IsValid) return View(viewModel);
 
-            var new_product = new Models.CustomerDTO(viewModel);
+            var new_list = new Models.ToDoListDTO(viewModel);
 
-            await _service.UpdateAsync(id, new_product);
+            await _service.UpdateListAsync(id, new_list);
             return RedirectToAction(nameof(Index));
         }
 
-
+/*
                 // GET: /Customers/Delete/5
                 public async Task<IActionResult> Delete(string id)
                 {
@@ -150,6 +144,6 @@ public class ToDoListsController : Controller
                     return RedirectToAction(nameof(Index));
                 }
     }
-    
+
     */
 }

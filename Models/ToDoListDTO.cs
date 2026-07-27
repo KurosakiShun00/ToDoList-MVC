@@ -1,4 +1,6 @@
-﻿namespace ToDoList_MVC.Models
+﻿using ToDoList_MVC.ViewModels;
+
+namespace ToDoList_MVC.Models
 {
     public class ToDoListDTO
     {
@@ -13,6 +15,16 @@
             Id = list.Id;
             Name = list.Name;
             ToDos = list.ToDos.Select(t => new ToDoDTO(t)).ToList();
+        }
+        
+        public ToDoListDTO(ToDoListsCreateViewModel list)
+        {
+            Name = list.Name;
+        }  
+        public ToDoListDTO(ToDoListsEditViewModel list)
+        {
+            Id = list.Id;
+            Name = list.Name;
         }
     }
 }

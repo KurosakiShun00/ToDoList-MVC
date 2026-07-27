@@ -5,6 +5,7 @@ public class ToDoListsDetailsViewModel
 {
     public int Id { get; set; }
     public string? Name { get; set; }
-
-    public List<ToDo> ToDos { get; set; } = new();
+    public int Remaining => ToDos.Count(x => !x.IsCompleted);
+        
+    public List<ToDoListLineViewModel> ToDos { get; set; } = new();
 }

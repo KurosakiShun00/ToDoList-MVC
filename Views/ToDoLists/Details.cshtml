@@ -1,0 +1,59 @@
+@model ToDoList_MVC.ViewModels.ToDoListsDetailsViewModel;
+
+@{
+    ViewData["Title"] = "Detail";
+    Layout = "_Layout";
+}
+
+<div class="card-body">
+    <dl class="row mb-0">
+
+        <dt class="col-sm-3 text-muted">ID Lista</dt>
+        <dd class="col-sm-9">@Model.Id</dd>
+
+        <dt class="col-sm-3 text-muted">Nome Lista</dt>
+        <dd class="col-sm-9 fw-bold">@Model.Name</dd>
+
+    </dl>
+</div>
+
+<hr />
+<h2 class="display-4">Cose Da Fare Nella Lista</h2>
+<table class="table">
+    <thead class="thead-dark">
+    <tr>
+        <th scope="col">Id Attività</th>
+        <th scope="col">Nome Attività</th>
+        <th scope="col">Stato Attività</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var line in Model.ToDos)
+    {
+        <tr>
+            <td>@line.Id</td>
+            <td>@line.Name</td>
+            <td>@(line.IsCompleted ? "Completata" : "Da Completare")</td>
+        </tr>
+    }
+    </tbody>
+</table>
+<p class="text-end fw-bold fs-4">Cose da fare rimaste : @Model.Remaining</p>
+<hr />
+
+
+<div class="d-flex align-items-left justify-content-between mb-4 gap-3">
+    <a asp-controller="ToDoLists" asp-action="Index" class="btn btn-primary" role="button">
+        ← Torna alla Lista
+    </a>
+
+    <a asp-controller="ToDoLists" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary" role="button">
+        Modifica Nome Lista
+        
+    </a>
+
+    <a asp-controller="ToDo" asp-action="Create" asp-route-id="@Model.Id" class="btn btn-primary" role="button">
+        + Aggiungi Attività
+    </a>
+
+</div>

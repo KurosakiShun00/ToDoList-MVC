@@ -25,7 +25,7 @@ namespace ToDoList_MVC.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<ToDoList>> CreateTodoListDto(ToDoList newList)
+        public async Task<ActionResult<ToDoList>> CreateTodoListDto(ToDoListDTO newList)
         {
             var createdList = await _todoListService.CreateListAsync(newList);
             if (createdList == null) return BadRequest();
