@@ -3,6 +3,7 @@ using ToDoList_MVC.Models;
 using ToDoList_MVC.Services;
 using ToDoList_MVC.ViewModels;
 using ToDoList_MVC.ViewModels.ToDo;
+using ToDoList_MVC.ViewModels.ToDoList;
 
 namespace ToDoList_MVC.Controllers.MVC;
 
@@ -182,37 +183,34 @@ public class ToDoListsController : Controller
                     return RedirectToAction(nameof(Index));
                 }
                 
-                public async Task<IActionResult> EditToDo(int id)
+                [HttpPost]
+                [ValidateAntiForgeryToken]
+                public async Task<IActionResult> ToggleToDo(int id, int toDoListId)
                 {
                     var item = await _service.GetToDoAsync(id);
                     if (item == null) return NotFound();
-                    var viewModel = new ToDoEditViewModel
-                    {
-                        Id = item.Id,
-                        Name = item.Name,
-                        IsCompleted = item.IsCompleted,
-                        ToDoListId = item.ToDoListId
-                    };
-                    return View(viewModel);
 
+                    item.IsCompleted = !item.IsCompleted;
+
+                    await _service.UpdateToDoAsync(id, item);
+
+                    return RedirectToAction(nameof(Details), new { id = toDoListId });
                 }
-                
+
                 [HttpPost]
                 [ValidateAntiForgeryToken]
                 public async Task<IActionResult> EditToDo(int id, ToDoEditViewModel viewModel)
                 {
-                    viewModel.Id = id; 
-                    if (!ModelState.IsValid) return View(viewModel);
+                    var existingToDo = await _service.GetToDoAsync(id);
+                    if (existingToDo == null) return NotFound();
 
-                    var new_toDo = new Models.ToDoDTO(viewModel);
+                    existingToDo.Name = viewModel.Name;
 
-                    var updated = await _service.UpdateToDoAsync(id, new_toDo);
-                    if (updated == null) return NotFound();
-                    
-                    return RedirectToAction(nameof(Details), new { id = updated.ToDoListId });
+                    await _service.UpdateToDoAsync(id, existingToDo);
+
+                    int redirectId = viewModel.ToDoListId != 0 ? viewModel.ToDoListId : existingToDo.ToDoListId;
+                    return RedirectToAction(nameof(Details), new { id = redirectId });
                 }
-                
-    
                 
                 [HttpPost]
                 [ValidateAntiForgeryToken]

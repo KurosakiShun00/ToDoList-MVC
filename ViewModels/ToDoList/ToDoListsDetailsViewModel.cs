@@ -1,5 +1,4 @@
-using ToDoList_MVC.Models;
-namespace ToDoList_MVC.ViewModels;
+namespace ToDoList_MVC.ViewModels.ToDoList;
 
 public class ToDoListsDetailsViewModel
 {
