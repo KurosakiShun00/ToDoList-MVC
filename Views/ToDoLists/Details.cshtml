@@ -1,4 +1,4 @@
-@model ToDoList_MVC.ViewModels.ToDoListsDetailsViewModel;
+@model ToDoList_MVC.ViewModels.ToDoList.ToDoListsDetailsViewModel;
 
 @{
     ViewData["Title"] = "Detail";
@@ -36,10 +36,15 @@
             <td>@line.Name</td>
             <td>@(line.IsCompleted ? "Completata" : "Da Completare")</td>
             <td><a asp-controller="ToDoLists" asp-action="EditToDo" asp-route-id = "@line.Id" class="btn btn-primary" role="button">
-                Modifica Attività
-            </a></td>
-            <td><form asp-controller="ToDoLists" asp-action="DeleteToDo" asp-route-id="@line.Id" method="post" class="d-inline">
-                <button type="submit" class="btn btn-danger btn-sm">
+                    Modifica Attività
+                </a>
+                
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" @(line.IsCompleted ? "checked" : "")>
+                </div>
+                
+                <form asp-controller="ToDoLists" asp-action="DeleteToDo" asp-route-id="@line.Id" method="post" class="d-inline">
+                <button type="submit" class="btn btn-danger btn-sm ">
                     Elimina
                 </button>
             </form></td>
