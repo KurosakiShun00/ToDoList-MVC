@@ -1,7 +1,7 @@
 ﻿@page
 @model RegisterModel
 @{
-    ViewData["Title"] = "Register";
+    ViewData["Title"] = "Registrati";
 }
 
 <h1>@ViewData["Title"]</h1>
@@ -9,7 +9,7 @@
 <div class="row">
     <div class="col-md-4">
         <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
-            <h2>Create a new account.</h2>
+            <h2>Create un nuovo account.</h2>
             <hr />
             <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
             <div class="form-floating mb-3">
@@ -24,40 +24,258 @@
             </div>
             <div class="form-floating mb-3">
                 <input asp-for="Input.ConfirmPassword" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" />
-                <label asp-for="Input.ConfirmPassword">Confirm Password</label>
+                <label asp-for="Input.ConfirmPassword">Conferma Password</label>
                 <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
             </div>
-            <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary">Register</button>
+            <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary">Registrati</button>
         </form>
     </div>
-    <div class="col-md-6 col-md-offset-2">
+
+    <div class="col-md-8 col-lg-7 offset-lg-1">
         <section>
-            <h3>Use another service to register.</h3>
+            <h3>Entra nel mondo dei ToDoLists</h3>
             <hr />
-            @{
-                if ((Model.ExternalLogins?.Count ?? 0) == 0)
-                {
-                    <div>
-                        <p>
-                            There are no external authentication services configured. See this <a href="https://go.microsoft.com/fwlink/?LinkID=532715">article
-                            about setting up this ASP.NET application to support logging in via external services</a>.
-                        </p>
-                    </div>
-                }
-                else
-                {
-                    <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal">
-                        <div>
-                            <p>
-                                @foreach (var provider in Model.ExternalLogins!)
-                                {
-                                    <button type="submit" class="btn btn-primary" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">@provider.DisplayName</button>
-                                }
-                            </p>
+
+           
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 g-3">
+                
+                
+                <div class="col d-flex">
+                    <div class="card border-success shadow-sm w-100 h-100 d-flex flex-column">
+                        <div class="card-header bg-transparent border-success d-flex align-items-center justify-content-between py-2">
+                            <h6 class="card-title text-success mb-0 text-truncate me-1" title="Lista Della Spesa">
+                                Spesa
+                            </h6>
+                            <a href="#" class="btn btn-xs btn-outline-primary flex-shrink-0 p-1" title="Modifica">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
+                                    <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325"/>
+                                </svg>
+                            </a>
                         </div>
-                    </form>
-                }
-            }
+        
+                        <div class="card-body flex-grow-1 p-2 d-flex flex-column justify-content-between">
+                            <div>
+                                <div class="d-flex justify-content-between align-items-center mb-1">
+                                    <small class="text-muted fw-bold text-uppercase" style="font-size: 0.65rem; letter-spacing: 0.5px;">Anteprima</small>
+                                    <span class="badge bg-light text-dark border p-1" style="font-size: 0.7rem;">5 elementi</span>
+                                </div>
+        
+                                <ul class="list-group list-group-flush mb-0" style="font-size: 0.85rem;">
+                                    <li class="list-group-item px-0 py-0 d-flex align-items-center bg-transparent border-0">
+                                        <span class="me-1 text-muted">•</span>
+                                        <span class="text-decoration-line-through text-muted text-truncate">Uova</span>
+                                    </li>
+                                    <li class="list-group-item px-0 py-0 d-flex align-items-center bg-transparent border-0">
+                                        <span class="me-1 text-muted">•</span>
+                                        <span class="text-decoration-line-through text-muted text-truncate">Latte</span>
+                                    </li>
+                                    <li class="list-group-item px-0 py-0 d-flex align-items-center bg-transparent border-0">
+                                        <span class="me-1 text-muted">•</span>
+                                        <span class="text-truncate">Farina</span>
+                                    </li>
+                                </ul>
+                            </div>
+        
+                            <div class="text-end">
+                                <small class="text-muted fst-italic" style="font-size: 0.75rem;">+ altri 2</small>
+                            </div>
+                        </div>
+
+                        <div class="card-footer bg-transparent border-success d-flex justify-content-between align-items-center gap-1 p-2">
+                            <a href="#" class="btn btn-outline-primary btn-xs w-100 p-1" style="font-size: 0.75rem;" role="button">
+                                Vedi
+                            </a>
+                            <a href="#" class="btn btn-outline-danger btn-xs w-100 p-1" style="font-size: 0.75rem;" role="button">
+                                Elimina
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                
+                <div class="col d-flex">
+                    <div class="card border-success shadow-sm w-100 h-100 d-flex flex-column">
+                        <div class="card-header bg-transparent border-success d-flex align-items-center justify-content-between py-2">
+                            <h6 class="card-title text-success mb-0 text-truncate me-1" title="Lavoro">
+                                Lavoro
+                            </h6>
+                            <a href="#" class="btn btn-xs btn-outline-primary flex-shrink-0 p-1" title="Modifica">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
+                                    <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325"/>
+                                </svg>
+                            </a>
+                        </div>
+        
+                        <div class="card-body flex-grow-1 p-2 d-flex flex-column justify-content-between">
+                            <div>
+                                <div class="d-flex justify-content-between align-items-center mb-1">
+                                    <small class="text-muted fw-bold text-uppercase" style="font-size: 0.65rem; letter-spacing: 0.5px;">Anteprima</small>
+                                    <span class="badge bg-light text-dark border p-1" style="font-size: 0.7rem;">2 elementi</span>
+                                </div>
+        
+                                <ul class="list-group list-group-flush mb-0" style="font-size: 0.85rem;">
+                                    <li class="list-group-item px-0 py-0 d-flex align-items-center bg-transparent border-0">
+                                        <span class="me-1 text-muted">•</span>
+                                        <span class="text-decoration-line-through text-muted text-truncate">Pratica Bianchi</span>
+                                    </li>
+                                    <li class="list-group-item px-0 py-0 d-flex align-items-center bg-transparent border-0">
+                                        <span class="me-1 text-muted">•</span>
+                                        <span class="text-decoration-line-through text-muted text-truncate">Inventario</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="card-footer bg-transparent border-success d-flex justify-content-between align-items-center gap-1 p-2">
+                            <a href="#" class="btn btn-outline-primary btn-xs w-100 p-1" style="font-size: 0.75rem;" role="button">
+                                Vedi
+                            </a>
+                            <a href="#" class="btn btn-outline-danger btn-xs w-100 p-1" style="font-size: 0.75rem;" role="button">
+                                Elimina
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                
+                <div class="col d-flex">
+                    <div class="card border-success shadow-sm w-100 h-100 d-flex flex-column">
+                        <div class="card-header bg-transparent border-success d-flex align-items-center justify-content-between py-2">
+                            <h6 class="card-title text-success mb-0 text-truncate me-1" title="Progetti">
+                                Progetti
+                            </h6>
+                            <a href="#" class="btn btn-xs btn-outline-primary flex-shrink-0 p-1" title="Modifica">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
+                                    <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325"/>
+                                </svg>
+                            </a>
+                        </div>
+        
+                        <div class="card-body flex-grow-1 p-2 d-flex flex-column justify-content-between">
+                            <div>
+                                <div class="d-flex justify-content-between align-items-center mb-1">
+                                    <small class="text-muted fw-bold text-uppercase" style="font-size: 0.65rem; letter-spacing: 0.5px;">Anteprima</small>
+                                    <span class="badge bg-light text-dark border p-1" style="font-size: 0.7rem;">1 elemento</span>
+                                </div>
+        
+                                <ul class="list-group list-group-flush mb-0" style="font-size: 0.85rem;">
+                                    <li class="list-group-item px-0 py-0 d-flex align-items-center bg-transparent border-0">
+                                        <span class="me-1 text-muted">•</span>
+                                        <span class="text-decoration-line-through text-muted text-truncate">App ToDoList</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="card-footer bg-transparent border-success d-flex justify-content-between align-items-center gap-1 p-2">
+                            <a href="#" class="btn btn-outline-primary btn-xs w-100 p-1" style="font-size: 0.75rem;" role="button">
+                                Vedi
+                            </a>
+                            <a href="#" class="btn btn-outline-danger btn-xs w-100 p-1" style="font-size: 0.75rem;" role="button">
+                                Elimina
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col d-flex">
+                    <div class="card border-success shadow-sm w-100 h-100 d-flex flex-column">
+                        <div class="card-header bg-transparent border-success d-flex align-items-center justify-content-between py-2">
+                            <h6 class="card-title text-success mb-0 text-truncate me-1" title="Festa di Compleanno">
+                                Festa di Compleanno
+                            </h6>
+                            <a href="#" class="btn btn-xs btn-outline-primary flex-shrink-0 p-1" title="Modifica">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
+                                    <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325"/>
+                                </svg>
+                            </a>
+                        </div>
+        
+                        <div class="card-body flex-grow-1 p-2 d-flex flex-column justify-content-between">
+                            <div>
+                                <div class="d-flex justify-content-between align-items-center mb-1">
+                                    <small class="text-muted fw-bold text-uppercase" style="font-size: 0.65rem; letter-spacing: 0.5px;">Anteprima</small>
+                                    <span class="badge bg-light text-dark border p-1" style="font-size: 0.7rem;">7 elementi</span>
+                                </div>
+        
+                                <ul class="list-group list-group-flush mb-0" style="font-size: 0.85rem;">
+                                    <li class="list-group-item px-0 py-0 d-flex align-items-center bg-transparent border-0">
+                                        <span class="me-1 text-muted">•</span>
+                                        <span class="text-truncate">Comprare torta</span>
+                                    </li>
+                                    <li class="list-group-item px-0 py-0 d-flex align-items-center bg-transparent border-0">
+                                        <span class="me-1 text-muted">•</span>
+                                        <span class="text-decoration-line-through text-muted text-truncate">Inviare gli inviti</span>
+                                    </li>
+                                    <li class="list-group-item px-0 py-0 d-flex align-items-center bg-transparent border-0">
+                                        <span class="me-1 text-muted">•</span>
+                                        <span class="text-truncate">Chiamare per il buffet</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="card-footer bg-transparent border-success d-flex justify-content-between align-items-center gap-1 p-2">
+                            <a href="#" class="btn btn-outline-primary btn-xs w-100 p-1" style="font-size: 0.75rem;" role="button">
+                                Vedi
+                            </a>
+                            <a href="#" class="btn btn-outline-danger btn-xs w-100 p-1" style="font-size: 0.75rem;" role="button">
+                                Elimina
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col d-flex">
+                    <div class="card border-success shadow-sm w-100 h-100 d-flex flex-column">
+                        <div class="card-header bg-transparent border-success d-flex align-items-center justify-content-between py-2">
+                            <h6 class="card-title text-success mb-0 text-truncate me-1" title="Ricetta Carbonara">
+                                Ricetta Carbonara
+                            </h6>
+                            <a href="#" class="btn btn-xs btn-outline-primary flex-shrink-0 p-1" title="Modifica">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
+                                    <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325"/>
+                                </svg>
+                            </a>
+                        </div>
+        
+                        <div class="card-body flex-grow-1 p-2 d-flex flex-column justify-content-between">
+                            <div>
+                                <div class="d-flex justify-content-between align-items-center mb-1">
+                                    <small class="text-muted fw-bold text-uppercase" style="font-size: 0.65rem; letter-spacing: 0.5px;">Anteprima</small>
+                                    <span class="badge bg-light text-dark border p-1" style="font-size: 0.7rem;">10 elementi</span>
+                                </div>
+        
+                                <ul class="list-group list-group-flush mb-0" style="font-size: 0.85rem;">
+                                    <li class="list-group-item px-0 py-0 d-flex align-items-center bg-transparent border-0">
+                                        <span class="me-1 text-muted">•</span>
+                                        <span class="text-decoration-line-through text-muted text-truncate">Mettere a rosolare il guanciale</span>
+                                    </li>
+                                    <li class="list-group-item px-0 py-0 d-flex align-items-center bg-transparent border-0">
+                                        <span class="me-1 text-muted">•</span>
+                                        <span class="text-decoration-line-through text-muted text-truncate">Mettere uova nella ciotola</span>
+                                    </li>
+                                    <li class="list-group-item px-0 py-0 d-flex align-items-center bg-transparent border-0">
+                                        <span class="me-1 text-muted">•</span>
+                                        <span class="text-truncate">Unire formaggio e pepe</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="card-footer bg-transparent border-success d-flex justify-content-between align-items-center gap-1 p-2">
+                            <a href="#" class="btn btn-outline-primary btn-xs w-100 p-1" style="font-size: 0.75rem;" role="button">
+                                Vedi
+                            </a>
+                            <a href="#" class="btn btn-outline-danger btn-xs w-100 p-1" style="font-size: 0.75rem;" role="button">
+                                Elimina
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+            </div> 
+            
         </section>
     </div>
 </div>
