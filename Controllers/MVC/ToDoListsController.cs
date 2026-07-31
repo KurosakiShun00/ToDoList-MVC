@@ -1,3 +1,5 @@
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ToDoList_MVC.Models;
 using ToDoList_MVC.Services;
@@ -16,11 +18,18 @@ public class ToDoListsController : Controller
             _service = service;
         }
 
+        private string? GetUserID()
+        {
+            return User.FindFirstValue(ClaimTypes.NameIdentifier);
+        }
         
+        [Authorize]
         public async Task<IActionResult> Index()
         {
-
-            var items = (await _service.GetAllListsAsync()).ToList();
+            var userId = GetUserID();
+            if(userId == null) return Unauthorized();
+            
+            var items = (await _service.GetAllListsAsync(userId)).ToList();
             
 
             var viewModels = items.Select(x => new ToDoListsListViewModel
@@ -33,12 +42,15 @@ public class ToDoListsController : Controller
             return View(viewModels);
         }
 
-
-
         
+
+        [Authorize]
         public async Task<IActionResult> Details(int id)
         {
-            var item = await _service.GetByIdAsync(id);
+            var userId = GetUserID();
+            if(userId == null) return Unauthorized();
+            
+            var item = await _service.GetByIdAsync(id, userId);
             if (item == null) return NotFound();
             var ToDos = new List<ToDoListLineViewModel>();
             foreach (var ToDo in item.ToDos)
@@ -61,25 +73,32 @@ public class ToDoListsController : Controller
         }
 
 
-        // GET: /Customers/Create
+        [Authorize]
         public IActionResult Create() => View();
 
-        // POST: /Customers/Create
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(ToDoListsCreateViewModel viewModel)
         {
+            var userId = GetUserID();
+            if(userId == null) return Unauthorized();
+            
             if (!ModelState.IsValid) return View(viewModel);
 
             var new_list = new ToDoListDTO(viewModel);
 
-            await _service.CreateListAsync(new_list);
+            await _service.CreateListAsync(new_list, userId);
             return RedirectToAction(nameof(Index));
         }
-
+        
+        [Authorize]
         public async Task<IActionResult> CreateToDo(int id)
         {
-            var list = await _service.GetByIdAsync(id);
+            var userId = GetUserID();
+            if(userId  == null) return Unauthorized();
+            
+            var list = await _service.GetByIdAsync(id, userId);
             if(list == null) return NotFound();
             var listName = list.Name;
 
@@ -91,33 +110,38 @@ public class ToDoListsController : Controller
             
             return View(viewModel);
         }
-        
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateToDo(ToDoCreateViewModel viewModel)
         {
+            var userId = GetUserID();
+            if(userId  == null) return Unauthorized();
+            
             if (!ModelState.IsValid)
             {
                 if (string.IsNullOrEmpty(viewModel.ListName))
                 {
-                    var list = await _service.GetByIdAsync(viewModel.ToDoListId);
+                    var list = await _service.GetByIdAsync(viewModel.ToDoListId, userId);
                     viewModel.ListName = list?.Name;
                 }
                 return View(viewModel);
             }
-
+            
             var new_toDo = new ToDoDTO(viewModel);
 
-            await _service.AddToDoToListAsync(new_toDo.ToDoListId, new_toDo);
+            await _service.AddToDoToListAsync(new_toDo.ToDoListId, new_toDo, userId);
 
                     
             return RedirectToAction(nameof(Details), new {id =  new_toDo.ToDoListId});
         }
 
-        // GET: /Customers/Edit/5
+        [Authorize]
         public async Task<IActionResult> Edit(int id)
-        {
-            var item = await _service.GetByIdAsync(id);
+        {   
+            var userId = GetUserID();
+            if(userId  == null) return Unauthorized();
+            var item = await _service.GetByIdAsync(id, userId);
             if (item == null) return NotFound();
             var viewModel = new ToDoListsEditViewModel
             {
@@ -128,24 +152,29 @@ public class ToDoListsController : Controller
 
         }
         
-        // POST: /Customers/Edit/5
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, ToDoListsEditViewModel viewModel)
         {
+            var userId = GetUserID();
+            if(userId  == null) return Unauthorized();
+            
             if (!ModelState.IsValid) return View(viewModel);
 
             var new_list = new Models.ToDoListDTO(viewModel);
 
-            await _service.UpdateListAsync(id, new_list);
+            await _service.UpdateListAsync(id, new_list, userId);
             return RedirectToAction(nameof(Details), new {id =  id});
         }
 
-        
+        [Authorize]
                 public async Task<IActionResult> Delete(int id)
                 {
+                    var userId = GetUserID();
+                    if(userId  == null) return Unauthorized();
 
-                    var item = await _service.GetByIdAsync(id);
+                    var item = await _service.GetByIdAsync(id, userId);
                     if (item == null) return NotFound();
                     var ToDos = new List<ToDoListLineViewModel>();
                     foreach (var ToDo in item.ToDos)
@@ -168,12 +197,15 @@ public class ToDoListsController : Controller
 
                 }
                 
+                [Authorize]
                 [HttpPost, ActionName("Delete")]
                 [ValidateAntiForgeryToken]
                 public async Task<IActionResult> DeleteConfirmed(int id)
                 {
+                    var userId = GetUserID();
+                    if(userId  == null) return Unauthorized();
 
-                    bool isDeleted = await _service.DeleteListAsync(id);
+                    bool isDeleted = await _service.DeleteListAsync(id, userId);
 
                     if (!isDeleted)
                     {
@@ -183,6 +215,7 @@ public class ToDoListsController : Controller
                     return RedirectToAction(nameof(Index));
                 }
                 
+                [Authorize]
                 [HttpPost]
                 [ValidateAntiForgeryToken]
                 public async Task<IActionResult> ToggleToDo(int id, int toDoListId)
@@ -197,6 +230,7 @@ public class ToDoListsController : Controller
                     return RedirectToAction(nameof(Details), new { id = toDoListId });
                 }
 
+                [Authorize]
                 [HttpPost]
                 [ValidateAntiForgeryToken]
                 public async Task<IActionResult> EditToDo(int id, ToDoEditViewModel viewModel)
@@ -212,6 +246,7 @@ public class ToDoListsController : Controller
                     return RedirectToAction(nameof(Details), new { id = redirectId });
                 }
                 
+                [Authorize]
                 [HttpPost]
                 [ValidateAntiForgeryToken]
                 public async Task<IActionResult> DeleteToDo(int id)

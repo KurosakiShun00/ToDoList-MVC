@@ -11,17 +11,17 @@ namespace ToDoList_MVC.Repositories
         public ToDoListRepository(ToDoDB context)
         {  _context = context; }
 
-        public async Task<IEnumerable<ToDoList>> GetAllAsync()
+        public async Task<IEnumerable<ToDoList>> GetAllAsync(string? userId)
         {
-            return await _context.ToDosLists.Include(l => l.ToDos).ToListAsync();
+            return await _context.ToDosLists.Include(l => l.ToDos).Where(u=>u.UserId == userId).ToListAsync();
         }
-        public async Task<ToDoList?> GetByIdAsync(int id)
+        public async Task<ToDoList?> GetByIdAsync(int id, string? userId)
         {
-            return await _context.ToDosLists.Include(l => l.ToDos).FirstOrDefaultAsync(l => l.Id == id);
+            return await _context.ToDosLists.Include(l => l.ToDos).FirstOrDefaultAsync(l => l.Id == id && l.UserId==userId);
         }
-        public async Task<bool> ListExistsAsync(int id)
+        public async Task<bool> ListExistsAsync(int id, string? userId)
         {
-            return await _context.ToDosLists.AnyAsync(l => l.Id == id); 
+            return await _context.ToDosLists.AnyAsync(l => l.Id == id && l.UserId == userId); 
         }
         public async Task AddListAsync(ToDoList newList)
         {
@@ -30,7 +30,7 @@ namespace ToDoList_MVC.Repositories
 
         public async Task<ToDoList?> UpdateListAsync(int id, ToDoList updateList)
         {
-             _context.ToDosLists.Update( updateList);
+             _context.ToDosLists.Update(updateList);
              await _context.SaveChangesAsync();
             return await _context.ToDosLists.FirstOrDefaultAsync(l => l.Id == id);
         }

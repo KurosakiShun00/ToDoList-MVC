@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ToDoList_MVC.Models;
 using ToDoList_MVC.Services;
+using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 namespace ToDoList_MVC.Controllers
 {
@@ -17,17 +19,28 @@ namespace ToDoList_MVC.Controllers
             _toDoService = toDoService;
         }
 
+        private string? GetUserID()
+        {
+            return User.FindFirstValue(ClaimTypes.NameIdentifier);
+        }
+        
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ToDoListDTO>>> GetLists()
         {
-            var lists = await _todoListService.GetAllListsAsync();
+            var userId = GetUserID();
+            if(userId == null) return Unauthorized();
+            
+            var lists = await _todoListService.GetAllListsAsync(userId);
             return Ok(lists);
         }
 
         [HttpPost]
         public async Task<ActionResult<ToDoList>> CreateTodoListDto(ToDoListDTO newList)
         {
-            var createdList = await _todoListService.CreateListAsync(newList);
+            var userId = GetUserID();
+            if(userId == null) return Unauthorized();
+            
+            var createdList = await _todoListService.CreateListAsync(newList, userId);
             if (createdList == null) return BadRequest();
 
             return Ok(createdList);
@@ -36,7 +49,10 @@ namespace ToDoList_MVC.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteList(int id)
         {
-            var deleted = await _todoListService.DeleteListAsync(id);
+            var userId = GetUserID();
+            if(userId == null) return Unauthorized();
+            
+            var deleted = await _todoListService.DeleteListAsync(id, userId);
             if (!deleted) return NotFound();
 
             return NoContent();
@@ -59,7 +75,10 @@ namespace ToDoList_MVC.Controllers
         [HttpPost("{listId}/todos")]
         public async Task<IActionResult> AddToDoToList(int listId, ToDoDTO newToDo)
         {
-            var createdToDo = await _todoListService.AddToDoToListAsync(listId, newToDo);
+            var userId = GetUserID();
+            if(userId == null) return Unauthorized();
+            
+            var createdToDo = await _todoListService.AddToDoToListAsync(listId, newToDo,userId);
             if (createdToDo == null) return BadRequest();
 
             return Ok(createdToDo);
