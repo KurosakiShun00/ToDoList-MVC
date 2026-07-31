@@ -5,8 +5,6 @@
 
 > Un'API RESTful per la gestione di una lista di attività (Todo List), sviluppata in .NET come esercizio.
 
-Il progetto utilizza per ora un **Database In-Memory**, il che significa che non è richiesta alcuna configurazione o installazione di database esterni (come SQL Server). I dati vengono salvati temporaneamente nella memoria RAM e si azzerano a ogni riavvio dell'applicazione.
-
 ---
 
 ## 📌 Indice
@@ -21,9 +19,10 @@ Il progetto utilizza per ora un **Database In-Memory**, il che significa che non
 
 ## ✨ Caratteristiche principali
 
-*   **Operazioni CRUD complete:** Creazione, lettura, aggiornamento e cancellazione dei task all'interno di liste.
-*   **Database In-Memory:** Avvio immediato senza configurazioni di stringhe di connessione.
-*   **Documentazione Swagger:** Interfaccia grafica integrata per esplorare e testare gli endpoint direttamente dal browser.
+*   **Operazioni CRUD complete:** Creazione, lettura, aggiornamento e cancellazione di liste e dei task all'interno di liste.
+*   **Gestione multi utente:** Possibilità per ogni utente registrato di eseguire CRUD sulle proprio liste.
+*   **Collegamento Database :** Utilizzato per conservare i dati sulle liste e sugli utenti, utilizzo SqLite.
+*   **Documentazione Swagger:** Interfaccia grafica integrata per esplorare e testare gli endpoint API direttamente dal browser.
 
 ---
 
@@ -33,14 +32,16 @@ Il progetto utilizza per ora un **Database In-Memory**, il che significa che non
 *   **Entity Framework Core** (Per la gestione dei dati tramite ORM)
 *   **EF Core In-Memory Database Provider** (Database temporaneo in RAM)
 *   **Swagger / OpenAPI** (Per la documentazione degli endpoint)
-
----
+*   **AspNetCore.Authentication (Per il flusso di autenticazione)
+*    --
 
 ## ⚙️ Installazione e Configurazione
 
 ### Prerequisiti
 Per avviare questo progetto sul tuo computer, hai solo bisogno di:
 *   **[.NET SDK](https://dotnet.microsoft.com/download)** (Versione 8.0 o successiva, a seconda di quella che hai usato)
+*   Lanciare 'dotnet restore' nel caso i pacchetti risultino disallineati, per altre info al riguardo visitare:
+*   https://learn.microsoft.com/en-us/nuget/consume-packages/package-restore
 
 Per verificare se lo hai già installato, apri il terminale e digita:
 ```bash
