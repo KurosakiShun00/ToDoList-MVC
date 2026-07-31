@@ -11,36 +11,37 @@ namespace ToDoList_MVC.Services
         _repository = repository;
         }
 
-        public async Task<IEnumerable<ToDoListDTO>> GetAllListsAsync()
+        public async Task<IEnumerable<ToDoListDTO>> GetAllListsAsync(string? userId)
         {
-            var listFromDB = await _repository.GetAllAsync();
+            var listFromDB = await _repository.GetAllAsync(userId);
 
             return listFromDB.Select(list => new ToDoListDTO(list));
         }
 
-        public async Task<ToDoListDTO?> GetByIdAsync(int id)
+        public async Task<ToDoListDTO?> GetByIdAsync(int id, string? userId)
         {
-            var list = await _repository.GetByIdAsync(id);
+            var list = await _repository.GetByIdAsync(id, userId);
             if(list == null) return null;
             
             var result = new  ToDoListDTO(list);
             
             return result;
         }
-        public async Task<ToDoList> CreateListAsync(ToDoListDTO newListDTO)
+        public async Task<ToDoList> CreateListAsync(ToDoListDTO newListDTO, string? userId)
         {
             var newList = new ToDoList
             {
-                Name = newListDTO.Name
+                Name = newListDTO.Name,
+                UserId = userId
             };
             
             await _repository.AddListAsync(newList);
             await _repository.SaveChangesAsync();
             return newList;
         }
-        public async Task<ToDo?> AddToDoToListAsync(int listId, ToDoDTO newToDo)
+        public async Task<ToDo?> AddToDoToListAsync(int listId, ToDoDTO newToDo, string? userId)
         {
-            var exists = await _repository.ListExistsAsync(listId);
+            var exists = await _repository.ListExistsAsync(listId, userId);
             if (!exists) return null;
 
             var _ToDo = new ToDo
@@ -82,10 +83,10 @@ namespace ToDoList_MVC.Services
             return true;
         }
 
-        public async Task<ToDoList?> UpdateListAsync(int id, ToDoListDTO updatedListDTO)
+        public async Task<ToDoList?> UpdateListAsync(int id, ToDoListDTO updatedListDTO, string? userId)
         {
-            if (!(await _repository.ListExistsAsync(id))|| id != updatedListDTO.Id) return null;
-
+            if (!(await _repository.ListExistsAsync(id, userId))|| id != updatedListDTO.Id) return null;
+            
             var updateList = new ToDoList
             {
                 Id = updatedListDTO.Id,
@@ -106,9 +107,9 @@ namespace ToDoList_MVC.Services
             
             return result;
         }
-        public async Task<bool> DeleteListAsync(int id)
+        public async Task<bool> DeleteListAsync(int id, string? userId)
         {
-            var list = await _repository.GetByIdAsync(id);
+            var list = await _repository.GetByIdAsync(id, userId);
             if (list == null) return false;
 
             _repository.DeleteList(list);

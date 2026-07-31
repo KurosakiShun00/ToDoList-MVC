@@ -1,11 +1,13 @@
 using Microsoft.AspNetCore.Mvc;
 using ToDoList_MVC.ViewModels.Shared;
 using System.Diagnostics;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ToDoList_MVC.Controllers.MVC
 {
     public class HomeController : Controller
     {
+        [Authorize]
         public IActionResult Index()
         {
             return View();
