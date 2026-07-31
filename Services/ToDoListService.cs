@@ -32,7 +32,7 @@ namespace ToDoList_MVC.Services
             var newList = new ToDoList
             {
                 Name = newListDTO.Name,
-                UserId = userId
+                UserId = userId!
             };
             
             await _repository.AddListAsync(newList);
