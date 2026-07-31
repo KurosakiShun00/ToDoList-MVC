@@ -76,7 +76,9 @@
     <a asp-controller="ToDoLists" asp-action="Index" class="btn btn-secondary" role="button">
         ← Torna alla Lista
     </a>
-
+    <a asp-controller="ToDoLists" asp-action="ExportList" asp-route-id="@Model.Id" class="btn btn-primary" role="button">
+        ⬇ Scarica Lista (.txt)
+    </a>
     <div class="d-flex gap-2">
 
         <a asp-controller="ToDoLists" asp-action="CreateToDo" asp-route-id="@Model.Id" class="btn btn-primary" role="button">

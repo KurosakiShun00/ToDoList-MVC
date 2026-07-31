@@ -1,4 +1,5 @@
 using System.Security.Claims;
+using System.Text;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ToDoList_MVC.Models;
@@ -268,5 +269,41 @@ public class ToDoListsController : Controller
 
                     
                     return RedirectToAction(nameof(Index));
+                }
+
+                public async Task<IActionResult> ExportList(int id)
+                {
+                    var  userId = GetUserID();
+                    if(userId  == null) return Unauthorized();
+                    
+                    var list = await _service.GetByIdAsync(id, userId);
+                    
+                    if(list == null) return NotFound();
+
+                    var stringBuilder = new StringBuilder();
+
+                    stringBuilder.Append("====================================================").AppendLine();
+                    stringBuilder.Append("LISTA DI ATTIVITA': ").Append(list.Name).AppendLine();
+                    stringBuilder.Append("DELL'UTENTE: ").Append(User.FindFirstValue(ClaimTypes.GivenName  )?? "nome non trovato".ToUpper()).AppendLine();
+                    stringBuilder.Append("E-MAIL: ").Append(User.FindFirstValue(ClaimTypes.Email  )?? "e-mail non trovata").AppendLine();
+                    stringBuilder.Append("scaricata in data: ").Append(DateTime.Now).AppendLine();
+                    stringBuilder.Append("====================================================").AppendLine();
+
+                    if (list.ToDos.Count == 0) stringBuilder.Append("LA LISTA E' VUOTA");
+                    else
+                    {
+                        foreach (var toDo in list.ToDos)
+                        {
+                            stringBuilder.Append(toDo.Name + ", ").Append(toDo.IsCompleted? "Completata" : "Non Completata").AppendLine();
+                        }
+                    }
+                    
+                    var str = stringBuilder.ToString();
+                    
+                    byte[] fileBytes = Encoding.UTF8.GetBytes(str);
+
+                    string fileName = $"{list.Name??"UnnamedList".Replace(" ", "_")}_Export.txt";
+                    
+                    return File(fileBytes, "text/plain", fileName);
                 }
     }
