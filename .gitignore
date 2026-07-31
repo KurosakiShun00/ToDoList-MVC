@@ -57,3 +57,20 @@ TestResult.xml
 nunit-*.xml
 .vs/
 .idea/
+
+# Impostazioni locali 
+appsettings.Development.json
+appsettings.Local.json
+*.secrets.json
+
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+*.sql
+
+# Log
+.DS_Store
+thumbs.db
+desktop.ini
