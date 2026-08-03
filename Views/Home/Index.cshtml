@@ -1,27 +1,62 @@
+@using System.Security.Claims
+@using Humanizer
 @{
     ViewData["Title"] = "Index";
     Layout = "_Layout";
+}
+
+@{
+    var mail = User.FindFirstValue(ClaimTypes.Email) ?? "";
+    var atIndex = mail.LastIndexOf('@');
+    
+    var username = atIndex > 0 
+        ? mail.Truncate(atIndex) 
+        : (!string.IsNullOrEmpty(mail) ? mail : "Ospite");
 }
 
 <div class="container my-5">
 
     <div class="p-5 mb-4 bg-white rounded-3 shadow-sm border">
         <div class="container-fluid py-3 text-center">
-            <h1 class="display-5 fw-bold text-primary">Benvenuto</h1>
-            <p>
-                TEST TODOLIST DATABASE
+            <h1 class="display-5 fw-bold text-primary">Benvenuto @username</h1>
+            <p class="fs-5 text-muted mb-0">
+                ToDoLists
             </p>
         </div>
     </div>
 
-    <div class="row row-cols-1">
-        <div class="col">
-            <div class="card h-100 shadow-sm text-center">
-                    <a asp-controller="ToDoLists" asp-action="Index" class="card-body btn btn-primary " role="button">
-                        VAI ALLE TUE LISTE
-                    </a>
-            </div>
+    <div class="row row-cols-1 row-cols-md-2 g-4">
+        
+        <div class="col d-flex">
+            <a asp-controller="ToDoLists" 
+               asp-action="Index" 
+               class="btn btn-primary shadow-sm w-100 d-flex align-items-center justify-content-center fw-semibold fs-5 p-4 rounded-3 text-decoration-none" 
+               role="button">
+                VAI ALLE TUE LISTE
+            </a>
+        </div>
+
+        <div class="col d-flex flex-column gap-3">
+            
+            <a asp-area="Identity" 
+               asp-page="/Account/Manage/Index" 
+               class="btn shadow-sm text-white fw-medium py-3 rounded-3 text-decoration-none" 
+               style="background-color: #3D3D3D;" 
+               role="button">
+                Vai al tuo profilo
+            </a>
+
+            <form class="w-100" 
+                  asp-area="Identity" 
+                  asp-page="/Account/Logout" 
+                  asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })" 
+                  method="post">
+                <button type="submit" class="btn btn-outline-danger shadow-sm w-100 fw-medium py-3 rounded-3">
+                    Logout
+                </button>
+            </form>
+
         </div>
     </div>
-    
+
 </div>
