@@ -33,9 +33,8 @@
 *   **Entity Framework Core** (Per la gestione dei dati tramite ORM)
 *   **EF Core In-Memory Database Provider** (Database temporaneo in RAM)
 *   **Swagger / OpenAPI** (Per la documentazione degli endpoint)
-*   **AspNetCore.Authentication (Per il flusso di autenticazione)
-*   **Servizio email delivery service MailTrap (https://mailtrap.io)
-*    --
+*   **AspNetCore.Authentication** (Per il flusso di autenticazione)
+*   **MailTrap** Servizio email delivery service (https://mailtrap.io)
 
 ## ⚙️ Installazione e Configurazione
 
