@@ -8,9 +8,15 @@
 
 <div class="d-flex align-items-center justify-content-between mb-4 gap-3">
     <h2 class="display-6 mb-0">Le tue Liste</h2>
-    <a asp-controller="ToDoLists" asp-action="Create" class="btn btn-primary" role="button">
-        + Crea Nuova Lista
-    </a>
+    <div class="d-flex align-items-center gap-2">
+        <a asp-controller="ToDoLists" asp-action="Create" class="btn btn-primary" role="button">
+            + Crea Nuova Lista
+        </a>
+        <a asp-controller="Home" asp-action="Import" class="btn btn-primary" role="button">
+            ⬆ Importa Lista
+        </a>
+    
+        </div>
 </div>
 
     @if (Model.Count == 0)

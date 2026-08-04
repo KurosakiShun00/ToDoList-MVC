@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using System.Security.Claims;
 using System.Text;
 using Microsoft.AspNetCore.Authorization;
@@ -7,6 +8,7 @@ using ToDoList_MVC.Services;
 using ToDoList_MVC.ViewModels;
 using ToDoList_MVC.ViewModels.ToDo;
 using ToDoList_MVC.ViewModels.ToDoList;
+using ToDoList_MVC.ViewModels.Shared;
 
 namespace ToDoList_MVC.Controllers.MVC;
 
@@ -306,4 +308,95 @@ public class ToDoListsController : Controller
                     
                     return File(fileBytes, "text/plain", fileName);
                 }
-    }
+                
+
+                [Authorize]
+                [HttpPost]
+                public async Task<IActionResult> ImportList(IFormFile file)
+                {
+                    var errorModel = new ErrorViewModel();
+                    if (file.Length == 0)
+                    {
+                        TempData["ErrorTitle"] = "Seleziona un file .txt valido.";
+                        TempData["ErrorMessage"] = "Il file non risulta avere del contenuto";
+                        
+                        errorModel.RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier;
+                        
+                        return View("~/Views/Shared/Error.cshtml", errorModel);
+                    }
+                    
+                    string? userId = GetUserID();
+                    string nomeLista = "Lista Importata";
+                    var toDos = new List<ToDoDTO>();
+                    
+                    using (var reader = new StreamReader(file.OpenReadStream()))
+                    {
+                        string? linea;
+
+                        while ((linea = await reader.ReadLineAsync()) != null)
+                        {
+                            linea = linea.Trim();
+                            
+                            if (linea.StartsWith("LISTA DI ATTIVITÀ:", StringComparison.OrdinalIgnoreCase))
+                            {
+                                var partiHeader = linea.Split(':');
+                                if (partiHeader.Length > 1 && !string.IsNullOrWhiteSpace(partiHeader[1]))
+                                {
+                                    nomeLista = partiHeader[1].Trim();
+                                }
+                                continue;
+                            }
+            
+                            if (linea.StartsWith('=') || 
+                                linea.StartsWith("DELL'UTENTE:") || 
+                                linea.StartsWith("E-MAIL:") || 
+                                linea.StartsWith("scaricata in data:") || 
+                                string.IsNullOrWhiteSpace(linea))
+                            {
+                                continue;
+                            }
+                            
+                            var parti = linea.Split(',');
+                            
+                            if (parti.Length != 2) continue;
+                            
+                            string nomeToDo = parti[0].Trim();
+                            string stato = parti[1].Trim();
+            
+                            var isCompleted = stato.Equals("Completata", StringComparison.OrdinalIgnoreCase);
+            
+                            toDos.Add(new ToDoDTO()
+                            {
+                                Name = nomeToDo,
+                                IsCompleted = isCompleted
+                            });
+                        }
+                    }
+            
+                    if (!toDos.Any())
+                    {
+                        TempData["ErrorTitle"] = "Seleziona un file .txt valido.";
+                        TempData["ErrorMessage"] = "Il file non risulta avere attività da importare";
+                        
+                        errorModel.RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier;
+                        
+                        return View("~/Views/Shared/Error.cshtml", errorModel);
+                    }
+            
+                    
+                    var nuovaLista = new ToDoListDTO()
+                    {
+                        Name = nomeLista,
+                        UserId = userId!
+                    };
+            
+                    var newList = await _service.CreateListAsync(nuovaLista, userId);
+
+                    foreach (var toDo in toDos)
+                    {
+                        await _service.AddToDoToListAsync(newList.Id, toDo, userId);
+                    }
+                    
+                    return RedirectToAction(nameof(Index));
+                }
+}
