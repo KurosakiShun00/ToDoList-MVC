@@ -36,5 +36,11 @@ namespace ToDoList_MVC.Controllers.MVC
 
             return View(viewModel);
         }
+        
+        [Authorize]
+        public IActionResult Import()
+        {
+            return View();
+        }
     }
 }
