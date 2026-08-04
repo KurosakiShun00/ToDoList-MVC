@@ -22,6 +22,7 @@
 *   **Collegamento Database :** Utilizzato per conservare i dati sulle liste e sugli utenti, utilizzo SqLite.
 *   **Documentazione Swagger:** Interfaccia grafica integrata per esplorare e testare gli endpoint API direttamente dal browser.
 *   **Email Delivery:** Servizio per la conferma dell'e-mail gestita da MailTrap configurando appsettings.json con i propri dati.
+*   **Importazione Liste:** Caricando un file txt ben formattato è possibile creare una lista sul gestionale
 
 ---
 
