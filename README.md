@@ -12,8 +12,6 @@
 - [Caratteristiche principali](#-caratteristiche-principali)
 - [Tecnologie utilizzate](#-tecnologie-utilizzate)
 - [Installazione e Configurazione](#-installazione-e-configurazione)
-- [Endpoint dell'API](#-endpoint-dellapi)
-- [Come testare le API](#-come-testare-le-api)
 
 ---
 
