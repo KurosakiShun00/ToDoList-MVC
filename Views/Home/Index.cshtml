@@ -2,7 +2,7 @@
 @using Humanizer
 @model List<ToDoList_MVC.ViewModels.ToDoList.ToDoListsListViewModel>
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Dashboard";
     Layout = "_Layout";
 }
 
@@ -11,18 +11,95 @@
     var atIndex = mail.LastIndexOf('@');
     
     var username = atIndex > 0 
-        ? mail.Truncate(atIndex) 
+        ? mail.Truncate(atIndex, "") 
         : (!string.IsNullOrEmpty(mail) ? mail : "Ospite");
+
+    var totalLists = Model.Count;
+    var completedLists = Model.Count(x => x.IsFinished);
+    var pendingLists = Model.Count(x => !x.IsFinished);
+    var completionPercentage = totalLists > 0 ? (completedLists * 100) / totalLists : 0;
 }
 
 <div class="container my-5">
 
-    <div class="p-5 mb-4 bg-white rounded-3 shadow-sm border">
-        <div class="container-fluid py-3 text-center">
-            <h1 class="display-5 fw-bold text-primary">Benvenuto @username</h1>
-            <p class="fs-5 text-muted mb-0">
-                ToDoLists
-            </p>
+    <div class="p-4 p-md-5 mb-4 bg-white rounded-3 shadow-sm border">
+        <div class="d-flex align-items-center justify-content-between mb-4 border-bottom pb-3">
+            <div>
+                <h1 class="h2 fw-bold text-dark mb-1">Benvenuto, @username </h1>
+                <p class="text-muted mb-0">Ecco la panoramica delle tue liste e delle tue attività.</p>
+            </div>
+            <a asp-controller="ToDoLists" asp-action="Create" class="btn btn-success fw-semibold shadow-sm d-none d-sm-inline-flex align-items-center gap-2">
+                <b>+</b> Nuova Lista
+            </a>
+        </div>
+
+        <div class="row g-3">
+            
+            <div class="col-xl-3 col-md-6">
+                <div class="card bg-info text-white h-100 shadow-sm border-0">
+                    <div class="card-body d-flex justify-content-between align-items-center">
+                        <div>
+                            <div class="text-white-50 small text-uppercase fw-bold">Liste Totali</div>
+                            <div class="fs-2 fw-bold">@totalLists</div>
+                        </div>
+                        <i class="bi bi-list-task fs-1 text-white-50"></i>
+                    </div>
+                    <div class="card-footer bg-transparent border-0 d-flex align-items-center justify-content-between pt-0">
+                        <a class="small text-white stretched-link text-decoration-none fw-medium" asp-controller="ToDoLists" asp-action="Index">Vedi tutte</a>
+                        <i class="bi bi-chevron-right small"></i>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-xl-3 col-md-6">
+                <div class="card bg-success text-white h-100 shadow-sm border-0">
+                    <div class="card-body d-flex justify-content-between align-items-center">
+                        <div>
+                            <div class="text-white-50 small text-uppercase fw-bold">Completate</div>
+                            <div class="fs-2 fw-bold">@completedLists</div>
+                        </div>
+                        <i class="bi bi-check-circle fs-1 text-white-50"></i>
+                    </div>
+                    <div class="card-footer bg-transparent border-0 d-flex align-items-center justify-content-between pt-0">
+                        <a class="small text-white stretched-link text-decoration-none fw-medium" asp-controller="ToDoLists" asp-action="Index">Vedi completate</a>
+                        <i class="bi bi-chevron-right small"></i>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-xl-3 col-md-6">
+                <div class="card bg-warning text-dark h-100 shadow-sm border-0">
+                    <div class="card-body d-flex justify-content-between align-items-center">
+                        <div>
+                            <div class="text-dark-50 small text-uppercase fw-bold">Da completare</div>
+                            <div class="fs-2 fw-bold">@pendingLists</div>
+                        </div>
+                        <i class="bi bi-clock-history fs-1 text-dark-50"></i>
+                    </div>
+                    <div class="card-footer bg-transparent border-0 d-flex align-items-center justify-content-between pt-0">
+                        <a class="small text-dark stretched-link text-decoration-none fw-medium" asp-controller="ToDoLists" asp-action="Index" >Vedi in corso</a>
+                        <i class="bi bi-chevron-right small"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-3 col-md-6">
+                <div class="card bg-dark text-white h-100 shadow-sm border-0">
+                    <div class="card-body d-flex justify-content-between align-items-center">
+                        <div>
+                            <div class="text-white-50 small text-uppercase fw-bold">Progresso</div>
+                            <div class="fs-2 fw-bold">@completionPercentage%</div>
+                        </div>
+                        <i class="bi bi-pie-chart fs-1 text-white-50"></i>
+                    </div>
+                    <div class="card-footer bg-transparent border-0 pt-0">
+                        <div class="progress" style="height: 6px;">
+                            <div class="progress-bar bg-success" role="progressbar" style="width: @completionPercentage%" aria-valuenow="@completionPercentage" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
 
@@ -31,8 +108,9 @@
         <div class="col d-flex">
             <a asp-controller="ToDoLists" 
                asp-action="Index" 
-               class="btn btn-primary shadow-sm w-100 d-flex align-items-center justify-content-center fw-semibold fs-5 p-4 rounded-3 text-decoration-none" 
+               class="btn btn-primary shadow-sm w-100 d-flex align-items-center justify-content-center gap-3 fw-semibold fs-5 p-4 rounded-3 text-decoration-none" 
                role="button">
+                <i class="bi bi-journal-check fs-3"></i>
                 VAI ALLE TUE LISTE
             </a>
         </div>
@@ -41,9 +119,10 @@
             
             <a asp-area="Identity" 
                asp-page="/Account/Manage/Index" 
-               class="btn shadow-sm text-white fw-medium py-3 rounded-3 text-decoration-none" 
+               class="btn shadow-sm text-white fw-medium py-3 rounded-3 text-decoration-none d-flex align-items-center justify-content-center gap-2" 
                style="background-color: #3D3D3D;" 
                role="button">
+                <i class="bi bi-person-gear"></i>
                 Vai al tuo profilo
             </a>
 
@@ -52,7 +131,8 @@
                   asp-page="/Account/Logout" 
                   asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })" 
                   method="post">
-                <button type="submit" class="btn btn-outline-danger shadow-sm w-100 fw-medium py-3 rounded-3">
+                <button type="submit" class="btn btn-outline-danger shadow-sm w-100 fw-medium py-3 rounded-3 d-flex align-items-center justify-content-center gap-2">
+                    <i class="bi bi-box-arrow-right"></i>
                     Logout
                 </button>
             </form>
