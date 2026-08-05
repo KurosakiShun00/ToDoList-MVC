@@ -27,7 +27,7 @@ public class ToDoListsController : Controller
         }
         
         [Authorize]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string? filter = null)
         {
             var userId = GetUserID();
             if(userId == null) return Unauthorized();
@@ -42,6 +42,8 @@ public class ToDoListsController : Controller
                 ToDos = x.ToDos
             }).ToList();
 
+            ViewData["Filter"] = filter;
+            
             return View(viewModels);
         }
 
