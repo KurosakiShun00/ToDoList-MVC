@@ -4,10 +4,25 @@
 @{
     ViewData["Title"] = "Index";
     Layout = "_Layout";
-}
+    var filteredModel = ViewData["Filter"] != null
+        ? ViewData["Filter"]!.Equals("Finished") ? Model.Where(x => x.IsFinished) : Model.Where(x => !x.IsFinished)
+        : Model;
+    }
 
 <div class="d-flex align-items-center justify-content-between mb-4 gap-3">
-    <h2 class="display-6 mb-0">Le tue Liste</h2>
+    <div class="d-flex align-items-center gap-2">
+        <h2 class="display-6 mb-0">Le tue Liste</h2>
+        <a asp-controller="ToDoLists" asp-action="Index" class="btn btn-outline-primary @(ViewData["Filter"] == null ? "active" : "")" role="button">
+            Tutti
+        </a>
+        <a asp-controller="ToDoLists" asp-action="Index" asp-route-filter="Finished" class="btn btn-outline-primary @((ViewData["Filter"]!= null && ViewData["Filter"]!.Equals("Finished"))  ? "active" : "")" role="button">
+            Filtra per Completate
+        </a> 
+        <a asp-controller="ToDoLists" asp-action="Index" asp-route-filter="Not Finished" class="btn btn-outline-primary @((ViewData["Filter"]!= null && !ViewData["Filter"]!.Equals("Finished"))  ? "active" : "")" role="button">
+            Filtra per In Corso
+        </a>
+    </div>
+    
     <div class="d-flex align-items-center gap-2">
         <a asp-controller="ToDoLists" asp-action="Create" class="btn btn-primary" role="button">
             + Crea Nuova Lista
@@ -15,8 +30,8 @@
         <a asp-controller="Home" asp-action="Import" class="btn btn-primary" role="button">
             ⬆ Importa Lista
         </a>
-    
-        </div>
+
+    </div>
 </div>
 
     @if (Model.Count == 0)
@@ -28,7 +43,7 @@
     }
     else
     {<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-        @foreach (var ToDoList in Model)
+        @foreach (var ToDoList in filteredModel)
         {
             <div class="col d-flex">
                 <div class="card @(ToDoList.IsFinished ? "border-secondary" : "border-success") shadow-sm w-100 h-100 d-flex flex-column">
