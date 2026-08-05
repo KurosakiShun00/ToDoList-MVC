@@ -7,5 +7,6 @@ public class ToDoListsListViewModel
     public int Id { get; set; }
     public string? Name { get; set; }
     public int Remaining => ToDos.Count(x => !x.IsCompleted);
+    public bool IsFinished => Remaining == 0;
     public List<ToDoDTO> ToDos { get; set; } = new();
 }
