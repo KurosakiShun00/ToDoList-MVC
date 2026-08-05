@@ -96,6 +96,24 @@ public class ToDoListsController : Controller
             await _service.CreateListAsync(new_list, userId);
             return RedirectToAction(nameof(Index));
         }
+
+        [Authorize]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DuplicateList(int id)
+        {
+            var userId = GetUserID();
+            if(userId  == null) return Unauthorized();
+            
+            var list = await _service.GetByIdAsync(id, userId);
+            
+            if(list == null) return NotFound();
+            if(string.Concat(list.Name, "-Copia").Length<=20)list.Name = string.Concat(list.Name, "-Copia");
+            
+            await _service.CreateListAsync(list, userId);
+            
+            return RedirectToAction(nameof(Index));
+        }
         
         [Authorize]
         public async Task<IActionResult> CreateToDo(int id)
