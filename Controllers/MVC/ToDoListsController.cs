@@ -72,6 +72,7 @@ public class ToDoListsController : Controller
             {
                Id               = item.Id,
                Name           = item.Name,
+               Description = item.Description,
                ToDos = ToDos
     };
             return View(viewModel);
@@ -198,7 +199,8 @@ public class ToDoListsController : Controller
             var viewModel = new ToDoListsEditViewModel
             {
                 Id = item.Id,
-                Name = item.Name
+                Name = item.Name,
+                Description = item.Description
             };
             return View(viewModel);
 
@@ -215,7 +217,7 @@ public class ToDoListsController : Controller
             if (!ModelState.IsValid) return View(viewModel);
 
             var new_list = new Models.ToDoListDTO(viewModel);
-
+            
             await _service.UpdateListAsync(id, new_list, userId);
             return RedirectToAction(nameof(Details), new {id =  id});
         }

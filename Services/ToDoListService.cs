@@ -91,7 +91,7 @@ namespace ToDoList_MVC.Services
             var updateList = new ToDoList
             {
                 Id = updatedListDTO.Id,
-                UserId = updatedListDTO.UserId,
+                UserId = userId!,
                 Name = updatedListDTO.Name,
                 Description = updatedListDTO.Description
             };
