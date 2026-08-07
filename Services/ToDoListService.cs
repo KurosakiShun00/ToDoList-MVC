@@ -74,11 +74,13 @@ namespace ToDoList_MVC.Services
             return new ToDoDTO(existingToDo);
         }
 
-        public async Task<bool> DeleteToDoAsync(int id)
+        public async Task<bool> DeleteToDoAsync(int id, string? userId)
         {
             var toDo = await _repository.GetToDoAsync(id);
             if (toDo == null) return false;
 
+            if (!(await _repository.ListExistsAsync(toDo.ToDoListId, userId))) return false;
+            
             _repository.DeleteToDoAsync(toDo);
             await _repository.SaveChangesAsync();
             return true;

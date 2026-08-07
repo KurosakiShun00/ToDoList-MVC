@@ -268,6 +268,52 @@ public class ToDoListsController : Controller
 
                     return RedirectToAction(nameof(Index));
                 }
+
+                [Authorize]
+                [HttpPost]
+                [ValidateAntiForgeryToken]
+                public async Task<IActionResult> MultipleDelete(int[] selectedIds)
+                {
+                    var userId = GetUserID();
+                    if (userId == null) return Unauthorized();
+
+                    if (selectedIds == null || selectedIds.Length == 0)
+                    {
+                        return RedirectToAction(nameof(Index));
+                    }
+
+                    foreach (var id in selectedIds)
+                    {
+                        bool isDeleted = await _service.DeleteListAsync(id, userId);
+                        if (!isDeleted)
+                        {
+                            return NotFound();
+                        }
+                    }
+    
+                    return RedirectToAction(nameof(Index));
+                }
+                
+                
+                [Authorize]
+                [HttpPost]
+                [ValidateAntiForgeryToken]
+                public async Task<IActionResult> MultipleToDoDelete(int[] selectedIds, int toDoListId)
+                {
+                    var userId = GetUserID();
+                    if (userId == null) return Unauthorized();
+
+                    if (selectedIds != null && selectedIds.Length > 0)
+                    {
+                        foreach (var id in selectedIds)
+                        {
+                            var isDeleted = await _service.DeleteToDoAsync(id, userId);
+                            if (!isDeleted) return NotFound();
+                        }
+                    }
+
+                    return RedirectToAction(nameof(Details), new { id = toDoListId });
+                }
                 
                 [Authorize]
                 [HttpPost]
@@ -284,6 +330,55 @@ public class ToDoListsController : Controller
                     return RedirectToAction(nameof(Details), new { id = toDoListId });
                 }
 
+                [Authorize]
+                [HttpPost]
+                [ValidateAntiForgeryToken]
+                public async Task<IActionResult> MultipleToDoFinished(int[] selectedIds, int toDoListId)
+                {
+                    var userId = GetUserID();
+                    if (userId == null) return Unauthorized();
+
+                    if (selectedIds != null && selectedIds.Length > 0)
+                    {
+                        foreach (var id in selectedIds)
+                        {
+                            var item = await _service.GetToDoAsync(id);
+                            if (item != null)
+                            {
+                                item.IsCompleted = true;
+                                await _service.UpdateToDoAsync(id, item);
+                            }
+                        }
+                    }
+
+                    return RedirectToAction(nameof(Details), new { id = toDoListId });
+                }
+
+                [Authorize]
+                [HttpPost]
+                [ValidateAntiForgeryToken]
+                public async Task<IActionResult> MultipleToDoNotFinished(int[] selectedIds, int toDoListId)
+                {
+                    var userId = GetUserID();
+                    if (userId == null) return Unauthorized();
+
+                    if (selectedIds != null && selectedIds.Length > 0)
+                    {
+                        foreach (var id in selectedIds)
+                        {
+                            var item = await _service.GetToDoAsync(id);
+                            if (item != null)
+                            {
+                                item.IsCompleted = false;
+                                await _service.UpdateToDoAsync(id, item);
+                            }
+                        }
+                    }
+
+                    return RedirectToAction(nameof(Details), new { id = toDoListId });
+                }
+    
+                
                 [Authorize]
                 [HttpPost]
                 [ValidateAntiForgeryToken]
@@ -305,8 +400,10 @@ public class ToDoListsController : Controller
                 [ValidateAntiForgeryToken]
                 public async Task<IActionResult> DeleteToDo(int id)
                 {
-
-                    bool isDeleted = await _service.DeleteToDoAsync(id);
+                    var  userId = GetUserID();
+                    if(userId  == null) return Unauthorized();
+                    
+                    bool isDeleted = await _service.DeleteToDoAsync(id, userId);
 
                     if (!isDeleted)
                     {
