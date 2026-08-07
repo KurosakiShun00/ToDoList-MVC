@@ -10,5 +10,7 @@ public class ToDoListsEditValidator : AbstractValidator<ToDoListsEditViewModel>
     {
         RuleFor(x => x.Name).NotEmpty().WithMessage("Nome Richiesto").MaximumLength(20)
             .WithMessage("Massimo 20 caratteri");
+        RuleFor(x => x.Description).MaximumLength(500).WithMessage("Massimo 500 caratteri");
+
     }
 }
