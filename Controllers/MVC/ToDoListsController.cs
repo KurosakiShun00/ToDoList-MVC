@@ -333,6 +333,55 @@ public class ToDoListsController : Controller
                 [Authorize]
                 [HttpPost]
                 [ValidateAntiForgeryToken]
+                public async Task<IActionResult> MultipleToDoFinished(int[] selectedIds, int toDoListId)
+                {
+                    var userId = GetUserID();
+                    if (userId == null) return Unauthorized();
+
+                    if (selectedIds != null && selectedIds.Length > 0)
+                    {
+                        foreach (var id in selectedIds)
+                        {
+                            var item = await _service.GetToDoAsync(id);
+                            if (item != null)
+                            {
+                                item.IsCompleted = true;
+                                await _service.UpdateToDoAsync(id, item);
+                            }
+                        }
+                    }
+
+                    return RedirectToAction(nameof(Details), new { id = toDoListId });
+                }
+
+                [Authorize]
+                [HttpPost]
+                [ValidateAntiForgeryToken]
+                public async Task<IActionResult> MultipleToDoNotFinished(int[] selectedIds, int toDoListId)
+                {
+                    var userId = GetUserID();
+                    if (userId == null) return Unauthorized();
+
+                    if (selectedIds != null && selectedIds.Length > 0)
+                    {
+                        foreach (var id in selectedIds)
+                        {
+                            var item = await _service.GetToDoAsync(id);
+                            if (item != null)
+                            {
+                                item.IsCompleted = false;
+                                await _service.UpdateToDoAsync(id, item);
+                            }
+                        }
+                    }
+
+                    return RedirectToAction(nameof(Details), new { id = toDoListId });
+                }
+    
+                
+                [Authorize]
+                [HttpPost]
+                [ValidateAntiForgeryToken]
                 public async Task<IActionResult> EditToDo(int id, ToDoEditViewModel viewModel)
                 {
                     var existingToDo = await _service.GetToDoAsync(id);

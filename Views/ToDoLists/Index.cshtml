@@ -32,10 +32,22 @@
         </div>
 
         <div class="d-flex align-items-center gap-2">
-            <button type="submit" id="btnDeleteSelected" class="btn btn-danger d-none" 
-                    onclick="return confirm('Sei sicuro di voler eliminare tutte le liste selezionate?');">
-                Elimina Selezionate
-            </button>
+            <div id="batchActionButtons" class="d-none d-flex gap-2">
+                <button type="submit" 
+                        formaction="@Url.Action("MultipleFinished", "ToDoLists")" 
+                        class="btn btn-sm btn-success">
+                    Segna come Completate
+                </button>
+                <button type="submit" 
+                        formaction="@Url.Action("MultipleNotFinished", "ToDoLists")" 
+                        class="btn btn-sm btn-warning">
+                    Segna come non Completate
+                </button>
+                <button type="submit" id="btnDeleteSelected" class="btn btn-sm btn-danger" 
+                        onclick="return confirm('Sei sicuro di voler eliminare tutte le liste selezionate?');">
+                    Elimina Selezionate
+                </button>
+            </div>
 
             <div class="my-auto">
                 <span class="badge bg-light text-dark border fs-6 px-3 py-2 shadow-sm rounded-pill">
@@ -211,16 +223,16 @@
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             const checkboxes = document.querySelectorAll('.list-checkbox');
-            const btnDelete = document.getElementById('btnDeleteSelected');
+            const batchActionButtons = document.getElementById('batchActionButtons');
 
             checkboxes.forEach(box => {
                 box.addEventListener('change', function () {
                     const checkedCount = document.querySelectorAll('.list-checkbox:checked').length;
                     
                     if (checkedCount > 0) {
-                        btnDelete.classList.remove('d-none');
+                        batchActionButtons.classList.remove('d-none');
                     } else {
-                        btnDelete.classList.add('d-none');
+                        batchActionButtons.classList.add('d-none');
                     }
                 });
             });
