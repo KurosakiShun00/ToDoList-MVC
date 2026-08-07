@@ -7,6 +7,8 @@ namespace ToDoList_MVC.Models
     {
         public int Id { get; set; }
         public string? Name { get; set; }
+        public string? Description { get; set; }
+
         
         public string UserId { get; set; } = string.Empty;
 
@@ -20,6 +22,7 @@ namespace ToDoList_MVC.Models
         {
             Id = list.Id;
             Name = list.Name;
+            Description = list.Description;
             UserId = list.UserId; 
             ToDos = list.ToDos.Select(t => new ToDoDTO(t)).ToList();
         }
@@ -27,12 +30,14 @@ namespace ToDoList_MVC.Models
         public ToDoListDTO(ToDoListsCreateViewModel list)
         {
             Name = list.Name;
+            Description = list.Description;
         }  
 
         public ToDoListDTO(ToDoListsEditViewModel list)
         {
             Id = list.Id;
             Name = list.Name;
+            Description = list.Description;
         }
     }
 }

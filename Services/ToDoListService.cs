@@ -32,7 +32,8 @@ namespace ToDoList_MVC.Services
             var newList = new ToDoList
             {
                 Name = newListDTO.Name,
-                UserId = userId!
+                UserId = userId!,
+                Description = newListDTO.Description
             };
             
             await _repository.AddListAsync(newList);
@@ -90,7 +91,9 @@ namespace ToDoList_MVC.Services
             var updateList = new ToDoList
             {
                 Id = updatedListDTO.Id,
-                Name = updatedListDTO.Name
+                UserId = updatedListDTO.UserId,
+                Name = updatedListDTO.Name,
+                Description = updatedListDTO.Description
             };
             
             var result = await _repository.UpdateListAsync(id, updateList);

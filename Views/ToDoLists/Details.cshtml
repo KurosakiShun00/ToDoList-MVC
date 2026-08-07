@@ -3,15 +3,31 @@
 @{
     ViewData["Title"] = "Detail";
     Layout = "_Layout";
+
+    var ListDescription = @Model.Description ?? "Nessuna descrizione fornita.";
 }
-<div class="d-flex align-items-center">
-<h2 class="display-4 m-0">@Model.Name</h2>
-<a asp-controller="ToDoLists" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-sm btn-outline-primary flex-shrink-0" title="Modifica">
-    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
-        <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325"/>
-    </svg>
-</a>
+
+<div class="d-flex align-items-center justify-content-start gap-2 mb-3">
+    <h2 class="display-4 m-0">@Model.Name</h2>
+    
+    <a asp-controller="ToDoLists" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-sm btn-outline-primary flex-shrink-0" title="Modifica">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
+            <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325"/>
+        </svg>
+    </a>
+
+    <a tabindex="0" 
+       class="btn btn-info btn-sm ms-2" 
+       role="button" 
+       data-bs-toggle="popover" 
+       data-bs-trigger="focus" 
+       data-bs-placement="right"
+       title="Info Lista" 
+       data-bs-content="@ListDescription">
+        Descrizione
+    </a>
 </div>
+
 <table class="table align-middle">
     <thead class="table-dark">
         <tr>
@@ -27,22 +43,22 @@
         <tr>
             <td>@line.Id</td>
             
-<td>
-    <form asp-controller="ToDoLists" asp-action="EditToDo" asp-route-id="@line.Id" method="post">
-        @Html.AntiForgeryToken()
-        <input type="hidden" name="ToDoListId" value="@Model.Id" />
-        
-        <input type="text" 
-               name="Name" 
-               value="@line.Name" 
-               class="form-control form-control-sm bg-transparent border-0 shadow-none @(line.IsCompleted ? "text-decoration-line-through text-muted" : "")" 
-               onmouseenter="if(document.activeElement!==this){ this.classList.remove('bg-transparent','border-0'); this.classList.add('bg-light','border-secondary-subtle'); }"
-               onmouseleave="if(document.activeElement!==this){ this.classList.remove('bg-light','border-secondary-subtle'); this.classList.add('bg-transparent','border-0'); }"
-               onfocus="this.classList.remove('bg-transparent','bg-light','border-0','border-secondary-subtle'); this.classList.add('bg-white','border-primary');"
-               onblur="this.classList.remove('bg-white','border-primary'); this.classList.add('bg-transparent','border-0');"
-               onchange="this.form.submit()" />
-    </form>
-</td>
+            <td>
+                <form asp-controller="ToDoLists" asp-action="EditToDo" asp-route-id="@line.Id" method="post">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" name="ToDoListId" value="@Model.Id" />
+                    
+                    <input type="text" 
+                           name="Name" 
+                           value="@line.Name" 
+                           class="form-control form-control-sm bg-transparent border-0 shadow-none @(line.IsCompleted ? "text-decoration-line-through text-muted" : "")" 
+                           onmouseenter="if(document.activeElement!==this){ this.classList.remove('bg-transparent','border-0'); this.classList.add('bg-light','border-secondary-subtle'); }"
+                           onmouseleave="if(document.activeElement!==this){ this.classList.remove('bg-light','border-secondary-subtle'); this.classList.add('bg-transparent','border-0'); }"
+                           onfocus="this.classList.remove('bg-transparent','bg-light','border-0','border-secondary-subtle'); this.classList.add('bg-white','border-primary');"
+                           onblur="this.classList.remove('bg-white','border-primary'); this.classList.add('bg-transparent','border-0');"
+                           onchange="this.form.submit()" />
+                </form>
+            </td>
             
             <td class="text-center">
                 <form asp-controller="ToDoLists" asp-action="ToggleToDo" asp-route-id="@line.Id" method="post">
@@ -80,9 +96,21 @@
         ⬇ Scarica Lista (.txt)
     </a>
     <div class="d-flex gap-2">
-
         <a asp-controller="ToDoLists" asp-action="CreateToDo" asp-route-id="@Model.Id" class="btn btn-primary" role="button">
             + Aggiungi Attività
         </a>
     </div>
 </div>
+
+@section Scripts {
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var popoverElement = document.querySelector('[data-bs-toggle="popover"]');
+            if (popoverElement && typeof bootstrap !== 'undefined') {
+                new bootstrap.Popover(popoverElement);
+            } else {
+                console.error("Bootstrap JS non è caricato correttamente nel file _Layout.cshtml!");
+            }
+        });
+    </script>
+}
