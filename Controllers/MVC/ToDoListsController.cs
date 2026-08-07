@@ -85,12 +85,25 @@ public class ToDoListsController : Controller
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(ToDoListsCreateViewModel viewModel)
-        {
+        {   
+            
+            
             var userId = GetUserID();
             if(userId == null) return Unauthorized();
-            
+            var listNumber = (await _service.GetAllListsAsync(userId)).Count();
             if (!ModelState.IsValid) return View(viewModel);
-
+            var errorModel = new ErrorViewModel();
+            if (listNumber >= 30)
+            {
+                ViewData["ErrorTitle"] = "Raggiunto limite di 30 liste";
+                ViewData["ErrorMessage"] = "Non è possibile creare un'altra lista in quanto si è raggiunto il limite massimo di 30 liste.";
+                        
+                errorModel.RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier;
+                        
+                return View("~/Views/Shared/Error.cshtml", errorModel);
+            }
+            
+            
             var new_list = new ToDoListDTO(viewModel);
 
             await _service.CreateListAsync(new_list, userId);
@@ -104,7 +117,18 @@ public class ToDoListsController : Controller
         {
             var userId = GetUserID();
             if(userId  == null) return Unauthorized();
-            
+            var listNumber = (await _service.GetAllListsAsync(userId)).Count();
+            var errorModel = new ErrorViewModel();
+
+            if (listNumber >= 30)
+            {
+                ViewData["ErrorTitle"] = "Raggiunto limite di 30 liste";
+                ViewData["ErrorMessage"] = "Non è possibile creare un'altra lista in quanto si è raggiunto il limite massimo di 30 liste.";
+                        
+                errorModel.RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier;
+                        
+                return View("~/Views/Shared/Error.cshtml", errorModel);
+            }
             var list = await _service.GetByIdAsync(id, userId);
             
             if(list == null) return NotFound();
@@ -339,18 +363,31 @@ public class ToDoListsController : Controller
                 [HttpPost]
                 public async Task<IActionResult> ImportList(IFormFile file)
                 {
+                    string? userId = GetUserID();
+                    var listNumber = (await _service.GetAllListsAsync(userId)).Count();
                     var errorModel = new ErrorViewModel();
-                    if (file.Length == 0)
+                    
+                    if (listNumber >= 30)
                     {
-                        TempData["ErrorTitle"] = "Seleziona un file .txt valido.";
-                        TempData["ErrorMessage"] = "Il file non risulta avere del contenuto";
+                        ViewData["ErrorTitle"] = "Raggiunto limite di 30 liste";
+                        ViewData["ErrorMessage"] = "Non è possibile creare un'altra lista in quanto si è raggiunto il limite massimo di 30 liste.";
                         
                         errorModel.RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier;
                         
                         return View("~/Views/Shared/Error.cshtml", errorModel);
                     }
                     
-                    string? userId = GetUserID();
+                    if (file.Length == 0)
+                    {
+                        ViewData["ErrorTitle"] = "Seleziona un file .txt valido.";
+                        ViewData["ErrorMessage"] = "Il file non risulta avere del contenuto";
+                        
+                        errorModel.RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier;
+                        
+                        return View("~/Views/Shared/Error.cshtml", errorModel);
+                    }
+                    
+
                     string nomeLista = "Lista Importata";
                     var toDos = new List<ToDoDTO>();
                     
@@ -400,8 +437,8 @@ public class ToDoListsController : Controller
             
                     if (!toDos.Any())
                     {
-                        TempData["ErrorTitle"] = "Seleziona un file .txt valido.";
-                        TempData["ErrorMessage"] = "Il file non risulta avere attività da importare";
+                        ViewData["ErrorTitle"] = "Seleziona un file .txt valido.";
+                        ViewData["ErrorMessage"] = "Il file non risulta avere attività da importare";
                         
                         errorModel.RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier;
                         

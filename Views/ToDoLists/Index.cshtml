@@ -27,14 +27,31 @@
             Filtra per In Corso
         </a>
     </div>
+
     <div class="d-flex align-items-center gap-2">
-        <a asp-controller="ToDoLists" asp-action="Create" class="btn btn-primary" role="button">
+        <div class="my-auto">
+        <span class="badge bg-light text-dark border fs-6 px-3 py-2 shadow-sm rounded-pill">
+            <span class="fw-bold text-primary">@Model.Count</span> / 30 liste
+        </span>
+        </div>
+        
+        <a asp-controller="ToDoLists"
+           asp-action="Create"
+           class="btn btn-primary @(Model.Count() >= 30 ? "disabled" : "")"
+           aria-disabled="@(Model.Count() >= 30 ? "true" : "false")"
+           tabindex="@(Model.Count() >= 30 ? "-1" : "0")"
+           role="button">
             + Crea Nuova Lista
         </a>
-        <a asp-controller="Home" asp-action="Import" class="btn btn-primary" role="button">
+
+        <a asp-controller="Home"
+           asp-action="Import"
+           class="btn btn-outline-primary @(Model.Count() >= 30 ? "disabled" : "")"
+           aria-disabled="@(Model.Count() >= 30 ? "true" : "false")"
+           tabindex="@(Model.Count() >= 30 ? "-1" : "0")"
+           role="button">
             ⬆ Importa Lista
         </a>
-
     </div>
 </div>
 
