@@ -294,6 +294,27 @@ public class ToDoListsController : Controller
                     return RedirectToAction(nameof(Index));
                 }
                 
+                
+                [Authorize]
+                [HttpPost]
+                [ValidateAntiForgeryToken]
+                public async Task<IActionResult> MultipleToDoDelete(int[] selectedIds, int toDoListId)
+                {
+                    var userId = GetUserID();
+                    if (userId == null) return Unauthorized();
+
+                    if (selectedIds != null && selectedIds.Length > 0)
+                    {
+                        foreach (var id in selectedIds)
+                        {
+                            var isDeleted = await _service.DeleteToDoAsync(id, userId);
+                            if (!isDeleted) return NotFound();
+                        }
+                    }
+
+                    return RedirectToAction(nameof(Details), new { id = toDoListId });
+                }
+                
                 [Authorize]
                 [HttpPost]
                 [ValidateAntiForgeryToken]
@@ -330,8 +351,10 @@ public class ToDoListsController : Controller
                 [ValidateAntiForgeryToken]
                 public async Task<IActionResult> DeleteToDo(int id)
                 {
-
-                    bool isDeleted = await _service.DeleteToDoAsync(id);
+                    var  userId = GetUserID();
+                    if(userId  == null) return Unauthorized();
+                    
+                    bool isDeleted = await _service.DeleteToDoAsync(id, userId);
 
                     if (!isDeleted)
                     {

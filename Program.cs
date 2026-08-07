@@ -48,6 +48,7 @@ if (app.Environment.IsDevelopment())
         c.RoutePrefix = "swagger"; 
     });
 }
+app.UseDeveloperExceptionPage();
 app.UseStatusCodePagesWithReExecute("/Error/{0}");
 app.UseExceptionHandler("/Error");
 app.UseHsts();

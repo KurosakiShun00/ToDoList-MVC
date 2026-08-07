@@ -92,8 +92,17 @@
                                     <span class="badge rounded-pill text-bg-primary align-content-center">In corso</span>
                                 }
                                 else
-                                {
-                                    <span class="badge rounded-pill text-bg-secondary align-content-center">Completata</span>
+                                {   
+                                        if(ToDoList.ToDos.Any())
+                                        {
+                                            <span class="badge rounded-pill text-bg-secondary align-content-center">Completata</span>
+                                            
+                                        }
+                                        else
+                                        {
+                                            <span class="badge rounded-pill text-bg-secondary align-content-center">Vuota</span>
+                                        }
+
                                 }
                             </div>
                             <a asp-controller="ToDoLists" asp-action="Edit" asp-route-id="@ToDoList.Id"
@@ -160,7 +169,6 @@
                                 Duplica
                             </button>
 
-                            <!-- Pulsante per aprire la modale (outline red, no submit) -->
                             <button type="button" 
                                     class="btn btn-outline-danger btn-sm w-100" 
                                     data-bs-toggle="modal"
@@ -171,7 +179,6 @@
 
                     </div>
 
-                    <!-- Modale di conferma eliminazione -->
                     <div class="modal fade" tabindex="-1" id="deleteModal-@ToDoList.Id">
                         <div class="modal-dialog modal-dialog-centered">
                             <div class="modal-content">
@@ -185,7 +192,6 @@
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annulla</button>
-                                    <!-- Invia il submit solo alla conferma dentro la modale -->
                                     <button type="submit" 
                                             formaction="@Url.Action("Delete", "ToDoLists", new { id = ToDoList.Id })" 
                                             class="btn btn-danger">
