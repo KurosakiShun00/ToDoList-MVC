@@ -110,7 +110,12 @@ public class ToDoListsController : Controller
             if(list == null) return NotFound();
             if(string.Concat(list.Name, "-Copia").Length<=20)list.Name = string.Concat(list.Name, "-Copia");
             
-            await _service.CreateListAsync(list, userId);
+            var newList = await _service.CreateListAsync(list, userId);
+
+            foreach (var toDo in list.ToDos)
+            {
+                await _service.AddToDoToListAsync(newList.Id, toDo, userId);
+            }
             
             return RedirectToAction(nameof(Index));
         }
