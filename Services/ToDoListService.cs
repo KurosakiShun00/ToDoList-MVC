@@ -104,6 +104,25 @@ namespace ToDoList_MVC.Services
             return result;
         }
 
+        public async Task<List<ToDoDTO>?> GetToDosFromListAsync(int listId, string? userId)
+        {
+            var listCheck = await _repository.ListExistsAsync(listId, userId);
+            
+            if(!listCheck) return null;
+            
+            var toDos = await _repository.GetToDosFromListAsync(listId);
+
+            if(toDos == null) return null;
+            
+            var result = new List<ToDoDTO>();
+
+            foreach (var toDo in toDos)
+            {
+                result.Add(new ToDoDTO(toDo));
+            }
+            return result;
+        }
+        
         public async Task<ToDoDTO?> GetToDoAsync(int id)
         {
             var toDo = await _repository.GetToDoAsync(id);

@@ -10,6 +10,7 @@ namespace ToDoList_MVC.Repositories
         Task AddListAsync(ToDoList newList);
         Task<ToDoList?> UpdateListAsync(int id, ToDoList updateList);
         void DeleteList(ToDoList list);
+        Task<List<ToDo>?> GetToDosFromListAsync(int listId);
         Task AddToDoAsync(ToDo newToDo);
         Task UpdateToDoAsync(int id, ToDo newToDo);
         void DeleteToDoAsync(ToDo id);

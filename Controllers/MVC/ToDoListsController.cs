@@ -272,17 +272,17 @@ public class ToDoListsController : Controller
                 [Authorize]
                 [HttpPost]
                 [ValidateAntiForgeryToken]
-                public async Task<IActionResult> MultipleDelete(int[] selectedIds)
+                public async Task<IActionResult> MultipleDelete(int[] SelectedListIds)
                 {
                     var userId = GetUserID();
                     if (userId == null) return Unauthorized();
 
-                    if (selectedIds == null || selectedIds.Length == 0)
+                    if (SelectedListIds == null || SelectedListIds.Length == 0)
                     {
                         return RedirectToAction(nameof(Index));
                     }
 
-                    foreach (var id in selectedIds)
+                    foreach (var id in SelectedListIds)
                     {
                         bool isDeleted = await _service.DeleteListAsync(id, userId);
                         if (!isDeleted)
@@ -354,6 +354,51 @@ public class ToDoListsController : Controller
                     return RedirectToAction(nameof(Details), new { id = toDoListId });
                 }
 
+                [Authorize]
+                [HttpPost]
+                [ValidateAntiForgeryToken]
+                public async Task<IActionResult> MultipleFinished(int[] selectedListIds)
+                {
+                    var userId = GetUserID();
+                    if (userId == null) return Unauthorized();
+                    if (selectedListIds.Length <= 0) return RedirectToAction(nameof(Index));
+                    foreach (var id in selectedListIds)
+                    {
+                        var toDos = await _service.GetToDosFromListAsync(id, userId);
+                        if (toDos == null) continue;
+                        foreach (var item in toDos)
+                        {
+                            item.IsCompleted = true;
+                            await _service.UpdateToDoAsync(item.Id, item);
+                        }
+
+                    }
+
+                    return RedirectToAction(nameof(Index));
+                }
+                
+                [Authorize]
+                [HttpPost]
+                [ValidateAntiForgeryToken]
+                public async Task<IActionResult> MultipleNotFinished(int[] selectedListIds)
+                {
+                    var userId = GetUserID();
+                    if (userId == null) return Unauthorized();
+                    if (selectedListIds.Length <= 0) return RedirectToAction(nameof(Index));
+                    foreach (var id in selectedListIds)
+                    {
+                        var toDos = await _service.GetToDosFromListAsync(id, userId);
+                        if (toDos == null) continue;
+                        foreach (var item in toDos)
+                        {
+                            item.IsCompleted = false;
+                            await _service.UpdateToDoAsync(item.Id, item);
+                        }
+
+                    }
+
+                    return RedirectToAction(nameof(Index));
+                }
                 [Authorize]
                 [HttpPost]
                 [ValidateAntiForgeryToken]
