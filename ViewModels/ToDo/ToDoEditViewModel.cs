@@ -10,5 +10,5 @@ public class ToDoEditViewModel
     
     public int ToDoListId { get; set; }
     public string? ListName  { get; set; }
-
+    public int? CategoryId { get; set; }
 }

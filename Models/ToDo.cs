@@ -12,5 +12,7 @@ namespace ToDoList_MVC.Models
         //fk
 
         public int ToDoListId { get; set; }
+        public int? CategoryId { get; set; }
+        public Category? Category { get; set; }
     }
 }

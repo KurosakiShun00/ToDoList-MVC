@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ToDoList_MVC.Data;
 
@@ -11,9 +12,11 @@ using ToDoList_MVC.Data;
 namespace ToDoList_MVC.Migrations
 {
     [DbContext(typeof(ToDoDB))]
-    partial class ToDoDBModelSnapshot : ModelSnapshot
+    [Migration("20260825091742_AggiuntaCategoria")]
+    partial class AggiuntaCategoria
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -237,10 +240,6 @@ namespace ToDoList_MVC.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("longtext");
 
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
                     b.HasKey("Id");
 
                     b.ToTable("Categories");
@@ -254,9 +253,6 @@ namespace ToDoList_MVC.Migrations
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("CategoryId")
-                        .HasColumnType("int");
-
                     b.Property<bool>("IsCompleted")
                         .HasColumnType("tinyint(1)");
 
@@ -267,8 +263,6 @@ namespace ToDoList_MVC.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CategoryId");
 
                     b.HasIndex("ToDoListId");
 
@@ -353,17 +347,11 @@ namespace ToDoList_MVC.Migrations
 
             modelBuilder.Entity("ToDoList_MVC.Models.ToDo", b =>
                 {
-                    b.HasOne("ToDoList_MVC.Models.Category", "Category")
-                        .WithMany()
-                        .HasForeignKey("CategoryId");
-
                     b.HasOne("ToDoList_MVC.Models.ToDoList", null)
                         .WithMany("ToDos")
                         .HasForeignKey("ToDoListId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Category");
                 });
 
             modelBuilder.Entity("ToDoList_MVC.Models.ToDoList", b =>

@@ -5,5 +5,6 @@ public class ToDoCreateViewModel
     public string? Name { get; set; }
     public int ToDoListId { get; set; }
     public string? ListName  { get; set; }
+    public int? CategoryId { get; set; }
 
 }
