@@ -1,10 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ToDoList_MVC.Models;
-using ToDoList_MVC.Services;
-using Microsoft.AspNetCore.Authorization;
+using ToDoList_MVC.Services; 
 using System.Security.Claims;
 
-namespace ToDoList_MVC.Controllers
+namespace ToDoList_MVC.Controllers.API
 {
     [ApiController]
     [Route("api/lists")]
@@ -41,7 +40,6 @@ namespace ToDoList_MVC.Controllers
             if(userId == null) return Unauthorized();
             
             var createdList = await _todoListService.CreateListAsync(newList, userId);
-            if (createdList == null) return BadRequest();
 
             return Ok(createdList);
         }

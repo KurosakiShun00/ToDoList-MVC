@@ -4,8 +4,7 @@ using System.Text;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ToDoList_MVC.Models;
-using ToDoList_MVC.Services;
-using ToDoList_MVC.ViewModels;
+using ToDoList_MVC.Services; 
 using ToDoList_MVC.ViewModels.ToDo;
 using ToDoList_MVC.ViewModels.ToDoList;
 using ToDoList_MVC.ViewModels.Shared;
@@ -216,10 +215,10 @@ public class ToDoListsController : Controller
             
             if (!ModelState.IsValid) return View(viewModel);
 
-            var new_list = new Models.ToDoListDTO(viewModel);
+            var new_list = new ToDoListDTO(viewModel);
             
             await _service.UpdateListAsync(id, new_list, userId);
-            return RedirectToAction(nameof(Details), new {id =  id});
+            return RedirectToAction(nameof(Details), new {id});
         }
 
         [Authorize]
@@ -277,7 +276,7 @@ public class ToDoListsController : Controller
                     var userId = GetUserID();
                     if (userId == null) return Unauthorized();
 
-                    if (SelectedListIds == null || SelectedListIds.Length == 0)
+                    if ( SelectedListIds.Length == 0)
                     {
                         return RedirectToAction(nameof(Index));
                     }
@@ -303,7 +302,7 @@ public class ToDoListsController : Controller
                     var userId = GetUserID();
                     if (userId == null) return Unauthorized();
 
-                    if (selectedIds != null && selectedIds.Length > 0)
+                    if (selectedIds.Length > 0)
                     {
                         foreach (var id in selectedIds)
                         {
@@ -338,7 +337,7 @@ public class ToDoListsController : Controller
                     var userId = GetUserID();
                     if (userId == null) return Unauthorized();
 
-                    if (selectedIds != null && selectedIds.Length > 0)
+                    if (selectedIds.Length > 0)
                     {
                         foreach (var id in selectedIds)
                         {
@@ -407,7 +406,7 @@ public class ToDoListsController : Controller
                     var userId = GetUserID();
                     if (userId == null) return Unauthorized();
 
-                    if (selectedIds != null && selectedIds.Length > 0)
+                    if (selectedIds.Length > 0)
                     {
                         foreach (var id in selectedIds)
                         {
@@ -455,7 +454,7 @@ public class ToDoListsController : Controller
                         return NotFound();
                     }
 
-                    string? referer = Request.Headers["Referer"].ToString();
+                    string referer = Request.Headers["Referer"].ToString();
 
                     if (!string.IsNullOrEmpty(referer))
                     {
