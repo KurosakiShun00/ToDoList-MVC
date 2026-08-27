@@ -3,6 +3,7 @@ using System.Security.Claims;
 using System.Text;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using ToDoList_MVC.Models;
 using ToDoList_MVC.Services; 
 using ToDoList_MVC.ViewModels.ToDo;
@@ -14,10 +15,12 @@ namespace ToDoList_MVC.Controllers.MVC;
 public class ToDoListsController : Controller
 {
     private readonly IToDoListService _service;
+    private readonly ICategoryService _categoryService;
 
-        public ToDoListsController(IToDoListService service)
+        public ToDoListsController(IToDoListService service, ICategoryService categoryService)
         {
             _service = service;
+            _categoryService = categoryService;
         }
 
         private string? GetUserID()
@@ -65,16 +68,20 @@ public class ToDoListsController : Controller
                     Name = ToDo.Name,
                     IsCompleted = ToDo.IsCompleted,
                     CategoryName = ToDo.Category?.Name,
-                    LineColor = ToDo.Category?.Color
+                    LineColor = ToDo.Category?.Color,
+                    CategoryId = ToDo.CategoryId
                 });
             }
 
+            var categories = await _categoryService.GetAllCategories(userId);
+            
             var viewModel = new ToDoListsDetailsViewModel()
             {
                Id               = item.Id,
                Name           = item.Name,
                Description = item.Description,
-               ToDos = ToDos
+               ToDos = ToDos,
+               Categories = categories.Select(c => new SelectListItem(c.Name, c.Id.ToString())).ToList()
     };
             return View(viewModel);
         }
@@ -156,10 +163,13 @@ public class ToDoListsController : Controller
             if(list == null) return NotFound();
             var listName = list.Name;
 
+            var categories = await _categoryService.GetAllCategories(userId);
+            
             var viewModel = new ToDoCreateViewModel()
             {
                 ToDoListId = id,
-                ListName = listName
+                ListName = listName,
+                Categories = categories.Select(c => new SelectListItem(c.Name, c.Id.ToString())).ToList()
             };
             
             return View(viewModel);
@@ -197,6 +207,7 @@ public class ToDoListsController : Controller
             if(userId  == null) return Unauthorized();
             var item = await _service.GetByIdAsync(id, userId);
             if (item == null) return NotFound();
+            
             var viewModel = new ToDoListsEditViewModel
             {
                 Id = item.Id,
@@ -434,6 +445,7 @@ public class ToDoListsController : Controller
                     if (existingToDo == null) return NotFound();
 
                     existingToDo.Name = viewModel.Name;
+                    existingToDo.CategoryId = viewModel.CategoryId;
 
                     await _service.UpdateToDoAsync(id, existingToDo);
 

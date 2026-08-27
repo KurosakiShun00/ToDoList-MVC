@@ -1,10 +1,10 @@
-@model ToDoList_MVC.ViewModels.ToDoList.ToDoListsDetailsViewModel;
+@model ToDoList_MVC.ViewModels.ToDoList.ToDoListsDetailsViewModel
 
 @{
-ViewData["Title"] = "Dettaglio Lista";
-Layout = "_Layout";
+    ViewData["Title"] = "Dettaglio Lista";
+    Layout = "_Layout";
 
-var ListDescription = Model.Description ?? "Nessuna descrizione fornita.";
+    var ListDescription = Model.Description ?? "Nessuna descrizione fornita.";
 }
 
 <form asp-controller="ToDoLists" method="post" id="batchForm">
@@ -14,19 +14,19 @@ var ListDescription = Model.Description ?? "Nessuna descrizione fornita.";
 
 @foreach (var line in Model.ToDos)
 {
-<form id="editForm-@line.Id" asp-controller="ToDoLists" asp-action="EditToDo" asp-route-id="@line.Id" method="post">
-    @Html.AntiForgeryToken()
-    <input type="hidden" name="ToDoListId" value="@Model.Id"/>
-</form>
+    <form id="editForm-@line.Id" asp-controller="ToDoLists" asp-action="EditToDo" asp-route-id="@line.Id" method="post">
+        @Html.AntiForgeryToken()
+        <input type="hidden" name="ToDoListId" value="@Model.Id"/>
+    </form>
 
-<form id="toggleForm-@line.Id" asp-controller="ToDoLists" asp-action="ToggleToDo" asp-route-id="@line.Id" method="post">
-    @Html.AntiForgeryToken()
-    <input type="hidden" name="toDoListId" value="@Model.Id"/>
-</form>
+    <form id="toggleForm-@line.Id" asp-controller="ToDoLists" asp-action="ToggleToDo" asp-route-id="@line.Id" method="post">
+        @Html.AntiForgeryToken()
+        <input type="hidden" name="toDoListId" value="@Model.Id"/>
+    </form>
 
-<form id="deleteForm-@line.Id" asp-controller="ToDoLists" asp-action="DeleteToDo" asp-route-id="@line.Id" method="post">
-    @Html.AntiForgeryToken()
-</form>
+    <form id="deleteForm-@line.Id" asp-controller="ToDoLists" asp-action="DeleteToDo" asp-route-id="@line.Id" method="post">
+        @Html.AntiForgeryToken()
+    </form>
 }
 
 <div class="d-flex align-items-center justify-content-between mb-3">
@@ -90,45 +90,55 @@ var ListDescription = Model.Description ?? "Nessuna descrizione fornita.";
     <tbody>
     @foreach (var line in Model.ToDos)
     {
-    <tr style="--bs-table-bg: @line.LineColor">
-        <td>
-            <input type="checkbox" name="selectedIds" value="@line.Id"
-                   form="batchForm"
-                   class="form-check-input list-checkbox fs-5 mt-0 me-1"
-                   title="Seleziona attività" />
-        </td>
-        <td>@line.Id</td>
-        <td>
-            <input type="text"
-                   form="editForm-@line.Id"
-                   name="Name"
-                   value="@line.Name"
-                   class="form-control form-control-sm bg-transparent border-0 shadow-none @(line.IsCompleted ? "text-decoration-line-through text-muted" : "")"
-                   onmouseenter="if(document.activeElement!==this){ this.classList.remove('bg-transparent','border-0'); this.classList.add('bg-light','border-secondary-subtle'); }"
-                   onmouseleave="if(document.activeElement!==this){ this.classList.remove('bg-light','border-secondary-subtle'); this.classList.add('bg-transparent','border-0'); }"
-                   onfocus="this.classList.remove('bg-transparent','bg-light','border-0','border-secondary-subtle'); this.classList.add('bg-white','border-primary');"
-                   onblur="this.classList.remove('bg-white','border-primary'); this.classList.add('bg-transparent','border-0');"
-                   onchange="document.getElementById('editForm-@line.Id').submit()"/>
-        </td>
+        <tr style="--bs-table-bg: @line.LineColor">
+            <td>
+                <input type="checkbox" name="selectedIds" value="@line.Id"
+                       form="batchForm"
+                       class="form-check-input list-checkbox fs-5 mt-0 me-1"
+                       title="Seleziona attività" />
+            </td>
+            <td>@line.Id</td>
+            <td>
+                <input type="text"
+                       form="editForm-@line.Id"
+                       name="Name"
+                       value="@line.Name"
+                       class="form-control form-control-sm bg-transparent border-0 shadow-none @(line.IsCompleted ? "text-decoration-line-through text-muted" : "")"
+                       onmouseenter="if(document.activeElement!==this){ this.classList.remove('bg-transparent','border-0'); this.classList.add('bg-light','border-secondary-subtle'); }"
+                       onmouseleave="if(document.activeElement!==this){ this.classList.remove('bg-light','border-secondary-subtle'); this.classList.add('bg-transparent','border-0'); }"
+                       onfocus="this.classList.remove('bg-transparent','bg-light','border-0','border-secondary-subtle'); this.classList.add('bg-white','border-primary');"
+                       onblur="this.classList.remove('bg-white','border-primary'); this.classList.add('bg-transparent','border-0');"
+                       onchange="document.getElementById('editForm-@line.Id').submit()"/>
+            </td>
 
-        <td class="text-center">
-            <input class="form-check-input"
-                   type="checkbox"
-                   form="toggleForm-@line.Id"
-                   @(line.IsCompleted ? "checked" : "")
-                   onchange="document.getElementById('toggleForm-@line.Id').submit()"/>
-        </td>
+            <td class="text-center">
+                <input class="form-check-input"
+                       type="checkbox"
+                       form="toggleForm-@line.Id"
+                       @(line.IsCompleted ? "checked" : "")
+                       onchange="document.getElementById('toggleForm-@line.Id').submit()"/>
+            </td>
 
-        <td class="text-center">
-            @(line.CategoryName ?? "N/A")
-        </td>
+            <td class="text-center">
+                <select name="CategoryId"
+                        form="editForm-@line.Id"
+                        class="form-select form-select-sm"
+                        onchange="document.getElementById('editForm-@line.Id').submit()">
+                    @foreach (var category in Model.Categories)
+                    {
+                        <option value="@category.Value" selected="@(category.Value == line.CategoryId.ToString())">
+                            @category.Text
+                        </option>
+                    }
+                </select>
+            </td>
 
-        <td class="text-end">
-            <button type="submit" form="deleteForm-@line.Id" class="btn btn-danger btn-sm">
-                X
-            </button>
-        </td>
-    </tr>
+            <td class="text-end">
+                <button type="submit" form="deleteForm-@line.Id" class="btn btn-danger btn-sm">
+                    X
+                </button>
+            </td>
+        </tr>
     }
     </tbody>
 </table>

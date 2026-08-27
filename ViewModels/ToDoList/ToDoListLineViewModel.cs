@@ -6,5 +6,6 @@ public class ToDoListLineViewModel
     public string? Name { get; set; }
     public bool IsCompleted { get; set; }
     public string? CategoryName { get; set; }
+    public int? CategoryId { get; set; }
     public string? LineColor { get; set; }
 }
