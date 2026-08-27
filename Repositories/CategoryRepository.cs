@@ -46,4 +46,18 @@ public class CategoryRepository : ICategoryRepository
       
       return entry.Entity;
     }
+
+    public async Task<Category?> GetCategoryById(int id)
+    {
+        
+        return await _context.Categories.Where(x => x.Id == id).SingleOrDefaultAsync();
+    }
+
+    public async Task<Category?> UpdateCategoryAsync(int id, Category updatedCategory)
+    {
+        _context.Categories.Update(updatedCategory);
+        await _context.SaveChangesAsync();
+        return await _context.Categories.FirstOrDefaultAsync(l => l.Id == id);
+        
+    }
 }

@@ -11,9 +11,8 @@
 
 @foreach (var line in Model)
 {
-    <form id="editForm-@line.Id" asp-controller="Category" asp-action="EditCategory" asp-route-id="@line.Id" method="post">
+    <form id="editForm-@line.Id" asp-controller="Category" asp-action="Edit" asp-route-id="@line.Id" method="post">
         @Html.AntiForgeryToken()
-        <input type="hidden" name="Name" value="@line.Name" />
     </form>
 
     <form id="deleteForm-@line.Id" asp-controller="Category" asp-action="DeleteCategory" asp-route-id="@line.Id" method="post">
@@ -69,7 +68,7 @@
                            name="Name"
                            value="@line.Name"
                            class="form-control form-control-sm bg-transparent border-0 shadow-none"
-                           onmouseenter="if(document.activeElement!==this){ this.classList.remove('bg-transparent','border-0'); this.classList.add('bg-light','border-secondary-subtle'); }"
+                           onmouseenter="if(document.activeElemexnt!==this){ this.classList.remove('bg-transparent','border-0'); this.classList.add('bg-light','border-secondary-subtle'); }"
                            onmouseleave="if(document.activeElement!==this){ this.classList.remove('bg-light','border-secondary-subtle'); this.classList.add('bg-transparent','border-0'); }"
                            onfocus="this.classList.remove('bg-transparent','bg-light','border-0','border-secondary-subtle'); this.classList.add('bg-white','border-primary');"
                            onblur="this.classList.remove('bg-white','border-primary'); this.classList.add('bg-transparent','border-0');"

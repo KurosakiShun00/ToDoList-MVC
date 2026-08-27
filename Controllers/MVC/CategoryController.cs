@@ -69,4 +69,35 @@ public class CategoryController : Controller
         await _service.CreateCategoryAsync(new_category);
         return RedirectToAction(nameof(Index));
     }
+
+    [Authorize]
+    public async Task<IActionResult> Edit(int id)
+    {  
+        var userId = GetUserID();
+        if(userId  == null) return Unauthorized();
+        var item = await _service.GetCategoryById(id);
+        if (item == null) return NotFound();
+        var viewModel = new CategoryEditViewModel
+        {
+            Id = item.Id,
+            Name = item.Name,
+            Color = item.Color
+        };
+        return View(viewModel);
+    }
+
+    [Authorize]
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Edit(int id, CategoryEditViewModel viewModel)
+    {
+        var userId = GetUserID();
+        if(userId  == null) return Unauthorized();
+        
+        var newCategory = new Category(viewModel);
+        
+        await _service.UpdateCategoryAsync(id, newCategory);
+        return RedirectToAction(nameof(Index));
+        
+    }
 }

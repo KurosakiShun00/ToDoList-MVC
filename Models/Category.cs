@@ -14,5 +14,11 @@ public class Category
     {
         Name = viewModel.Name;
         Color = viewModel.Color;
+    }   
+    
+    public Category(CategoryEditViewModel viewModel)
+    {
+        Name = viewModel.Name;
+        Color = viewModel.Color;
     }
 }
