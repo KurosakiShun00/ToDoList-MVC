@@ -37,4 +37,13 @@ public class CategoryRepository : ICategoryRepository
             where t.IsCompleted == false && c.Id == id && l.UserId == userId
             select t).CountAsync();
     }
+
+    public async Task<Category?> CreateCategoryAsync(Category newCategory)
+    {
+      var entry = await _context.Categories.AddAsync(newCategory);
+      
+      await _context.SaveChangesAsync();
+      
+      return entry.Entity;
+    }
 }

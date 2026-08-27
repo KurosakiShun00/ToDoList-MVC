@@ -32,5 +32,9 @@ public class CategoryService : ICategoryService
         var result = await _repo.CountNotCompleted(id, userId);
         return result;
     }
-    
+
+    public async Task<Category?> CreateCategoryAsync(Category newCategory)
+    {
+        return await _repo.CreateCategoryAsync(newCategory);
+    }
 }

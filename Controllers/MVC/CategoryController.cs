@@ -2,6 +2,7 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using ToDoList_MVC.Models;
 using ToDoList_MVC.Services;
 using ToDoList_MVC.ViewModels.Category;
 
@@ -48,5 +49,24 @@ public class CategoryController : Controller
         }
         
         return View(result);
+    }
+
+    [Authorize]
+    public IActionResult Create() => View();
+    
+    [Authorize]
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Create(CategoryCreateViewModel viewModel)
+    {   
+        var userId = GetUserID();
+        if(userId == null) return Unauthorized();
+            
+        var new_category = new Category(viewModel);
+
+        new_category.UserId = userId;
+        
+        await _service.CreateCategoryAsync(new_category);
+        return RedirectToAction(nameof(Index));
     }
 }

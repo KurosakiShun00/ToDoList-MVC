@@ -64,7 +64,8 @@ public class ToDoListsController : Controller
                     Id = ToDo.Id,
                     Name = ToDo.Name,
                     IsCompleted = ToDo.IsCompleted,
-                    CategoryName = ToDo.Category?.Name
+                    CategoryName = ToDo.Category?.Name,
+                    LineColor = ToDo.Category?.Color
                 });
             }
 
