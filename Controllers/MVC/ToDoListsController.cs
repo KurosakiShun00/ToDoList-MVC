@@ -446,7 +446,7 @@ public class ToDoListsController : Controller
 
                     existingToDo.Name = viewModel.Name;
                     existingToDo.CategoryId = viewModel.CategoryId;
-
+                    
                     await _service.UpdateToDoAsync(id, existingToDo);
 
                     int redirectId = viewModel.ToDoListId != 0 ? viewModel.ToDoListId : existingToDo.ToDoListId;

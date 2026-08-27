@@ -7,23 +7,29 @@
     var ListDescription = Model.Description ?? "Nessuna descrizione fornita.";
 }
 
+@* Form generale per le azioni batch (elimina/completa selezionati) *@
 <form asp-controller="ToDoLists" method="post" id="batchForm">
     @Html.AntiForgeryToken()
     <input type="hidden" name="toDoListId" value="@Model.Id" />
 </form>
 
+@* Form di supporto per ciascuna riga *@
 @foreach (var line in Model.ToDos)
 {
+    @* Form per l'Edit di NOME e CATEGORIA collegato a EditToDoViewModel *@
     <form id="editForm-@line.Id" asp-controller="ToDoLists" asp-action="EditToDo" asp-route-id="@line.Id" method="post">
         @Html.AntiForgeryToken()
+        <input type="hidden" name="Id" value="@line.Id" />
         <input type="hidden" name="ToDoListId" value="@Model.Id"/>
     </form>
 
+    @* Form per il Toggle dello stato completato *@
     <form id="toggleForm-@line.Id" asp-controller="ToDoLists" asp-action="ToggleToDo" asp-route-id="@line.Id" method="post">
         @Html.AntiForgeryToken()
         <input type="hidden" name="toDoListId" value="@Model.Id"/>
     </form>
 
+    @* Form per l'eliminazione della singola attività *@
     <form id="deleteForm-@line.Id" asp-controller="ToDoLists" asp-action="DeleteToDo" asp-route-id="@line.Id" method="post">
         @Html.AntiForgeryToken()
     </form>
@@ -124,9 +130,11 @@
                         form="editForm-@line.Id"
                         class="form-select form-select-sm"
                         onchange="document.getElementById('editForm-@line.Id').submit()">
+                    <option value="">-- Nessuna --</option>
                     @foreach (var category in Model.Categories)
                     {
-                        <option value="@category.Value" selected="@(category.Value == line.CategoryId.ToString())">
+                        bool isSelected = line.CategoryId != null && category.Value == line.CategoryId.ToString();
+                        <option value="@category.Value" selected="@isSelected">
                             @category.Text
                         </option>
                     }

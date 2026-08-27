@@ -67,6 +67,7 @@ namespace ToDoList_MVC.Services
            
             existingToDo.Name = updateToDoDTO.Name;
             existingToDo.IsCompleted = updateToDoDTO.IsCompleted;
+            existingToDo.CategoryId = updateToDoDTO.CategoryId;
 
            
             await _repository.UpdateToDoAsync(id, existingToDo);
