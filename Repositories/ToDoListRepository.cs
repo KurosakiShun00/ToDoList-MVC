@@ -17,12 +17,12 @@ namespace ToDoList_MVC.Repositories
         }
         public async Task<ToDoList?> GetByIdAsync(int id, string? userId)
         {
-            return await _context.ToDosLists.Include(l => l.ToDos).FirstOrDefaultAsync(l => l.Id == id && l.UserId==userId);
+            return await _context.ToDosLists.Include(l => l.ToDos).ThenInclude(t=>t.Category).FirstOrDefaultAsync(l => l.Id == id && l.UserId==userId);
         }
 
         public async Task<List<ToDo>?> GetToDosFromListAsync(int listId)
         {
-            return await _context.ToDos.Where(l => l.ToDoListId == listId).ToListAsync();
+            return await _context.ToDos.Include(t=>t.Category).Where(l => l.ToDoListId == listId).ToListAsync();
         }
 
         public async Task<bool> ListExistsAsync(int id, string? userId)

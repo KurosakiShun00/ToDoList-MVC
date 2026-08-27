@@ -21,11 +21,20 @@ public class CategoryRepository : ICategoryRepository
 
     public async Task<int> CountCompleted(int id, string? userId)
     {
-        return (from t in _context.ToDos
-                join c in _context.Categories on t.CategoryId = ).CountAsync();
+        return await (from t in _context.ToDos
+                join c in _context.Categories on t.CategoryId equals c.Id
+                join l in _context.ToDosLists on t.ToDoListId equals l.Id
+                where t.IsCompleted == true && c.Id == id && l.UserId == userId
+                select t).CountAsync();
     }
     
     
-    Task<int> CountNotCompleted(int id, string? userId);
-    
+    public async Task<int> CountNotCompleted(int id, string? userId)
+    {
+        return await (from t in _context.ToDos
+            join c in _context.Categories on t.CategoryId equals c.Id
+            join l in _context.ToDosLists on t.ToDoListId equals l.Id
+            where t.IsCompleted == false && c.Id == id && l.UserId == userId
+            select t).CountAsync();
+    }
 }

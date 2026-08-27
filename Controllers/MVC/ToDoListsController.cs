@@ -63,7 +63,8 @@ public class ToDoListsController : Controller
                 {
                     Id = ToDo.Id,
                     Name = ToDo.Name,
-                    IsCompleted = ToDo.IsCompleted
+                    IsCompleted = ToDo.IsCompleted,
+                    CategoryName = ToDo.Category?.Name
                 });
             }
 
