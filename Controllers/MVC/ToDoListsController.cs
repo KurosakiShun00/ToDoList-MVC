@@ -52,7 +52,7 @@ public class ToDoListsController : Controller
         
 
         [Authorize]
-        public async Task<IActionResult> Details(int id)
+        public async Task<IActionResult> Details(int id, string? sortOrder = null)
         {
             var userId = GetUserID();
             if(userId == null) return Unauthorized();
@@ -60,6 +60,9 @@ public class ToDoListsController : Controller
             var item = await _service.GetByIdAsync(id, userId);
             if (item == null) return NotFound();
             var ToDos = new List<ToDoListLineViewModel>();
+            
+            ViewData["CurrentOrder"] = sortOrder;
+            
             foreach (var ToDo in item.ToDos)
             {
                 ToDos.Add(new ToDoListLineViewModel
@@ -83,6 +86,11 @@ public class ToDoListsController : Controller
                ToDos = ToDos,
                Categories = categories.Select(c => new SelectListItem(c.Name, c.Id.ToString())).ToList()
     };
+            if(sortOrder == "ASC"){
+            viewModel.ToDos = viewModel.ToDos.OrderBy(x => x.CategoryName).ToList();
+            }
+            else viewModel.ToDos = viewModel.ToDos.OrderByDescending(x => x.CategoryName).ToList();
+            
             return View(viewModel);
         }
 
