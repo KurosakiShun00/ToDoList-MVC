@@ -75,7 +75,7 @@ public class CategoryController : Controller
     {  
         var userId = GetUserID();
         if(userId  == null) return Unauthorized();
-        var item = await _service.GetCategoryById(id);
+        var item = await _service.GetCategoryById(id, userId);
         if (item == null) return NotFound();
         var viewModel = new CategoryEditViewModel
         {
@@ -96,8 +96,51 @@ public class CategoryController : Controller
         
         var newCategory = new Category(viewModel);
         
-        await _service.UpdateCategoryAsync(id, newCategory);
+        await _service.UpdateCategoryAsync(id, newCategory, userId);
         return RedirectToAction(nameof(Index));
         
+    }
+    
+    [Authorize]
+    [HttpPost, ActionName("Delete")]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Delete(int id)
+    {
+        var userId = GetUserID();
+        if(userId  == null) return Unauthorized();
+
+        bool isDeleted = await _service.DeleteCategoryAsync(id, userId);
+
+        if (!isDeleted)
+        {
+            return NotFound();
+        }
+
+        return RedirectToAction(nameof(Index));
+    }
+    
+    [Authorize]
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> MultipleDelete(int[] SelectedIds)
+    {
+        var userId = GetUserID();
+        if (userId == null) return Unauthorized();
+
+        if ( SelectedIds.Length == 0)
+        {
+            return RedirectToAction(nameof(Index));
+        }
+
+        foreach (var id in SelectedIds)
+        {
+            var isDeleted = await _service.DeleteCategoryAsync(id, userId);
+            if (!isDeleted)
+            {
+                return NotFound();
+            }
+        }
+    
+        return RedirectToAction(nameof(Index));
     }
 }
