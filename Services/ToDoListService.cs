@@ -49,7 +49,8 @@ namespace ToDoList_MVC.Services
             {
                 Name = newToDo.Name,
                 IsCompleted = newToDo.IsCompleted,
-                ToDoListId = listId
+                ToDoListId = listId,
+                CategoryId = newToDo.CategoryId
             };
 
             await _repository.AddToDoAsync(_ToDo);
@@ -67,6 +68,7 @@ namespace ToDoList_MVC.Services
            
             existingToDo.Name = updateToDoDTO.Name;
             existingToDo.IsCompleted = updateToDoDTO.IsCompleted;
+            existingToDo.CategoryId = updateToDoDTO.CategoryId;
 
            
             await _repository.UpdateToDoAsync(id, existingToDo);

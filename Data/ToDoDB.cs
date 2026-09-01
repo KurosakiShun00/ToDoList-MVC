@@ -13,7 +13,8 @@ namespace ToDoList_MVC.Data
 
     public DbSet<ToDo> ToDos => Set<ToDo>();
     public DbSet<ToDoList> ToDosLists => Set<ToDoList>();
-
+    public DbSet<Category> Categories => Set<Category>();
+    
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);

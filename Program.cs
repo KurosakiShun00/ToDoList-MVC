@@ -36,6 +36,8 @@ builder.Services.AddScoped<IToDoRepository, ToDoRepository>();
 builder.Services.AddScoped<IToDoListRepository, ToDoListRepository>();
 builder.Services.AddScoped<IToDoListService, ToDoListService>();
 builder.Services.AddScoped<IEmailSender, EmailSender>();
+builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+builder.Services.AddScoped<ICategoryService, CategoryService>();
 
 var app = builder.Build();
 

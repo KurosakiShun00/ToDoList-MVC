@@ -24,6 +24,15 @@
                                 <span asp-validation-for="Name" class="text-danger small"></span>
                             </div>
                         </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="CategoryId" class="form-label fw-bold">Categoria</label>
+                                <select asp-for="CategoryId" asp-items="Model.Categories" class="form-select" >
+                                <option selected></option>
+                                </select>
+                                <span asp-validation-for="CategoryId" class="text-danger small"></span>
+                            </div>
+                        </div>
 
                         <hr />
 

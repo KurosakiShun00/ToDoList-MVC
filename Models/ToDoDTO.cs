@@ -11,16 +11,20 @@ namespace ToDoList_MVC.Models
         public bool IsCompleted { get; set; }
 
         public int ToDoListId { get; set; }
+        public int? CategoryId { get; set; }
+        public Category? Category { get; set; }
+
         
         public ToDoDTO() { }
         public ToDoDTO(ToDo to_do) =>
-            (Id, Name, IsCompleted, ToDoListId) = (to_do.Id, to_do.Name, to_do.IsCompleted, to_do.ToDoListId);
+            (Id, Name, IsCompleted, ToDoListId, CategoryId, Category) = (to_do.Id, to_do.Name, to_do.IsCompleted, to_do.ToDoListId, to_do.CategoryId, to_do.Category);
 
         public ToDoDTO(ToDoCreateViewModel viewModel)
         {
             Name = viewModel.Name;
             IsCompleted = false;
             ToDoListId = viewModel.ToDoListId;
+            CategoryId = viewModel.CategoryId;
         }     
         public ToDoDTO(ToDoEditViewModel viewModel)
         {
@@ -28,6 +32,8 @@ namespace ToDoList_MVC.Models
             Name = viewModel.Name;
             IsCompleted = viewModel.IsCompleted;
             ToDoListId = viewModel.ToDoListId;
+            CategoryId = viewModel.CategoryId;
+
         }
     }
 }

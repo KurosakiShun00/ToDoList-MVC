@@ -8,9 +8,10 @@ namespace ToDoList_MVC.Models
         public string? Name { get; set; }
 
         public bool IsCompleted { get; set; }
-
         //fk
 
         public int ToDoListId { get; set; }
+        public int? CategoryId { get; set; }
+        public Category? Category { get; set; }
     }
 }
