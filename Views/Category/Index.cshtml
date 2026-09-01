@@ -15,7 +15,7 @@
         @Html.AntiForgeryToken()
     </form>
 
-    <form id="deleteForm-@line.Id" asp-controller="Category" asp-action="DeleteCategory" asp-route-id="@line.Id" method="post">
+    <form id="deleteForm-@line.Id" asp-controller="Category" asp-action="Delete" asp-route-id="@line.Id" method="post">
         @Html.AntiForgeryToken()
     </form>
 }
@@ -28,7 +28,7 @@
     <div id="batchActionsBar" class="d-none d-flex gap-2">
         <button type="submit" 
                 form="batchForm"
-                formaction="@Url.Action("MultipleCategoryDelete", "Category")" 
+                formaction="@Url.Action("MultipleDelete", "Category")" 
                 class="btn btn-sm btn-danger"
                 onclick="return confirm('Sei sicuro di voler eliminare le categorie selezionate?');">
              Elimina Selezionate

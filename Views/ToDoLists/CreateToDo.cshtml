@@ -1,8 +1,8 @@
 @model ToDoList_MVC.ViewModels.ToDo.ToDoCreateViewModel;
 
 @{
-    ViewData["Title"] = "ToDo Create";
-    Layout = "_Layout";
+ViewData["Title"] = "ToDo Create";
+Layout = "_Layout";
 }
 
 <div class="container my-5">
@@ -15,7 +15,7 @@
                 </div>
 
                 <div class="card-body p-4">
-                    <form asp-controller="ToDoLists" asp-action="CreateToDo" method="post">
+                    <form id="createToDoForm" asp-controller="ToDoLists" asp-action="CreateToDo" method="post">
                         <input type="hidden" asp-for="ToDoListId" />
                         <div class="row">
                             <div class="col-md-6 mb-3">
@@ -27,8 +27,8 @@
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <label asp-for="CategoryId" class="form-label fw-bold">Categoria</label>
-                                <select asp-for="CategoryId" asp-items="Model.Categories" class="form-select" >
-                                <option selected></option>
+                                <select asp-for="CategoryId" asp-items="Model.Categories" class="form-select">
+                                    <option selected></option>
                                 </select>
                                 <span asp-validation-for="CategoryId" class="text-danger small"></span>
                             </div>
@@ -40,7 +40,7 @@
                             <a asp-controller="ToDoLists" asp-action="Index" class="btn btn-outline-secondary">
                                 Annulla
                             </a>
-                            <button type="submit" class="btn btn-success px-4">
+                            <button type="submit" id="btnSubmit" class="btn btn-success px-4">
                                 Salva Lista
                             </button>
                         </div>
@@ -53,5 +53,5 @@
 </div>
 
 @section Scripts {
-    @await Html.PartialAsync("_ValidationScriptsPartial")
+@await Html.PartialAsync("_ValidationScriptsPartial")
 }

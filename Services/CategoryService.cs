@@ -39,14 +39,14 @@ public class CategoryService : ICategoryService
         return await _repo.CreateCategoryAsync(newCategory);
     }
 
-    public async Task<Category?> GetCategoryById(int id)
+    public async Task<Category?> GetCategoryById(int id, string? userId)
     {
-        return await _repo.GetCategoryById(id);
+        return await _repo.GetCategoryById(id, userId);
     }
 
-    public async Task<Category?> UpdateCategoryAsync(int id, Category updatedCategory)
+    public async Task<Category?> UpdateCategoryAsync(int id, Category updatedCategory, string? userId)
     {
-        var oldCategory = await _repo.GetCategoryById(id);
+        var oldCategory = await _repo.GetCategoryById(id, userId);
         if (oldCategory == null) return null;
         
         oldCategory.Name = updatedCategory.Name;
@@ -54,5 +54,15 @@ public class CategoryService : ICategoryService
         
         return await _repo.UpdateCategoryAsync(id, oldCategory);
 
+    }
+
+    public async Task<bool> DeleteCategoryAsync(int id, string? userId)
+    {
+        var category = await _repo.GetCategoryById(id,userId);
+        if (category == null) return false;
+
+        _repo.DeleteCategory(category);
+        await _repo.SaveChangesAsync();
+        return true;
     }
 }
