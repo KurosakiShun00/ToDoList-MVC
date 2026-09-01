@@ -88,8 +88,8 @@
         </th>
         <th scope="col" style="width: 10%;">Id</th>
         <th scope="col">Nome Attività</th>
-        <th scope="col" style="width: 15%;" class="text-center">Completata</th>
-        <th scope="col" style="width: 15%;" class="text-center"><a asp-action="Details" asp-route-sortOrder="@(ViewData["CurrentOrder"]?.ToString() == "ASC" ? "DESC" : "ASC")">Categoria</a></th>
+        <th scope="col" style="width: 15%;" class="text-center"><a asp-action="Details" asp-route-CompletedSortOrder="@(ViewData["CurrentCompletedSortOrder"]?.ToString() == "ASC" ? "DESC" : "ASC")" asp-route-sortType="2">Completata</a></th>
+        <th scope="col" style="width: 15%;" class="text-center"><a asp-action="Details" asp-route-CategorySortOrder="@(ViewData["CurrentCategorySortOrder"]?.ToString() == "ASC" ? "DESC" : "ASC")" asp-route-sortType="1">Categoria</a></th>
         <th scope="col" style="width: 15%;" class="text-end">Elimina Attività</th>
     </tr>
     </thead>

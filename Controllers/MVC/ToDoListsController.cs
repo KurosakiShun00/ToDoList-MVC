@@ -52,7 +52,7 @@ public class ToDoListsController : Controller
         
 
         [Authorize]
-        public async Task<IActionResult> Details(int id, string? sortOrder = null)
+        public async Task<IActionResult> Details(int id, string? CategorySortOrder = null, string? CompletedSortOrder = null, int sortType = 0)
         {
             var userId = GetUserID();
             if(userId == null) return Unauthorized();
@@ -61,7 +61,8 @@ public class ToDoListsController : Controller
             if (item == null) return NotFound();
             var ToDos = new List<ToDoListLineViewModel>();
             
-            ViewData["CurrentOrder"] = sortOrder;
+            ViewData["CurrentCategorySortOrder"] = CategorySortOrder; //1
+            ViewData["CurrentCompletedSortOrder"] = CompletedSortOrder; //2
             
             foreach (var ToDo in item.ToDos)
             {
@@ -86,11 +87,22 @@ public class ToDoListsController : Controller
                ToDos = ToDos,
                Categories = categories.Select(c => new SelectListItem(c.Name, c.Id.ToString())).ToList()
     };
-            if(sortOrder == "ASC"){
-            viewModel.ToDos = viewModel.ToDos.OrderBy(x => x.CategoryName).ToList();
+            switch(sortType){
+                case 1 :
+                    if(CategorySortOrder == "ASC"){
+                    viewModel.ToDos = viewModel.ToDos.OrderBy(x => x.CategoryName).ToList();
+                    }
+                    else viewModel.ToDos = viewModel.ToDos.OrderByDescending(x => x.CategoryName).ToList();
+
+                    break;
+                case 2 : 
+                    if(CompletedSortOrder == "ASC"){
+                        viewModel.ToDos = viewModel.ToDos.OrderBy(x => x.IsCompleted).ToList();
+                    }
+                    else viewModel.ToDos = viewModel.ToDos.OrderByDescending(x => x.IsCompleted).ToList();
+
+                    break;
             }
-            else viewModel.ToDos = viewModel.ToDos.OrderByDescending(x => x.CategoryName).ToList();
-            
             return View(viewModel);
         }
 
