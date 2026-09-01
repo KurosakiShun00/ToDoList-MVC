@@ -30,21 +30,30 @@
 
 *   **.NET / C#** (Core dell'applicazione)
 *   **Entity Framework Core** (Per la gestione dei dati tramite ORM)
-*   **EF Core In-Memory Database Provider** (Database temporaneo in RAM)
+*   **DBeaver** Per il debug visuale del database
 *   **Swagger / OpenAPI** (Per la documentazione degli endpoint)
 *   **AspNetCore.Authentication** (Per il flusso di autenticazione)
 *   **MailTrap** Servizio email delivery service (https://mailtrap.io)
+*   **Bootstrap 5.0** HTML, CSS and JS library
   * **AI Tooling:** **Google Gemini** — UI refactoring e Debuggin
 
 ## ⚙️ Installazione e Configurazione
 
 ### Prerequisiti
-Per avviare questo progetto sul tuo computer, hai solo bisogno di:
-*   **[.NET SDK](https://dotnet.microsoft.com/download)** (Versione 8.0 o successiva, a seconda di quella che hai usato)
+Per avviare questo progetto sul tuo computer, hai bisogno di:
+*   **[.NET SDK](https://dotnet.microsoft.com/download)** (Versione 10.0 per sicurezza)
+*   Una IDE di sviluppo
 *   Lanciare 'dotnet restore' nel caso i pacchetti risultino disallineati, per altre info al riguardo visitare:
 *   https://learn.microsoft.com/en-us/nuget/consume-packages/package-restore
 *   Avere un account MailTrap configurato correttamente, oppure utilizzare un qualunque servizio di Email Delivery
 
-Per verificare se lo hai già installato, apri il terminale e digita:
+Per verificare se hai già installato un SDK .NET, apri il terminale e digita:
 ```bash
 dotnet --version
+```
+*  Lanciare per allineare la struttura del Database il seguente comando su terminale:
+```bash
+dotnet database restore
+``` 
+*  Una volta che la build avrà successo, dovrebbe partire la web app senza problemi in HTTPS
+
