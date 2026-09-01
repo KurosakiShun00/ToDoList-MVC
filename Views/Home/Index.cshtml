@@ -20,6 +20,19 @@
     var completionPercentage = totalLists > 0 ? (completedLists * 100) / totalLists : 0;
 }
 
+<style>
+    .btn-category-custom {
+        background-color: #6366f1;
+        border-color: #6366f1;
+        color: #fff;
+    }
+    .btn-category-custom:hover {
+        background-color: #4f46e5 !important;
+        border-color: #4f46e5 !important;
+        color: #fff !important;
+    }
+</style>
+
 <div class="container my-5">
 
     <div class="p-4 p-md-5 mb-4 bg-white rounded-3 shadow-sm border">
@@ -105,13 +118,20 @@
 
     <div class="row row-cols-1 row-cols-md-2 g-4">
         
-        <div class="col d-flex">
+        <div class="col d-flex column-gap-3">
             <a asp-controller="ToDoLists" 
                asp-action="Index" 
                class="btn btn-primary shadow-sm w-100 d-flex align-items-center justify-content-center gap-3 fw-semibold fs-5 p-4 rounded-3 text-decoration-none" 
                role="button">
                 <i class="bi bi-journal-check fs-3"></i>
                 VAI ALLE TUE LISTE
+            </a>
+            <a asp-controller="Category" 
+               asp-action="Index" 
+               class="btn btn-category-custom shadow-sm w-100 d-flex align-items-center justify-content-center gap-3 fw-semibold fs-5 p-4 rounded-3 text-decoration-none" 
+               role="button">
+                <i class="bi bi-tags-fill fs-3"></i>
+                VAI ALLE TUE CATEGORIE
             </a>
         </div>
 
