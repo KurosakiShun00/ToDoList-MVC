@@ -34,6 +34,7 @@
 *   **Swagger / OpenAPI** (Per la documentazione degli endpoint)
 *   **AspNetCore.Authentication** (Per il flusso di autenticazione)
 *   **MailTrap** Servizio email delivery service (https://mailtrap.io)
+  * **AI Tooling:** **Google Gemini** — UI refactoring e Debuggin
 
 ## ⚙️ Installazione e Configurazione
 
