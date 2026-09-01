@@ -89,7 +89,7 @@
         <th scope="col" style="width: 10%;">Id</th>
         <th scope="col">Nome Attività</th>
         <th scope="col" style="width: 15%;" class="text-center">Completata</th>
-        <th scope="col" style="width: 15%;" class="text-center">Categoria</th>
+        <th scope="col" style="width: 15%;" class="text-center"><a asp-action="Details" asp-route-sortOrder="@(ViewData["CurrentOrder"]?.ToString() == "ASC" ? "DESC" : "ASC")">Categoria</a></th>
         <th scope="col" style="width: 15%;" class="text-end">Elimina Attività</th>
     </tr>
     </thead>
