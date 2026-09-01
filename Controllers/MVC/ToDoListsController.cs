@@ -522,7 +522,7 @@ public class ToDoListsController : Controller
                     {
                         foreach (var toDo in list.ToDos)
                         {
-                            stringBuilder.Append(toDo.Name + ", ").Append(toDo.IsCompleted? "Completata" : "Non Completata").AppendLine();
+                            stringBuilder.Append(toDo.Name + ", ").Append((toDo.IsCompleted? "Completata" : "Non Completata") + ", ").Append(toDo.CategoryId).AppendLine();
                         }
                     }
                     
@@ -597,17 +597,21 @@ public class ToDoListsController : Controller
                             
                             var parti = linea.Split(',');
                             
-                            if (parti.Length != 2) continue;
+                            if (parti.Length != 3) continue;
                             
                             string nomeToDo = parti[0].Trim();
                             string stato = parti[1].Trim();
+                            string categoria = parti[2].Trim();
             
                             var isCompleted = stato.Equals("Completata", StringComparison.OrdinalIgnoreCase);
-            
+
+                            int? categoryId = int.TryParse(categoria, out int parsedId) ? parsedId : null;
+                            
                             toDos.Add(new ToDoDTO()
                             {
                                 Name = nomeToDo,
-                                IsCompleted = isCompleted
+                                IsCompleted = isCompleted,
+                                CategoryId = categoryId
                             });
                         }
                     }
