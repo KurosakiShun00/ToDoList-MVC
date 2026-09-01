@@ -27,10 +27,13 @@
                             <strong>Nome Lista:</strong> La riga che comincia con <code>LISTA DI ATTIVITÀ:</code> definirà il titolo della lista.
                         </li>
                         <li class="list-group-item bg-transparent px-0 py-2">
-                            <strong>Attività:</strong> Le righe con formato <code>Nome Attività, Completata</code> oppure <code>Nome Attività, Non Completata</code> popoleranno gli elementi.
+                            <strong>Attività:</strong> Le righe con formato <code>Nome Attività, Completata, ID_CATEGORIA</code> oppure <code>Nome Attività, Non Completata, ID_CATEGORIA</code> popoleranno gli elementi.
                         </li>
                         <li class="list-group-item bg-transparent px-0 py-2 text-muted">
                             <strong>Ignorate:</strong> Verranno ignorate le righe che iniziano con <code>=</code>, <code>DELL'UTENTE:</code>, <code>E-MAIL:</code> e <code>scaricata in data:</code>.
+                        </li>
+                        <li class="list-group-item bg-transparent px-0 py-2 text-muted">
+                            <strong>Categoria:</strong> al posto di ID_CATEGORIA subito dopo "Completata/Non Completata", va inserito l'intero che definisce l'ID della categoria scelta, in sua assenza non verrà assegnata una categoria.
                         </li>
                     </ul>
                     <p class="text-secondary small mb-3">
