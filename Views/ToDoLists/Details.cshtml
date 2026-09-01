@@ -1,180 +1,226 @@
 @model ToDoList_MVC.ViewModels.ToDoList.ToDoListsDetailsViewModel
 
 @{
-    ViewData["Title"] = "Dettaglio Lista";
-    Layout = "_Layout";
+ViewData["Title"] = "Dettaglio Lista";
+Layout = "_Layout";
+var listDescription = Model.Description ?? "Nessuna descrizione fornita.";
 
-    var ListDescription = Model.Description ?? "Nessuna descrizione fornita.";
+var totalToDos = Model.ToDos.Count;
+var completedToDos = Model.ToDos.Count(t => t.IsCompleted);
+var progressPct = totalToDos > 0 ? (completedToDos * 100) / totalToDos : 0;
 }
 
-@* Form generale per le azioni batch (elimina/completa selezionati) *@
 <form asp-controller="ToDoLists" method="post" id="batchForm">
     @Html.AntiForgeryToken()
     <input type="hidden" name="toDoListId" value="@Model.Id" />
 </form>
 
-@* Form di supporto per ciascuna riga *@
 @foreach (var line in Model.ToDos)
 {
-    @* Form per l'Edit di NOME e CATEGORIA collegato a EditToDoViewModel *@
-    <form id="editForm-@line.Id" asp-controller="ToDoLists" asp-action="EditToDo" asp-route-id="@line.Id" method="post">
-        @Html.AntiForgeryToken()
-        <input type="hidden" name="Id" value="@line.Id" />
-        <input type="hidden" name="ToDoListId" value="@Model.Id"/>
-    </form>
+<form id="editForm-@line.Id" asp-controller="ToDoLists" asp-action="EditToDo" asp-route-id="@line.Id" method="post">
+    @Html.AntiForgeryToken()
+    <input type="hidden" name="Id" value="@line.Id" />
+    <input type="hidden" name="ToDoListId" value="@Model.Id"/>
+</form>
 
-    @* Form per il Toggle dello stato completato *@
-    <form id="toggleForm-@line.Id" asp-controller="ToDoLists" asp-action="ToggleToDo" asp-route-id="@line.Id" method="post">
-        @Html.AntiForgeryToken()
-        <input type="hidden" name="toDoListId" value="@Model.Id"/>
-    </form>
+<form id="toggleForm-@line.Id" asp-controller="ToDoLists" asp-action="ToggleToDo" asp-route-id="@line.Id" method="post">
+    @Html.AntiForgeryToken()
+    <input type="hidden" name="toDoListId" value="@Model.Id"/>
+</form>
 
-    @* Form per l'eliminazione della singola attività *@
-    <form id="deleteForm-@line.Id" asp-controller="ToDoLists" asp-action="DeleteToDo" asp-route-id="@line.Id" method="post">
-        @Html.AntiForgeryToken()
-    </form>
+<form id="deleteForm-@line.Id" asp-controller="ToDoLists" asp-action="DeleteToDo" asp-route-id="@line.Id" method="post">
+    @Html.AntiForgeryToken()
+</form>
 }
 
-<div class="d-flex align-items-center justify-content-between mb-3">
-    <div class="d-flex align-items-center gap-2">
-        <h2 class="display-4 m-0">@Model.Name</h2>
+<div class="container py-2">
 
-        <a asp-controller="ToDoLists" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-sm btn-outline-primary flex-shrink-0" title="Modifica">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
-                <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325"/>
-            </svg>
+    <div class="bg-white p-4 rounded-4 shadow-sm border mb-4">
+        <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-3">
+            <div class="d-flex align-items-center gap-2">
+                <h2 class="h2 fw-bold text-dark m-0">@Model.Name</h2>
+
+                <a asp-controller="ToDoLists" asp-action="Edit" asp-route-id="@Model.Id"
+                   class="btn btn-sm btn-light rounded-circle text-muted p-2 lh-1" title="Modifica Lista">
+                    <i class="bi bi-pencil"></i>
+                </a>
+
+                <a tabindex="0"
+                   class="btn btn-info btn-sm ms-1"
+                   role="button"
+                   data-bs-toggle="popover"
+                   data-bs-trigger="focus"
+                   data-bs-placement="right"
+                   title="Info Lista"
+                   data-bs-content="@listDescription">
+                    Descrizione
+                </a>
+            </div>
+
+            <div class="d-flex align-items-center gap-2">
+                <a asp-controller="ToDoLists" asp-action="CreateToDo" asp-route-id="@Model.Id"
+                   class="btn btn-primary fw-medium rounded-3 px-3">
+                    + Aggiungi Attività
+                </a>
+            </div>
+        </div>
+
+        <div class="row align-items-center g-3">
+            <div class="col-md-8">
+                <div class="d-flex justify-content-between small text-muted mb-1 fw-semibold">
+                    <span>Progresso Complessivo</span>
+                    <span>@completedToDos / @totalToDos Completate (@progressPct%)</span>
+                </div>
+                <div class="progress" style="height: 8px;">
+                    <div class="progress-bar bg-primary rounded-pill" role="progressbar" style="width: @progressPct%"
+                         aria-valuenow="@progressPct" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+            </div>
+            <div class="col-md-4 text-md-end">
+                <span class="badge bg-warning-subtle text-warning-emphasis border border-warning-subtle fs-6 px-3 py-2 rounded-pill">
+                    <i class="bi bi-clock me-1"></i> Rimaste: <b>@Model.Remaining</b>
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-3 px-1">
+        <div class="d-flex align-items-center gap-2">
+            <div class="form-check me-2">
+                <input type="checkbox" id="selectAll" class="form-check-input fs-5" title="Seleziona tutti" style="cursor: pointer;" />
+                <label class="form-check-label text-muted small ms-1 align-middle fw-medium" for="selectAll">Seleziona Tutti</label>
+            </div>
+
+            <span class="text-muted small ms-2 d-none d-sm-inline">Ordina:</span>
+            <a asp-action="Details" asp-route-CompletedSortOrder="@(ViewData["CurrentCompletedSortOrder"]?.ToString() == "ASC" ? "DESC" : "ASC")" asp-route-sortType="2"
+               class="btn btn-sm btn-light border text-muted rounded-pill px-3">
+                <i class="bi bi-arrow-down-up me-1"></i> Stato
+            </a>
+            <a asp-action="Details" asp-route-CategorySortOrder="@(ViewData["CurrentCategorySortOrder"]?.ToString() == "ASC" ? "DESC" : "ASC")" asp-route-sortType="1"
+               class="btn btn-sm btn-light border text-muted rounded-pill px-3">
+                <i class="bi bi-tag me-1"></i> Categoria
+            </a>
+        </div>
+
+        <div id="batchActionsBar" class="d-none d-flex gap-2">
+            <button type="submit" form="batchForm" formaction="@Url.Action("MultipleToDoFinished", "ToDoLists")" class="btn btn-sm btn-success rounded-3">
+                <i class="bi bi-check2-all me-1"></i> Completate
+            </button>
+            <button type="submit" form="batchForm" formaction="@Url.Action("MultipleToDoNotFinished", "ToDoLists")" class="btn btn-sm btn-warning rounded-3">
+                <i class="bi bi-arrow-counterclockwise me-1"></i> Non Completate
+            </button>
+            <button type="submit" form="batchForm" formaction="@Url.Action("MultipleToDoDelete", "ToDoLists")" class="btn btn-sm btn-danger rounded-3"
+                    onclick="return confirm('Sei sicuro di voler eliminare le attività selezionate?');">
+                <i class="bi bi-trash me-1"></i> Elimina
+            </button>
+        </div>
+    </div>
+
+    <div class="card border-0 shadow-sm rounded-4 overflow-hidden mb-4">
+        @if (!Model.ToDos.Any())
+        {
+        <div class="card-body text-center py-5">
+            <i class="bi bi-clipboard-check fs-1 text-muted d-block mb-3"></i>
+            <h5 class="fw-bold text-dark">Nessuna attività in questa lista</h5>
+            <p class="text-muted small">Fai clic su "+ Aggiungi Attività" per iniziare.</p>
+        </div>
+        }
+        else
+        {
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="table-dark">
+                <tr class="text-uppercase small fw-bold" style="font-size: 0.75rem; letter-spacing: 0.5px;">
+                    <th style="width: 40px;" class="ps-4"></th>
+                    <th scope="col" style="width: 60px;">ID</th>
+                    <th scope="col">Attività</th>
+                    <th scope="col" class="text-center" style="width: 120px;">Stato</th>
+                    <th scope="col" style="width: 200px;">Categoria</th>
+                    <th scope="col" class="text-end pe-4" style="width: 80px;">Azioni</th>
+                </tr>
+                </thead>
+                <tbody>
+                @foreach (var line in Model.ToDos)
+                {
+                <tr style="--bs-table-bg: @line.LineColor;">
+                    <td class="ps-4">
+                        <input type="checkbox" name="selectedIds" value="@line.Id"
+                               form="batchForm"
+                               class="form-check-input list-checkbox fs-5"
+                               style="cursor: pointer;"
+                               title="Seleziona attività" />
+                    </td>
+                    <td class="text-muted small fw-semibold">#@line.Id</td>
+                    <td>
+                        <input type="text"
+                               form="editForm-@line.Id"
+                               name="Name"
+                               value="@line.Name"
+                               class="form-control form-control-sm border-0 bg-transparent fw-medium @(line.IsCompleted ? "text-decoration-line-through text-muted" : "text-dark")"
+                               onmouseenter="if(document.activeElement!==this){ this.classList.remove('bg-transparent','border-0'); this.classList.add('bg-white','border'); }"
+                               onmouseleave="if(document.activeElement!==this){ this.classList.remove('bg-white','border'); this.classList.add('bg-transparent','border-0'); }"
+                               onfocus="this.classList.remove('bg-transparent','border-0'); this.classList.add('bg-white','border-primary','shadow-sm');"
+                               onblur="this.classList.remove('bg-white','border-primary','shadow-sm'); this.classList.add('bg-transparent','border-0');"
+                               onchange="document.getElementById('editForm-@line.Id').submit()"/>
+                    </td>
+
+                    <td class="text-center">
+                        <input class="form-check-input fs-5"
+                               type="checkbox"
+                               style="cursor: pointer;"
+                               form="toggleForm-@line.Id"
+                               @(line.IsCompleted ? "checked" : "")
+                               onchange="document.getElementById('toggleForm-@line.Id').submit()"/>
+                    </td>
+
+                    <td>
+                        <select name="CategoryId"
+                                form="editForm-@line.Id"
+                                class="form-select form-select-sm rounded-3 border-light-subtle"
+                                onchange="document.getElementById('editForm-@line.Id').submit()">
+                            <option value="">-- Nessuna --</option>
+                            @foreach (var category in Model.Categories)
+                            {
+                            bool isSelected = line.CategoryId != null && category.Value == line.CategoryId.ToString();
+                            <option value="@category.Value" selected="@isSelected">
+                                @category.Text
+                            </option>
+                            }
+                        </select>
+                    </td>
+
+                    <td class="text-end pe-4">
+                        <button type="submit" form="deleteForm-@line.Id" class="btn btn-sm btn-outline-danger border-0 rounded-circle p-2 lh-1" title="Elimina">
+                            <i class="bi bi-trash"></i>
+                        </button>
+                    </td>
+                </tr>
+                }
+                </tbody>
+            </table>
+        </div>
+        }
+    </div>
+
+    <div class="d-flex align-items-center justify-content-between pt-2">
+        <a asp-controller="ToDoLists" asp-action="Index" class="btn btn-outline-secondary rounded-3 px-3" role="button">
+            <i class="bi bi-arrow-left me-1"></i> Torna alla Lista
         </a>
 
-        <a tabindex="0"
-           class="btn btn-info btn-sm ms-2"
-           role="button"
-           data-bs-toggle="popover"
-           data-bs-trigger="focus"
-           data-bs-placement="right"
-           title="Info Lista"
-           data-bs-content="@ListDescription">
-            Descrizione
+        <a asp-controller="ToDoLists" asp-action="ExportList" asp-route-id="@Model.Id" class="btn btn-outline-primary rounded-3 px-3" role="button">
+            <i class="bi bi-download me-1"></i> Scarica Lista (.txt)
         </a>
     </div>
 
-    <div id="batchActionsBar" class="d-none d-flex gap-2">
-        <button type="submit"
-                form="batchForm"
-                formaction="@Url.Action("MultipleToDoFinished", "ToDoLists")"
-                class="btn btn-sm btn-success">
-            Segna come Completate
-        </button>
-        <button type="submit"
-                form="batchForm"
-                formaction="@Url.Action("MultipleToDoNotFinished", "ToDoLists")"
-                class="btn btn-sm btn-warning">
-            Segna come non Completate
-        </button>
-        <button type="submit"
-                form="batchForm"
-                formaction="@Url.Action("MultipleToDoDelete", "ToDoLists")"
-                class="btn btn-sm btn-danger"
-                onclick="return confirm('Sei sicuro di voler eliminare le attività selezionate?');">
-            Elimina Selezionate
-        </button>
-    </div>
-</div>
-
-<table class="table align-middle">
-    <thead class="table-dark">
-    <tr>
-        <th style="width: 5%;">
-            <input type="checkbox" id="selectAll" class="form-check-input fs-5 mt-0" title="Seleziona tutti" />
-        </th>
-        <th scope="col" style="width: 10%;">Id</th>
-        <th scope="col">Nome Attività</th>
-        <th scope="col" style="width: 15%;" class="text-center"><a asp-action="Details" asp-route-CompletedSortOrder="@(ViewData["CurrentCompletedSortOrder"]?.ToString() == "ASC" ? "DESC" : "ASC")" asp-route-sortType="2">Completata</a></th>
-        <th scope="col" style="width: 15%;" class="text-center"><a asp-action="Details" asp-route-CategorySortOrder="@(ViewData["CurrentCategorySortOrder"]?.ToString() == "ASC" ? "DESC" : "ASC")" asp-route-sortType="1">Categoria</a></th>
-        <th scope="col" style="width: 15%;" class="text-end">Elimina Attività</th>
-    </tr>
-    </thead>
-    <tbody>
-    @foreach (var line in Model.ToDos)
-    {
-        <tr style="--bs-table-bg: @line.LineColor">
-            <td>
-                <input type="checkbox" name="selectedIds" value="@line.Id"
-                       form="batchForm"
-                       class="form-check-input list-checkbox fs-5 mt-0 me-1"
-                       title="Seleziona attività" />
-            </td>
-            <td>@line.Id</td>
-            <td>
-                <input type="text"
-                       form="editForm-@line.Id"
-                       name="Name"
-                       value="@line.Name"
-                       class="form-control form-control-sm bg-transparent border-0 shadow-none @(line.IsCompleted ? "text-decoration-line-through text-muted" : "")"
-                       onmouseenter="if(document.activeElement!==this){ this.classList.remove('bg-transparent','border-0'); this.classList.add('bg-light','border-secondary-subtle'); }"
-                       onmouseleave="if(document.activeElement!==this){ this.classList.remove('bg-light','border-secondary-subtle'); this.classList.add('bg-transparent','border-0'); }"
-                       onfocus="this.classList.remove('bg-transparent','bg-light','border-0','border-secondary-subtle'); this.classList.add('bg-white','border-primary');"
-                       onblur="this.classList.remove('bg-white','border-primary'); this.classList.add('bg-transparent','border-0');"
-                       onchange="document.getElementById('editForm-@line.Id').submit()"/>
-            </td>
-
-            <td class="text-center">
-                <input class="form-check-input"
-                       type="checkbox"
-                       form="toggleForm-@line.Id"
-                       @(line.IsCompleted ? "checked" : "")
-                       onchange="document.getElementById('toggleForm-@line.Id').submit()"/>
-            </td>
-
-            <td class="text-center">
-                <select name="CategoryId"
-                        form="editForm-@line.Id"
-                        class="form-select form-select-sm"
-                        onchange="document.getElementById('editForm-@line.Id').submit()">
-                    <option value="">-- Nessuna --</option>
-                    @foreach (var category in Model.Categories)
-                    {
-                        bool isSelected = line.CategoryId != null && category.Value == line.CategoryId.ToString();
-                        <option value="@category.Value" selected="@isSelected">
-                            @category.Text
-                        </option>
-                    }
-                </select>
-            </td>
-
-            <td class="text-end">
-                <button type="submit" form="deleteForm-@line.Id" class="btn btn-danger btn-sm">
-                    X
-                </button>
-            </td>
-        </tr>
-    }
-    </tbody>
-</table>
-
-<p class="text-end fw-bold fs-4">Cose da fare rimaste: @Model.Remaining</p>
-<hr />
-
-<div class="d-flex align-items-center justify-content-between mb-4 gap-3">
-    <a asp-controller="ToDoLists" asp-action="Index" class="btn btn-secondary" role="button">
-        ← Torna alla Lista
-    </a>
-    <a asp-controller="ToDoLists" asp-action="ExportList" asp-route-id="@Model.Id" class="btn btn-primary" role="button">
-        ⬇ Scarica Lista (.txt)
-    </a>
-    <div class="d-flex gap-2">
-        <a asp-controller="ToDoLists" asp-action="CreateToDo" asp-route-id="@Model.Id" class="btn btn-primary" role="button">
-            + Aggiungi Attività
-        </a>
-    </div>
 </div>
 
 @section Scripts {
 <script>
     document.addEventListener("DOMContentLoaded", function () {
-        var popoverElement = document.querySelector('[data-bs-toggle="popover"]');
-        if (popoverElement && typeof bootstrap !== 'undefined') {
-            new bootstrap.Popover(popoverElement);
-        }
+        var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'));
+        var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
+            return new bootstrap.Popover(popoverTriggerEl);
+        });
 
         const checkboxes = document.querySelectorAll('.list-checkbox');
         const batchActionsBar = document.getElementById('batchActionsBar');

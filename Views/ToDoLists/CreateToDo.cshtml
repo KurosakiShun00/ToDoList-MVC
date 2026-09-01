@@ -37,7 +37,7 @@ Layout = "_Layout";
                         <hr />
 
                         <div class="d-flex justify-content-between align-items-center">
-                            <a asp-controller="ToDoLists" asp-action="Index" class="btn btn-outline-secondary">
+                            <a asp-controller="ToDoLists" asp-action="Details" asp-route-id="@Model.ToDoListId" class="btn btn-outline-secondary">
                                 Annulla
                             </a>
                             <button type="submit" id="btnSubmit" class="btn btn-success px-4">
