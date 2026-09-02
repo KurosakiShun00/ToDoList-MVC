@@ -69,5 +69,13 @@ namespace ToDoList_MVC.Repositories
             await _context.SaveChangesAsync();
         }
 
+        public async Task<List<ToDo>?> GetAllToDos(string? userId)
+        {
+            return await _context.ToDosLists
+                .Where(l => l.UserId == userId)
+                .SelectMany(l => l.ToDos)
+                .ToListAsync();
+        }
+
     }
 }

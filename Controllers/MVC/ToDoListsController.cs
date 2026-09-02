@@ -644,4 +644,32 @@ public class ToDoListsController : Controller
                     
                     return RedirectToAction(nameof(Index));
                 }
+                
+                [Authorize]
+                [HttpGet]
+                public async Task<IActionResult> GetCalendarEvents()
+                {
+                    string? userId = GetUserID();
+                    var todos = await _service.GetAllToDos(userId);
+
+                    if (todos == null)
+                    {
+                        return Json(new List<object>());
+                    }
+                    
+                    var events = todos
+                        .Where(t => t.Deadline.HasValue) 
+                        .Select(t => new 
+                        {
+                            id = t.Id,
+                            title = t.Name,
+                            start = t.Deadline!.Value.ToString("yyyy-MM-ddTHH:mm:ss"), 
+                            color = t.IsCompleted ? "#198754" : "#0d6efd", 
+                            allDay = false
+                        });
+
+                    return Json(events);
+                }
+                
+                
 }

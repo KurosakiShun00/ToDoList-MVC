@@ -144,5 +144,21 @@ namespace ToDoList_MVC.Services
             await _repository.SaveChangesAsync();
             return true;
         }
+
+        public async Task<List<ToDoDTO>?> GetAllToDos(string? userId)
+        {
+            var toDos = await _repository.GetAllToDos(userId);
+
+            if(toDos == null) return null;
+            
+            var result = new List<ToDoDTO>();
+
+            foreach (var toDo in toDos)
+            {
+                result.Add(new ToDoDTO(toDo));
+            }
+            return result;
+        }
+
     }
 }

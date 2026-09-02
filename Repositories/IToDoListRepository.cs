@@ -16,5 +16,6 @@ namespace ToDoList_MVC.Repositories
         void DeleteToDoAsync(ToDo id);
         Task<ToDo?> GetToDoAsync(int id);
         Task SaveChangesAsync();
+        Task<List<ToDo>?> GetAllToDos(string? userId);
     }
 }

@@ -14,5 +14,6 @@ namespace ToDoList_MVC.Services
         Task<ToDoDTO?> GetToDoAsync(int id);
         Task<ToDo?> AddToDoToListAsync(int listId, ToDoDTO newToDo, string?  userId);
         Task<bool> DeleteListAsync(int id, string? userId);
+        Task<List<ToDoDTO>?> GetAllToDos(string? userId);
     }
 }
