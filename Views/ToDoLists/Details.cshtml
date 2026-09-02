@@ -10,6 +10,66 @@ var completedToDos = Model.ToDos.Count(t => t.IsCompleted);
 var progressPct = totalToDos > 0 ? (completedToDos * 100) / totalToDos : 0;
 }
 
+@if (Model.ListsIds.First() != Model.Id)
+{
+    <a asp-controller="ToDoLists" asp-action="Details" asp-route-id="@Model.ListsIds[Array.IndexOf(Model.ListsIds,Model.Id)-1]"
+       class="nav-arrow nav-arrow-left" title="Lista Precedente">
+        <i class="bi bi-caret-left-fill"></i>
+    </a>
+}
+
+@if (Model.ListsIds.Last() != Model.Id)
+{
+    <a asp-controller="ToDoLists" asp-action="Details" asp-route-id="@Model.ListsIds[Array.IndexOf(Model.ListsIds,Model.Id)+1]"
+       class="nav-arrow nav-arrow-right" title="Lista Successiva">
+        <i class="bi bi-caret-right-fill"></i>
+    </a>
+}
+
+<style>
+    .nav-arrow {
+        position: fixed;
+        top: 50%;
+        transform: translateY(-50%);
+        z-index: 1030;
+        width: 48px;
+        height: 64px;
+        background-color: rgba(255, 255, 255, 0.85);
+        color: #0d6efd;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.8rem;
+        text-decoration: none;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+        backdrop-filter: blur(4px);
+        transition: all 0.2s ease-in-out;
+    }
+
+    .nav-arrow-left {
+        left: 0;
+        border-top-right-radius: 12px;
+        border-bottom-right-radius: 12px;
+        border: 1px solid #e5e7eb;
+        border-left: none;
+    }
+
+    .nav-arrow-right {
+        right: 0;
+        border-top-left-radius: 12px;
+        border-bottom-left-radius: 12px;
+        border: 1px solid #e5e7eb;
+        border-right: none;
+    }
+
+    .nav-arrow:hover {
+        background-color: #0d6efd;
+        color: #ffffff;
+        width: 54px;
+        box-shadow: 0 6px 16px rgba(13, 110, 253, 0.3);
+    }
+</style>
+
 <form asp-controller="ToDoLists" method="post" id="batchForm">
     @Html.AntiForgeryToken()
     <input type="hidden" name="toDoListId" value="@Model.Id" />
@@ -163,12 +223,20 @@ var progressPct = totalToDos > 0 ? (completedToDos * 100) / totalToDos : 0;
                                onmouseenter="if(document.activeElement!==this){ this.classList.remove('bg-transparent','border-0'); this.classList.add('bg-white','border'); }"
                                onmouseleave="if(document.activeElement!==this){ this.classList.remove('bg-white','border'); this.classList.add('bg-transparent','border-0'); }"
                                onfocus="this.classList.remove('bg-transparent','border-0'); this.classList.add('bg-white','border-primary','shadow-sm');"
-                               onblur="this.classList.remove('bg-white','border-primary','shadow-sm'); this.classList.add('bg-transparent','border-0');"
-                               onchange="
-                                   if (this.value.length > 50 || this.value.length === 0) {
-                                   alert('Inserire un nome con meno di 50 caratteri');
-                                   this.value = '@line.Name' }
-                                   else document.getElementById('editForm-@line.Id').submit()"/>
+                               onkeydown="if(event.key === 'Enter'){ event.preventDefault(); this.blur(); }"
+                               onblur="
+                                   this.classList.remove('bg-white','border-primary','shadow-sm'); 
+                                   this.classList.add('bg-transparent','border-0');
+
+                                   const val = this.value;
+
+                                   if (!val || val.length > 50) {
+                                       alert('Inserire un nome valido (massimo 50 caratteri e non vuoto)');
+                                       this.value = '@line.Name';
+                                   } else if (val !== '@line.Name') {
+                                       document.getElementById('editForm-@line.Id').submit();
+                                   }
+                               " />
                         <span asp-validation-for="@line.Name" class="text-danger small"></span>
                     </td>
 
@@ -216,21 +284,20 @@ var progressPct = totalToDos > 0 ? (completedToDos * 100) / totalToDos : 0;
                const selected = new Date(this.value);
 
                if (this.value && selected < today) {
-               alert('Inserire una data futura, non passata');
-               this.value = '@formattedDeadline';
-               if (!this.value) {
-               this.type = 'text';
-               this.value = 'Nessuna Data';
-               }
+                   alert('Inserire una data futura, non passata');
+                   this.value = '@formattedDeadline';
+                   if (!this.value) {
+                       this.type = 'text';
+                       this.value = 'Nessuna Data';
+                   }
                } else {
-               if (!this.value) {
-               this.type = 'text';
-               this.value = 'Nessuna Data';
+                   if (!this.value) {
+                       this.type = 'text';
+                       this.value = 'Nessuna Data';
+                   }
+                   document.getElementById('editForm-@line.Id').submit();
                }
-               document.getElementById('editForm-@line.Id').submit();
-               }
-
-               " />
+           " />
     <span asp-validation-for="@line.Deadline" class="text-danger small"></span>
 </td>
 

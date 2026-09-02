@@ -8,7 +8,7 @@ public class ToDoListsDetailsViewModel
     public string? Name { get; set; }
     public int Remaining => ToDos.Count(x => !x.IsCompleted);
     public string? Description { get; set; }
-    
+    public int[] ListsIds { get; set; } = [];
     public int? CategoryId { get; set; }
     
     public List<ToDoListLineViewModel> ToDos { get; set; } = new();
