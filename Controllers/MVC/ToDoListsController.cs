@@ -658,14 +658,15 @@ public class ToDoListsController : Controller
                     }
                     
                     var events = todos
-                        .Where(t => t.Deadline.HasValue) 
+                        .Where(t => t.Deadline.HasValue && !t.IsCompleted) 
                         .Select(t => new 
                         {
                             id = t.Id,
                             title = t.Name,
                             start = t.Deadline!.Value.ToString("yyyy-MM-ddTHH:mm:ss"), 
-                            color = t.IsCompleted ? "#198754" : "#0d6efd", 
-                            allDay = false
+                            color = t.Deadline.Value.CompareTo(DateTime.Now) <= 0 ? "#D30000" : "#198754", 
+                            allDay = false,
+                            url = Url.Action("Details","ToDoLists", new { id = t.ToDoListId })
                         });
 
                     return Json(events);

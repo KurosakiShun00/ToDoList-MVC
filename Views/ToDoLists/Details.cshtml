@@ -164,7 +164,12 @@ var progressPct = totalToDos > 0 ? (completedToDos * 100) / totalToDos : 0;
                                onmouseleave="if(document.activeElement!==this){ this.classList.remove('bg-white','border'); this.classList.add('bg-transparent','border-0'); }"
                                onfocus="this.classList.remove('bg-transparent','border-0'); this.classList.add('bg-white','border-primary','shadow-sm');"
                                onblur="this.classList.remove('bg-white','border-primary','shadow-sm'); this.classList.add('bg-transparent','border-0');"
-                               onchange="document.getElementById('editForm-@line.Id').submit()"/>
+                               onchange="
+                                   if (this.value.length > 50 || this.value.length === 0) {
+                                   alert('Inserire un nome con meno di 50 caratteri');
+                                   this.value = '@line.Name' }
+                                   else document.getElementById('editForm-@line.Id').submit()"/>
+                        <span asp-validation-for="@line.Name" class="text-danger small"></span>
                     </td>
 
                     <td class="text-center">
