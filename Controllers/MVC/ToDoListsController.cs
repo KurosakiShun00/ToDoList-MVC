@@ -71,6 +71,7 @@ public class ToDoListsController : Controller
                     Id = ToDo.Id,
                     Name = ToDo.Name,
                     IsCompleted = ToDo.IsCompleted,
+                    Deadline = ToDo.Deadline,
                     CategoryName = ToDo.Category?.Name,
                     LineColor = ToDo.Category?.Color,
                     CategoryId = ToDo.CategoryId
@@ -466,6 +467,7 @@ public class ToDoListsController : Controller
 
                     existingToDo.Name = viewModel.Name;
                     existingToDo.CategoryId = viewModel.CategoryId;
+                    existingToDo.Deadline = viewModel.Deadline;
                     
                     await _service.UpdateToDoAsync(id, existingToDo);
 
