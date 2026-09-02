@@ -56,6 +56,9 @@ public class ToDoListsController : Controller
         {
             var userId = GetUserID();
             if(userId == null) return Unauthorized();
+            var Lists = (await _service.GetAllListsAsync(userId)).ToList();
+
+            var listIds = Lists.Select(l => l.Id).ToArray();
             
             var item = await _service.GetByIdAsync(id, userId);
             if (item == null) return NotFound();
@@ -85,6 +88,7 @@ public class ToDoListsController : Controller
                Id               = item.Id,
                Name           = item.Name,
                Description = item.Description,
+               ListsIds = listIds,
                ToDos = ToDos,
                Categories = categories.Select(c => new SelectListItem(c.Name, c.Id.ToString())).ToList()
     };
