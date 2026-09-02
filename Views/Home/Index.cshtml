@@ -67,6 +67,25 @@
     .card-logout-hover:hover .text-danger-emphasis {
         color: rgba(255, 255, 255, 0.85) !important;
     }
+    .btn-calendar-custom {
+        background-color: #c084fc;
+        border-color: #c084fc;
+        color: #ffffff !important;
+    }
+
+    .btn-calendar-custom .text-calendar-sub {
+        color: rgba(255, 255, 255, 0.8) !important;
+    }
+
+    .btn-calendar-custom:hover {
+        background-color: #a855f7 !important;
+        border-color: #a855f7 !important;
+        color: #ffffff !important;
+    }
+
+    .btn-calendar-custom:hover .text-calendar-sub {
+        color: rgba(255, 255, 255, 0.95) !important;
+    }
 </style>
 
 <div class="container py-4">
@@ -162,56 +181,57 @@
         </div>
     </div>
 
-    <div class="row g-4">
-        
-        <div class="col-lg-6">
-            <div class="row g-3">
-                <div class="col-12 col-sm-6">
-                    <a asp-controller="ToDoLists" asp-action="Index" 
-                       class="card border-0 shadow-sm rounded-4 text-decoration-none action-card bg-primary text-white p-4 h-100 d-flex flex-column justify-content-center align-items-center text-center">
-                        <i class="bi bi-journal-check fs-1 mb-2"></i>
-                        <span class="fw-bold fs-5">Le tue Liste</span>
-                        <small class="text-white-50">Gestisci le attività</small>
-                    </a>
-                </div>
-                <div class="col-12 col-sm-6">
-                    <a asp-controller="Category" asp-action="Index" 
-                       class="card border-0 shadow-sm rounded-4 text-decoration-none action-card btn-category-custom p-4 h-100 d-flex flex-column justify-content-center align-items-center text-center">
-                        <i class="bi bi-tags-fill fs-1 mb-2"></i>
-                        <span class="fw-bold fs-5">Le tue Categorie</span>
-                        <small class="text-white-50">Organizza i tag</small>
-                    </a>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-lg-6">
-            <div class="row g-3">
-                <div class="col-12 col-sm-6">
-                    <a asp-area="Identity" asp-page="/Account/Manage/Index" 
-                       class="card border shadow-sm rounded-4 text-decoration-none action-card card-profile-hover p-4 h-100 d-flex flex-column justify-content-center align-items-center text-center">
-                        <i class="bi bi-person-gear fs-1 text-secondary mb-2"></i>
-                        <span class="fw-bold fs-5">Profilo Utente</span>
-                        <small class="text-muted">Impostazioni account</small>
-                    </a>
-                </div>
-                <div class="col-12 col-sm-6">
-                    <form class="h-100" 
-                          asp-area="Identity" 
-                          asp-page="/Account/Logout" 
-                          asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })" 
-                          method="post">
-                        <button type="submit" 
-                                class="card border shadow-sm rounded-4 text-decoration-none action-card card-logout-hover p-4 h-100 w-100 d-flex flex-column justify-content-center align-items-center text-center">
-                            <i class="bi bi-box-arrow-right fs-1 mb-2"></i>
-                            <span class="fw-bold fs-5">Esci</span>
-                            <small class="text-danger-emphasis">Termina sessione</small>
-                        </button>
-                    </form>
-                </div>
-            </div>
-        </div>
-
+   <div class="row g-3">
+    <div class="col-12 col-sm-6 col-md-4 col-xl">
+        <a asp-controller="ToDoLists" asp-action="Index" 
+           class="card border-0 shadow-sm rounded-4 text-decoration-none action-card bg-primary text-white p-4 h-100 d-flex flex-column justify-content-center align-items-center text-center">
+            <i class="bi bi-journal-check fs-1 mb-2"></i>
+            <span class="fw-bold fs-5">Le tue Liste</span>
+            <small class="text-white-50">Gestisci le attività</small>
+        </a>
     </div>
+
+    <div class="col-12 col-sm-6 col-md-4 col-xl">
+        <a asp-controller="Category" asp-action="Index" 
+           class="card border-0 shadow-sm rounded-4 text-decoration-none action-card btn-category-custom p-4 h-100 d-flex flex-column justify-content-center align-items-center text-center">
+            <i class="bi bi-tags-fill fs-1 mb-2"></i>
+            <span class="fw-bold fs-5">Le tue Categorie</span>
+            <small class="text-white-50">Organizza i tag</small>
+        </a>
+    </div>
+
+    <div class="col-12 col-sm-6 col-md-4 col-xl">
+        <a asp-controller="Home" asp-action="Calendar" 
+           class="card border-0 shadow-sm rounded-4 text-decoration-none action-card btn-calendar-custom p-4 h-100 d-flex flex-column justify-content-center align-items-center text-center">
+            <i class="bi bi-calendar-event-fill fs-1 mb-2"></i>
+            <span class="fw-bold fs-5">Il Tuo Calendario</span>
+            <small class="text-calendar-sub">Pianifica Le Task</small>
+        </a>
+    </div>
+
+    <div class="col-12 col-sm-6 col-md-6 col-xl">
+        <a asp-area="Identity" asp-page="/Account/Manage/Index" 
+           class="card border shadow-sm rounded-4 text-decoration-none action-card card-profile-hover p-4 h-100 d-flex flex-column justify-content-center align-items-center text-center">
+            <i class="bi bi-person-gear fs-1 text-secondary mb-2"></i>
+            <span class="fw-bold fs-5">Profilo Utente</span>
+            <small class="text-muted">Impostazioni account</small>
+        </a>
+    </div>
+
+    <div class="col-12 col-sm-6 col-md-6 col-xl">
+        <form class="h-100" 
+              asp-area="Identity" 
+              asp-page="/Account/Logout" 
+              asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })" 
+              method="post">
+            <button type="submit" 
+                    class="card border shadow-sm rounded-4 text-decoration-none action-card card-logout-hover p-4 h-100 w-100 d-flex flex-column justify-content-center align-items-center text-center">
+                <i class="bi bi-box-arrow-right fs-1 mb-2"></i>
+                <span class="fw-bold fs-5">Esci</span>
+                <small class="text-danger-emphasis">Termina sessione</small>
+            </button>
+        </form>
+    </div>
+</div>
 
 </div>

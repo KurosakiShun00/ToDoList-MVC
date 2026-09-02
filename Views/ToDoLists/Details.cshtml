@@ -228,12 +228,12 @@ var progressPct = totalToDos > 0 ? (completedToDos * 100) / totalToDos : 0;
                                    this.classList.remove('bg-white','border-primary','shadow-sm'); 
                                    this.classList.add('bg-transparent','border-0');
 
-                                   const val = this.value.trim();
+                                   const val = this.value;
 
                                    if (!val || val.length > 50) {
                                        alert('Inserire un nome valido (massimo 50 caratteri e non vuoto)');
-                                       this.value = '@Html.Raw(System.Text.Encodings.Web.JavaScriptEncoder.Default.Encode(line.Name))';
-                                   } else if (val !== '@Html.Raw(System.Text.Encodings.Web.JavaScriptEncoder.Default.Encode(line.Name))') {
+                                       this.value = '@line.Name';
+                                   } else if (val !== '@line.Name') {
                                        document.getElementById('editForm-@line.Id').submit();
                                    }
                                " />
