@@ -9,6 +9,7 @@ public class ToDoEditValidator : AbstractValidator<ToDoEditViewModel>
     {
         RuleFor(x => x.Name).NotEmpty().WithMessage("Campo Richiesto")
             .MaximumLength(50).WithMessage("Massimo 50 caratteri");
+        RuleFor(x => x.Deadline).GreaterThan(DateTime.Now).WithMessage("Inserire una data futura");
 
     }
 }

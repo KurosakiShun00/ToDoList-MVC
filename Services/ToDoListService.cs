@@ -49,6 +49,7 @@ namespace ToDoList_MVC.Services
             {
                 Name = newToDo.Name,
                 IsCompleted = newToDo.IsCompleted,
+                Deadline = newToDo.Deadline,
                 ToDoListId = listId,
                 CategoryId = newToDo.CategoryId
             };
@@ -69,6 +70,7 @@ namespace ToDoList_MVC.Services
             existingToDo.Name = updateToDoDTO.Name;
             existingToDo.IsCompleted = updateToDoDTO.IsCompleted;
             existingToDo.CategoryId = updateToDoDTO.CategoryId;
+            existingToDo.Deadline = updateToDoDTO.Deadline;
 
            
             await _repository.UpdateToDoAsync(id, existingToDo);
@@ -142,5 +144,21 @@ namespace ToDoList_MVC.Services
             await _repository.SaveChangesAsync();
             return true;
         }
+
+        public async Task<List<ToDoDTO>?> GetAllToDos(string? userId)
+        {
+            var toDos = await _repository.GetAllToDos(userId);
+
+            if(toDos == null) return null;
+            
+            var result = new List<ToDoDTO>();
+
+            foreach (var toDo in toDos)
+            {
+                result.Add(new ToDoDTO(toDo));
+            }
+            return result;
+        }
+
     }
 }

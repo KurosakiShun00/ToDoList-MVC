@@ -132,16 +132,19 @@ var progressPct = totalToDos > 0 ? (completedToDos * 100) / totalToDos : 0;
                 <thead class="table-dark">
                 <tr class="text-uppercase small fw-bold" style="font-size: 0.75rem; letter-spacing: 0.5px;">
                     <th style="width: 40px;" class="ps-4"></th>
-                    <th scope="col" style="width: 60px;">ID</th>
+                    <th scope="col" style="width: 60px;" class="text-center">ID</th>
                     <th scope="col">Attività</th>
-                    <th scope="col" class="text-center" style="width: 120px;">Stato</th>
-                    <th scope="col" style="width: 200px;">Categoria</th>
+                    <th scope="col" class="text-center" style="width: 100px;">Stato</th>
+                    <th scope="col" style="width: 180px;" class="text-center">Categoria</th>
+                    <th scope="col" style="width: 220px;" class="text-center">Scadenza</th>
                     <th scope="col" class="text-end pe-4" style="width: 80px;">Azioni</th>
                 </tr>
                 </thead>
                 <tbody>
                 @foreach (var line in Model.ToDos)
                 {
+                var isExpired = line.Deadline.HasValue && line.Deadline.Value < DateTime.Now;
+
                 <tr style="--bs-table-bg: @line.LineColor;">
                     <td class="ps-4">
                         <input type="checkbox" name="selectedIds" value="@line.Id"
@@ -161,7 +164,12 @@ var progressPct = totalToDos > 0 ? (completedToDos * 100) / totalToDos : 0;
                                onmouseleave="if(document.activeElement!==this){ this.classList.remove('bg-white','border'); this.classList.add('bg-transparent','border-0'); }"
                                onfocus="this.classList.remove('bg-transparent','border-0'); this.classList.add('bg-white','border-primary','shadow-sm');"
                                onblur="this.classList.remove('bg-white','border-primary','shadow-sm'); this.classList.add('bg-transparent','border-0');"
-                               onchange="document.getElementById('editForm-@line.Id').submit()"/>
+                               onchange="
+                                   if (this.value.length > 50 || this.value.length === 0) {
+                                   alert('Inserire un nome con meno di 50 caratteri');
+                                   this.value = '@line.Name' }
+                                   else document.getElementById('editForm-@line.Id').submit()"/>
+                        <span asp-validation-for="@line.Name" class="text-danger small"></span>
                     </td>
 
                     <td class="text-center">
@@ -188,6 +196,43 @@ var progressPct = totalToDos > 0 ? (completedToDos * 100) / totalToDos : 0;
                             }
                         </select>
                     </td>
+
+                   <td class="text-center">
+    @{ var formattedDeadline = line.Deadline.HasValue ? line.Deadline.Value.ToString("yyyy-MM-ddTHH:mm") : ""; }
+    <input type="@(line.Deadline.HasValue ? "datetime-local" : "text")"
+           form="editForm-@line.Id"
+           name="Deadline"
+           value="@(line.Deadline.HasValue ? line.Deadline.Value.ToString("yyyy-MM-ddTHH:mm") : "Nessuna Data")"
+           class="form-control form-control-sm border-0 bg-transparent text-center fw-semibold @(isExpired ? "text-danger" : (line.Deadline.HasValue ? "text-success" : "text-muted"))"
+           onmouseenter="if(document.activeElement!==this){ this.classList.remove('bg-transparent','border-0'); this.classList.add('bg-white','border'); }"
+           onmouseleave="if(document.activeElement!==this){ this.classList.remove('bg-white','border'); this.classList.add('bg-transparent','border-0'); }"
+           onfocus="this.type='datetime-local'; this.classList.remove('bg-transparent','border-0'); this.classList.add('bg-white','border-primary','shadow-sm'); try { this.showPicker(); } catch(e) {}"
+           onkeydown="if(event.key === 'Enter'){ event.preventDefault(); this.blur(); }"
+           onblur="
+               this.classList.remove('bg-white','border-primary','shadow-sm'); 
+               this.classList.add('bg-transparent','border-0');
+
+               const today = new Date();
+               const selected = new Date(this.value);
+
+               if (this.value && selected < today) {
+               alert('Inserire una data futura, non passata');
+               this.value = '@formattedDeadline';
+               if (!this.value) {
+               this.type = 'text';
+               this.value = 'Nessuna Data';
+               }
+               } else {
+               if (!this.value) {
+               this.type = 'text';
+               this.value = 'Nessuna Data';
+               }
+               document.getElementById('editForm-@line.Id').submit();
+               }
+
+               " />
+    <span asp-validation-for="@line.Deadline" class="text-danger small"></span>
+</td>
 
                     <td class="text-end pe-4">
                         <button type="submit" form="deleteForm-@line.Id" class="btn btn-sm btn-outline-danger border-0 rounded-circle p-2 lh-1" title="Elimina">

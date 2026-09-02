@@ -1,0 +1,124 @@
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.js"></script>
+
+<div class="container py-4">
+    <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-4">
+        <div>
+            <h2 class="h3 fw-bold text-dark m-0 d-flex align-items-center gap-2">
+                <i class="bi bi-calendar3 text-primary"></i> Calendario Scadenze
+            </h2>
+            <p class="text-muted small m-0 mt-1">Visualizza e gestisci le scadenze di tutte le tue attività in un unico posto.</p>
+        </div>
+        <div class="d-flex align-items-center gap-3 bg-white p-2 px-3 rounded-pill border shadow-sm">
+            <span class="small text-muted fw-semibold"><i class="bi bi-circle-fill text-success me-1"></i>Completate</span>
+            <span class="small text-muted fw-semibold"><i class="bi bi-circle-fill text-primary me-1"></i>In corso</span>
+        </div>
+    </div>
+
+    <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+        <div class="card-body p-4 bg-white">
+            <div id="calendar"></div>
+        </div>
+    </div>
+</div>
+
+<style>
+    :root {
+        --fc-border-color: #f1f5f9;
+        --fc-button-bg-color: #f8f9fa;
+        --fc-button-border-color: #dee2e6;
+        --fc-button-text-color: #495057;
+        --fc-button-hover-bg-color: #e9ecef;
+        --fc-button-hover-border-color: #ced4da;
+        --fc-button-active-bg-color: #0d6efd;
+        --fc-button-active-border-color: #0d6efd;
+    }
+
+    .fc .fc-toolbar-title {
+        font-size: 1.35rem;
+        font-weight: 700;
+        color: #212529;
+        text-transform: capitalize;
+    }
+
+    .fc .fc-button {
+        font-weight: 500;
+        border-radius: 0.5rem !important;
+        padding: 0.4rem 0.8rem;
+        box-shadow: none !important;
+        transition: all 0.2s ease;
+    }
+
+    .fc .fc-button-primary:not(:disabled).fc-button-active,
+    .fc .fc-button-primary:not(:disabled):active {
+        color: #fff;
+    }
+
+    .fc-theme-standard td, .fc-theme-standard th {
+        border-color: #f1f5f9;
+    }
+
+    .fc .fc-col-header-cell-cushion {
+        text-transform: uppercase;
+        font-size: 0.75rem;
+        letter-spacing: 0.5px;
+        color: #6c757d;
+        padding: 10px 0;
+    }
+
+    .fc .fc-daygrid-day-number {
+        font-weight: 600;
+        color: #495057;
+        font-size: 0.85rem;
+        padding: 8px;
+    }
+
+    .fc .fc-day-today {
+        background-color: rgba(13, 110, 253, 0.04) !important;
+    }
+
+    .fc-event {
+        cursor: pointer;
+        border: none !important;
+        border-radius: 6px !important;
+        padding: 3px 6px !important;
+        font-size: 0.8rem !important;
+        font-weight: 500;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+        transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .fc-event:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    var calendarEl = document.getElementById('calendar');
+
+    var calendar = new FullCalendar.Calendar(calendarEl, {
+        initialView: 'dayGridMonth',
+        locale: 'it',
+        firstDay: 1, 
+        height: 'auto',
+        headerToolbar: {
+            left: 'prev,next today',
+            center: 'title',
+            right: 'dayGridMonth,timeGridWeek'
+        },
+        buttonText: {
+            today: 'Oggi',
+            month: 'Mese',
+            week: 'Settimana'
+        },
+        events: '@Url.Action("GetCalendarEvents", "ToDoLists")',
+        
+        eventDidMount: function(info) {
+            info.el.setAttribute('title', info.event.title);
+        }
+    });
+
+    calendar.render();
+});
+</script>

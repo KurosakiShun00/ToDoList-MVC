@@ -9,6 +9,7 @@ namespace ToDoList_MVC.Models
         public string? Name { get; set; }
 
         public bool IsCompleted { get; set; }
+        public DateTime? Deadline { get; set; }
 
         public int ToDoListId { get; set; }
         public int? CategoryId { get; set; }
@@ -17,12 +18,13 @@ namespace ToDoList_MVC.Models
         
         public ToDoDTO() { }
         public ToDoDTO(ToDo to_do) =>
-            (Id, Name, IsCompleted, ToDoListId, CategoryId, Category) = (to_do.Id, to_do.Name, to_do.IsCompleted, to_do.ToDoListId, to_do.CategoryId, to_do.Category);
+            (Id, Name, IsCompleted, Deadline, ToDoListId, CategoryId, Category) = (to_do.Id, to_do.Name, to_do.IsCompleted, to_do.Deadline, to_do.ToDoListId, to_do.CategoryId, to_do.Category);
 
         public ToDoDTO(ToDoCreateViewModel viewModel)
         {
             Name = viewModel.Name;
             IsCompleted = false;
+            Deadline = viewModel.Deadline;
             ToDoListId = viewModel.ToDoListId;
             CategoryId = viewModel.CategoryId;
         }     
@@ -31,6 +33,7 @@ namespace ToDoList_MVC.Models
             Id = viewModel.Id;
             Name = viewModel.Name;
             IsCompleted = viewModel.IsCompleted;
+            Deadline = viewModel.Deadline;
             ToDoListId = viewModel.ToDoListId;
             CategoryId = viewModel.CategoryId;
 

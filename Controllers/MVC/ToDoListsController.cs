@@ -71,6 +71,7 @@ public class ToDoListsController : Controller
                     Id = ToDo.Id,
                     Name = ToDo.Name,
                     IsCompleted = ToDo.IsCompleted,
+                    Deadline = ToDo.Deadline,
                     CategoryName = ToDo.Category?.Name,
                     LineColor = ToDo.Category?.Color,
                     CategoryId = ToDo.CategoryId
@@ -466,6 +467,7 @@ public class ToDoListsController : Controller
 
                     existingToDo.Name = viewModel.Name;
                     existingToDo.CategoryId = viewModel.CategoryId;
+                    existingToDo.Deadline = viewModel.Deadline;
                     
                     await _service.UpdateToDoAsync(id, existingToDo);
 
@@ -642,4 +644,33 @@ public class ToDoListsController : Controller
                     
                     return RedirectToAction(nameof(Index));
                 }
+                
+                [Authorize]
+                [HttpGet]
+                public async Task<IActionResult> GetCalendarEvents()
+                {
+                    string? userId = GetUserID();
+                    var todos = await _service.GetAllToDos(userId);
+
+                    if (todos == null)
+                    {
+                        return Json(new List<object>());
+                    }
+                    
+                    var events = todos
+                        .Where(t => t.Deadline.HasValue && !t.IsCompleted) 
+                        .Select(t => new 
+                        {
+                            id = t.Id,
+                            title = t.Name,
+                            start = t.Deadline!.Value.ToString("yyyy-MM-ddTHH:mm:ss"), 
+                            color = t.Deadline.Value.CompareTo(DateTime.Now) <= 0 ? "#D30000" : "#198754", 
+                            allDay = false,
+                            url = Url.Action("Details","ToDoLists", new { id = t.ToDoListId })
+                        });
+
+                    return Json(events);
+                }
+                
+                
 }

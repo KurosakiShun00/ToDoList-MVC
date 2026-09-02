@@ -8,6 +8,7 @@ public class ToDoCreateViewModel
     public int ToDoListId { get; set; }
     public string? ListName  { get; set; }
     public int? CategoryId { get; set; }
+    public DateTime? Deadline { get; set; }
 
     public List<SelectListItem> Categories { get; set; } = new List<SelectListItem>();
 

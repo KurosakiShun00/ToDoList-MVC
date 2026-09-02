@@ -9,6 +9,7 @@ public class ToDoEditViewModel
     public string? Name { get; set; }
 
     public bool IsCompleted { get; set; }
+    public DateTime? Deadline { get; set; }
     
     public int ToDoListId { get; set; }
     public string? ListName  { get; set; }
