@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using ToDoList_MVC.User;
 
 namespace ToDoList_MVC.Models
 {
@@ -14,7 +15,7 @@ namespace ToDoList_MVC.Models
         public string UserId { get; set; } = string.Empty;
 
         [ForeignKey(nameof(UserId))]
-        public virtual IdentityUser? User { get; set; }
+        public virtual AppUser? User { get; set; }
         
         public List<ToDo> ToDos { get; set; } = new();
     }
