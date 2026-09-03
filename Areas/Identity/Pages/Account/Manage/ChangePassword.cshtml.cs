@@ -119,7 +119,7 @@ namespace ToDoList_MVC.Areas.Identity.Pages.Account.Manage
 
             await _signInManager.RefreshSignInAsync(user);
             _logger.LogInformation("User changed their password successfully.");
-            StatusMessage = "Your password has been changed.";
+            StatusMessage = "Password Modificata con successo.";
 
             return RedirectToPage();
         }
