@@ -93,7 +93,17 @@
     <div class="p-4 p-md-5 mb-4 bg-white rounded-4 shadow-sm border">
         <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-4 pb-3 border-bottom">
             <div>
-                <h1 class="h2 fw-bold text-dark mb-1">Benvenuto, @username</h1>
+                @switch (ViewData["sesso"])
+                {
+                    case 0: <h1 class="h2 fw-bold text-dark mb-1">Benvenuto, @ViewData["nickname"] </h1>
+                        break;
+                    case 1: <h1 class="h2 fw-bold text-dark mb-1">Benvenuta, @ViewData["nickname"] </h1>
+                        break;
+                    default:<h1 class="h2 fw-bold text-dark mb-1">Benvenuto, @ViewData["nickname"] </h1>
+                        break;
+                }
+                
+                
                 <p class="text-muted mb-0">Ecco la panoramica generale delle tue liste e attività.</p>
             </div>
             

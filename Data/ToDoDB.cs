@@ -1,10 +1,11 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using ToDoList_MVC.Models;
+using ToDoList_MVC.User;
 
 namespace ToDoList_MVC.Data
 {
-    public class ToDoDB : IdentityDbContext
+    public class ToDoDB : IdentityDbContext<AppUser>
 
     {
     public ToDoDB(DbContextOptions<ToDoDB> options) : base(options)

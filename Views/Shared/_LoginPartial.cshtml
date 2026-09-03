@@ -1,27 +1,37 @@
 @using Microsoft.AspNetCore.Identity
+@using ToDoList_MVC.User
 
-@inject SignInManager<IdentityUser> SignInManager
-@inject UserManager<IdentityUser> UserManager
+@inject SignInManager<AppUser> SignInManager
+@inject UserManager<AppUser> UserManager
 
-<ul class="navbar-nav">
-@if (SignInManager.IsSignedIn(User))
-{
-    <li class="nav-item">
-        <a id="manage" class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Profilo</a>
-    </li>
-    <li class="nav-item">
-        <form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-            <button id="logout" type="submit" class="nav-link btn btn-link text-dark border-0">Logout</button>
-        </form>
-    </li>
-}
-else
-{
-    <li class="nav-item">
-        <a class="nav-link text-dark" id="register" asp-area="Identity" asp-page="/Account/Register">Register</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link text-dark" id="login" asp-area="Identity" asp-page="/Account/Login">Login</a>
-    </li>
-}
+<ul class="navbar-nav align-items-center">
+    @if (SignInManager.IsSignedIn(User))
+    {
+        var currentUser = await UserManager.GetUserAsync(User);
+        var displayName = currentUser?.NickName ?? currentUser?.Nome ?? User.Identity?.Name ?? "Profilo";
+        
+
+        <li class="nav-item me-2">
+            <a id="manage" class="nav-link text-dark fw-medium d-flex align-items-center gap-1" asp-area="Identity" asp-page="/Account/Manage/Index" title="Gestisci Profilo">
+                <i class="bi bi-person-circle text-primary fs-5"></i>
+                <span>@displayName</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                <button id="logout" type="submit" class="btn btn-outline-danger btn-sm rounded-pill px-3 ms-1 d-flex align-items-center gap-1">
+                    <i class="bi bi-box-arrow-right"></i> Logout
+                </button>
+            </form>
+        </li>
+    }
+    else
+    {
+        <li class="nav-item">
+            <a class="nav-link text-dark" id="register" asp-area="Identity" asp-page="/Account/Register">Registrati</a>
+        </li>
+        <li class="nav-item">
+            <a class="btn btn-primary rounded-pill px-3 ms-2" id="login" asp-area="Identity" asp-page="/Account/Login">Accedi</a>
+        </li>
+    }
 </ul>

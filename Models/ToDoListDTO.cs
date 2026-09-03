@@ -1,5 +1,6 @@
 ﻿using ToDoList_MVC.ViewModels.ToDoList;
 using Microsoft.AspNetCore.Identity;
+using ToDoList_MVC.User;
 
 namespace ToDoList_MVC.Models
 {
@@ -12,7 +13,7 @@ namespace ToDoList_MVC.Models
         
         public string UserId { get; set; } = string.Empty;
 
-        public virtual IdentityUser? User { get; set; }
+        public virtual AppUser? User { get; set; }
         
         public List<ToDoDTO> ToDos { get; set; } = new();
 

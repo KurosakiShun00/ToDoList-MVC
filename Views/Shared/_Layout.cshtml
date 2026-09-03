@@ -69,26 +69,37 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             
-            <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between mt-2 mt-sm-0">
-                <ul class="navbar-nav gap-1 flex-grow-1">
+        <div class="navbar-collapse collapse d-sm-inline-flex mt-2 mt-sm-0">
+
+            @if(User.Identity.IsAuthenticated)
+            {
+                <ul class="navbar-nav gap-1">
                     <li class="nav-item">
-                        <a asp-controller="ToDoLists" asp-action="Index" class="nav-link nav-link-custom d-flex align-items-center gap-2">
+                        <a asp-controller="ToDoLists" asp-action="Index"
+                           class="nav-link nav-link-custom d-flex align-items-center gap-2">
                             <i class="bi bi-journal-check text-muted"></i> Le Tue Liste
                         </a>
-                    </li>                   
+                    </li>
+
                     <li class="nav-item">
-                        <a asp-controller="Category" asp-action="Index" class="nav-link nav-link-custom d-flex align-items-center gap-2">
+                        <a asp-controller="Category" asp-action="Index"
+                           class="nav-link nav-link-custom d-flex align-items-center gap-2">
                             <i class="bi bi-tags text-muted"></i> Le Tue Categorie
                         </a>
                     </li>
+
                     <li class="nav-item">
-                        <a asp-controller="Home" asp-action="Calendar" class="nav-link nav-link-custom d-flex align-items-center gap-2">
+                        <a asp-controller="Home" asp-action="Calendar"
+                           class="nav-link nav-link-custom d-flex align-items-center gap-2">
                             <i class="bi bi-calendar-event text-muted"></i> Il Tuo Calendario
                         </a>
                     </li>
                 </ul>
-                
+            }
+
+            <div class="ms-auto">
                 <partial name="_LoginPartial" />
+            </div>
             </div>
         </div>
     </nav>

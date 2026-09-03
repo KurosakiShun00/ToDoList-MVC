@@ -2,8 +2,11 @@ using Microsoft.AspNetCore.Mvc;
 using ToDoList_MVC.ViewModels.Shared;
 using System.Diagnostics;
 using System.Security.Claims;
+using Humanizer;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using ToDoList_MVC.Services;
+using ToDoList_MVC.User;
 using ToDoList_MVC.ViewModels.ToDoList;
 
 namespace ToDoList_MVC.Controllers.MVC
@@ -11,10 +14,12 @@ namespace ToDoList_MVC.Controllers.MVC
     public class HomeController : Controller
     {
         private readonly IToDoListService _service;
+        private readonly UserManager<AppUser> _userManager;
 
-        public HomeController(IToDoListService service)
+        public HomeController(IToDoListService service, UserManager<AppUser> userManager)
         {
             _service = service;
+            _userManager = userManager;
         }
         
         private string? GetUserID()
@@ -32,6 +37,28 @@ namespace ToDoList_MVC.Controllers.MVC
         [Authorize]
         public async Task<IActionResult> Index()
         {
+            var ApplicationUser = await _userManager.GetUserAsync(User);
+            if (ApplicationUser == null)
+            {
+                    var errorModel = new ErrorViewModel();
+                    ViewData["ErrorTitle"] = "Errore di autenticazione";
+                    ViewData["ErrorMessage"] = "Si è verificato un errore di autenticazione, riprovare il login.";
+                        
+                    errorModel.RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier;
+                        
+                    return View("~/Views/Shared/Error.cshtml", errorModel);
+            }
+            
+            var mail = ApplicationUser.Email ?? "";
+            var atIndex = mail.LastIndexOf('@');
+    
+            var username = atIndex > 0  
+                ? mail.Truncate(atIndex, "") 
+                : (!string.IsNullOrEmpty(mail) ? mail : "Ospite");
+            
+            ViewData["nickname"] =  ApplicationUser.NickName ?? username;
+            ViewData["sesso"] = ApplicationUser.Sesso;
+            
             var userId = GetUserID();
             if(userId == null) return Unauthorized();
             
