@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ToDoList_MVC.Data;
 
@@ -11,9 +12,11 @@ using ToDoList_MVC.Data;
 namespace ToDoList_MVC.Migrations
 {
     [DbContext(typeof(ToDoDB))]
-    partial class ToDoDBModelSnapshot : ModelSnapshot
+    [Migration("20260903094320_UserUpdate")]
+    partial class UserUpdate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -248,13 +251,14 @@ namespace ToDoList_MVC.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Cognome")
+                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("longtext");
 
-                    b.Property<DateTime?>("DataDiNascita")
+                    b.Property<DateTime>("DataDiNascita")
                         .HasColumnType("datetime(6)");
 
                     b.Property<string>("Email")
@@ -271,9 +275,11 @@ namespace ToDoList_MVC.Migrations
                         .HasColumnType("datetime(6)");
 
                     b.Property<string>("NickName")
+                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("Nome")
+                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("NormalizedEmail")
@@ -296,7 +302,7 @@ namespace ToDoList_MVC.Migrations
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("longtext");
 
-                    b.Property<int?>("Sesso")
+                    b.Property<int>("Sesso")
                         .HasColumnType("int");
 
                     b.Property<bool>("TwoFactorEnabled")

@@ -1,15 +1,46 @@
-@inject SignInManager<IdentityUser> SignInManager
+@using ToDoList_MVC.User
+@inject SignInManager<AppUser> SignInManager
 @{
     var hasExternalLogins = (await SignInManager.GetExternalAuthenticationSchemesAsync()).Any();
 }
-<ul class="nav nav-pills flex-column">
-    <li class="nav-item"><a class="nav-link @ManageNavPages.IndexNavClass(ViewContext)" id="profile" asp-page="./Index">Profile</a></li>
-    <li class="nav-item"><a class="nav-link @ManageNavPages.EmailNavClass(ViewContext)" id="email" asp-page="./Email">Email</a></li>
-    <li class="nav-item"><a class="nav-link @ManageNavPages.ChangePasswordNavClass(ViewContext)" id="change-password" asp-page="./ChangePassword">Password</a></li>
-    @if (hasExternalLogins)
-    {
-        <li id="external-logins" class="nav-item"><a id="external-login" class="nav-link @ManageNavPages.ExternalLoginsNavClass(ViewContext)" asp-page="./ExternalLogins">External logins</a></li>
-    }
-    <li class="nav-item"><a class="nav-link @ManageNavPages.TwoFactorAuthenticationNavClass(ViewContext)" id="two-factor" asp-page="./TwoFactorAuthentication">Two-factor authentication</a></li>
-    <li class="nav-item"><a class="nav-link @ManageNavPages.PersonalDataNavClass(ViewContext)" id="personal-data" asp-page="./PersonalData">Personal data</a></li>
-</ul>
+
+<div class="card shadow-sm border-0 rounded-3 my-2 w-100">
+    <div class="card-body p-3">
+        <h6 class="text-uppercase text-muted fw-bold small mb-3 px-2">Impostazioni Account</h6>
+        <ul class="nav nav-pills flex-column gap-1">
+            <li class="nav-item">
+                <a class="nav-link text-start px-3 py-2 rounded-2 @ManageNavPages.IndexNavClass(ViewContext)" id="profile" asp-area="Identity" asp-page="/Account/Manage/Index">
+                    <i class="bi bi-person me-2"></i> Profilo
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-start px-3 py-2 rounded-2 @ManageNavPages.EmailNavClass(ViewContext)" id="email" asp-area="Identity" asp-page="/Account/Manage/Email">
+                    <i class="bi bi-envelope me-2"></i> Email
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-start px-3 py-2 rounded-2 @ManageNavPages.ChangePasswordNavClass(ViewContext)" id="change-password" asp-area="Identity" asp-page="/Account/Manage/ChangePassword">
+                    <i class="bi bi-key me-2"></i> Password
+                </a>
+            </li>
+            @if (hasExternalLogins)
+            {
+                <li id="external-logins" class="nav-item">
+                    <a id="external-login" class="nav-link text-start px-3 py-2 rounded-2 @ManageNavPages.ExternalLoginsNavClass(ViewContext)" asp-area="Identity" asp-page="/Account/Manage/ExternalLogins">
+                        <i class="bi bi-box-arrow-in-right me-2"></i> Login Esterni
+                    </a>
+                </li>
+            }
+            <li class="nav-item">
+                <a class="nav-link text-start px-3 py-2 rounded-2 @ManageNavPages.TwoFactorAuthenticationNavClass(ViewContext)" id="two-factor" asp-area="Identity" asp-page="/Account/Manage/TwoFactorAuthentication">
+                    <i class="bi bi-shield-check me-2"></i> Autenticazione a Due Fattori
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-start px-3 py-2 rounded-2 @ManageNavPages.PersonalDataNavClass(ViewContext)" id="personal-data" asp-area="Identity" asp-page="/Account/Manage/PersonalData">
+                    <i class="bi bi-file-earmark-person me-2"></i> Dati Personali
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
