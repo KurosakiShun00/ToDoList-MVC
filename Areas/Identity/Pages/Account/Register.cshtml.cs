@@ -71,6 +71,22 @@ namespace ToDoList_MVC.Areas.Identity.Pages.Account
         /// </summary>
         public class InputModel
         {
+            [Display(Name = "Nome")]
+            public string Nome { get; set; }
+            
+            [Display(Name = "Cognome")]
+            public string Cognome { get; set; }
+
+            [Display(Name = "Nickname")]
+            public string Nickname { get; set; }
+
+            [Phone]
+            [Display(Name = "Numero di telefono")]
+            public string PhoneNumber { get; set; }
+
+            [Range(0, 3, ErrorMessage ="Qualcosa è andato storto")]
+            [Display(Name = "Sesso")]
+            public int Sesso { get; set; }
             /// <summary>
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
             ///     directly from your code. This API may change or be removed in future releases.
@@ -115,6 +131,12 @@ namespace ToDoList_MVC.Areas.Identity.Pages.Account
             {
                 var user = CreateUser();
 
+                user.Nome = Input.Nome;
+                user.Cognome = Input.Cognome;
+                user.NickName = Input.Nickname;
+                user.PhoneNumber = Input.PhoneNumber;
+                user.Sesso = Input.Sesso;
+                
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
                 var result = await _userManager.CreateAsync(user, Input.Password);
