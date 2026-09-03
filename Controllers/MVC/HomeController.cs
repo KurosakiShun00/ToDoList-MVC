@@ -22,6 +22,7 @@ namespace ToDoList_MVC.Controllers.MVC
             return User.FindFirstValue(ClaimTypes.NameIdentifier);
         }
         
+        [Authorize]
         [HttpGet]
         public IActionResult Calendar()
         {
