@@ -37,12 +37,12 @@ namespace ToDoList_MVC.Areas.Identity.Pages.Account.Manage
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
-                return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+                return NotFound($"Impossibile caricare l'utente con ID '{_userManager.GetUserId(User)}'.");
             }
 
             if (!await _userManager.GetTwoFactorEnabledAsync(user))
             {
-                throw new InvalidOperationException($"Cannot disable 2FA for user as it's not currently enabled.");
+                throw new InvalidOperationException($"Impossibile disabilitare la 2FA per l'utente poiché non è attualmente attiva.");
             }
 
             return Page();
@@ -53,17 +53,17 @@ namespace ToDoList_MVC.Areas.Identity.Pages.Account.Manage
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
-                return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+                return NotFound($"Impossibile caricare l'utente con ID '{_userManager.GetUserId(User)}'.");
             }
 
             var disable2faResult = await _userManager.SetTwoFactorEnabledAsync(user, false);
             if (!disable2faResult.Succeeded)
             {
-                throw new InvalidOperationException($"Unexpected error occurred disabling 2FA.");
+                throw new InvalidOperationException($"Si è verificato un errore inaspettato durante la disattivazione della 2FA.");
             }
 
-            _logger.LogInformation("User with ID '{UserId}' has disabled 2fa.", _userManager.GetUserId(User));
-            StatusMessage = "2fa has been disabled. You can reenable 2fa when you setup an authenticator app";
+            _logger.LogInformation("L'utente con ID '{UserId}' ha disabilitato la 2FA.", _userManager.GetUserId(User));
+            StatusMessage = "La 2FA è stata disabilitata. Potrai riabilitarla riconfigurando un'app di autenticazione.";
             return RedirectToPage("./TwoFactorAuthentication");
         }
     }
