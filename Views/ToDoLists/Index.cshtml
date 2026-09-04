@@ -111,7 +111,7 @@
                         </div>
 
                         <div class="px-4 pb-2">
-                            @if (!ToDoList.IsFinished)
+                            @if (!ToDoList.IsFinished && ToDoList.ToDos.Count() > 0)
                             {
                                 <span class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill">In corso</span>
                             }
