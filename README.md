@@ -3,7 +3,9 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/KurosakiShun00/ToDoList-MVC/blob/Develop/LICENSE)
 [![GitHub stars](https://img.shields.io/github/stars/KurosakiShun00/ToDoList-MVC)](https://github.com/KurosakiShun00/ToDoList-MVC/stargazers)
 
-> Un'API RESTful MVC per la gestione di una lista di attività (Todo List), sviluppata in .NET come esercizio.
+> Inizialmente Un'API RESTful MVC per la gestione di una lista di attività (Todo List), sviluppata in .NET come esercizio,
+> diventata in seguito una full web app con gestione di autenticazioni attraverso cookies di sessione per permettere ad ogni utente
+> registrato di creare, duplicare, scaricare, importare e programmare attraverso un calendario gestire le proprie liste di attività
 
 ---
 
@@ -26,6 +28,7 @@
 * **Email Delivery:** Servizio per la conferma dell'e-mail gestita da MailTrap configurando appsettings.json con i
   propri dati.
 * **Importazione Liste:** Caricando un file txt ben formattato è possibile creare una lista sul gestionale
+* **Calendario** Gestione delle task con scadenza programmata attraverso un calendario
 
 ---
 
@@ -39,6 +42,7 @@
 * **MailTrap** Servizio email delivery service (https://mailtrap.io)
 * **Bootstrap 5.0** HTML, CSS and JS library
 * **AI Tooling:** **Google Gemini** — UI refactoring e Debuggin
+* **FullCalendar** Calendario JavaScript (https://fullcalendar.io)
 
 ## ⚙️ Installazione e Configurazione
 
