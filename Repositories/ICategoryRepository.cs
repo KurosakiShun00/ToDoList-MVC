@@ -8,7 +8,7 @@ public interface ICategoryRepository
     Task<int> CountCompleted(int id, string? userId);
     Task<int> CountNotCompleted(int id, string? userId);
     Task<Category?> CreateCategoryAsync(Category newCategory);
-    
+
     Task<Category?> GetCategoryById(int id, string? userId);
     Task<Category?> UpdateCategoryAsync(int id, Category updatedCategory);
     void DeleteCategory(Category category);

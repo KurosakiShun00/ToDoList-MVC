@@ -10,7 +10,7 @@ public class ToDoListsDetailsViewModel
     public string? Description { get; set; }
     public int[] ListsIds { get; set; } = [];
     public int? CategoryId { get; set; }
-    
+
     public List<ToDoListLineViewModel> ToDos { get; set; } = new();
-    public List<SelectListItem> Categories { get; set; } = new List<SelectListItem>();
+    public List<SelectListItem> Categories { get; set; } = new();
 }

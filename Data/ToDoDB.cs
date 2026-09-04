@@ -3,11 +3,11 @@ using Microsoft.EntityFrameworkCore;
 using ToDoList_MVC.Models;
 using ToDoList_MVC.User;
 
-namespace ToDoList_MVC.Data
-{
-    public class ToDoDB : IdentityDbContext<AppUser>
+namespace ToDoList_MVC.Data;
 
-    {
+public class ToDoDB : IdentityDbContext<AppUser>
+
+{
     public ToDoDB(DbContextOptions<ToDoDB> options) : base(options)
     {
     }
@@ -15,7 +15,7 @@ namespace ToDoList_MVC.Data
     public DbSet<ToDo> ToDos => Set<ToDo>();
     public DbSet<ToDoList> ToDosLists => Set<ToDoList>();
     public DbSet<Category> Categories => Set<Category>();
-    
+
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
@@ -25,12 +25,11 @@ namespace ToDoList_MVC.Data
             .WithMany()
             .HasForeignKey(t => t.UserId)
             .OnDelete(DeleteBehavior.Cascade);
-        
+
         builder.Entity<ToDo>()
             .HasOne(t => t.Category)
             .WithMany()
             .HasForeignKey(t => t.CategoryId)
             .OnDelete(DeleteBehavior.SetNull);
-    }
     }
 }

@@ -5,12 +5,12 @@
     ViewData["ActivePage"] = ManageNavPages.TwoFactorAuthentication;
 }
 
-<partial name="_StatusMessage" for="StatusMessage" />
+<partial name="_StatusMessage" for="StatusMessage"/>
 
 <div class="col-12 p-0">
     <div class="card shadow-sm border-0 rounded-3 my-2 w-100">
         <div class="card-body p-4 p-md-5">
-            
+
             <div class="mb-4">
                 <h3 class="fw-bold text-primary mb-1">Disabilita 2FA</h3>
                 <p class="text-muted small">Disattiva la protezione a due fattori per il tuo account</p>
@@ -20,12 +20,16 @@
                 <i class="bi bi-exclamation-triangle-fill fs-5 text-warning flex-shrink-0"></i>
                 <div>
                     <strong class="d-block mb-1">Attenzione: Questa azione disabilita solo la 2FA!</strong>
-                    La disattivazione non cambia le chiavi configurate nella tua app di autenticazione. Se vuoi cambiare la chiave utilizzata, dovresti <a asp-page="./ResetAuthenticator" class="fw-semibold text-dark underline">reimpostare le chiavi di autenticazione</a>.
+                    La disattivazione non cambia le chiavi configurate nella tua app di autenticazione. Se vuoi cambiare
+                    la chiave utilizzata, dovresti <a asp-page="./ResetAuthenticator"
+                                                      class="fw-semibold text-dark underline">reimpostare le chiavi di
+                        autenticazione</a>.
                 </div>
             </div>
 
             <form method="post">
-                <button type="submit" class="w-100 btn btn-danger rounded-3 py-2 fw-semibold d-flex align-items-center justify-content-center gap-2">
+                <button type="submit"
+                        class="w-100 btn btn-danger rounded-3 py-2 fw-semibold d-flex align-items-center justify-content-center gap-2">
                     <i class="bi bi-shield-x"></i> Disabilita 2FA
                 </button>
             </form>

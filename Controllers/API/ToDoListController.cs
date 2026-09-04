@@ -1,121 +1,120 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Security.Claims;
+using Microsoft.AspNetCore.Mvc;
 using ToDoList_MVC.Models;
-using ToDoList_MVC.Services; 
-using System.Security.Claims;
+using ToDoList_MVC.Services;
 
-namespace ToDoList_MVC.Controllers.API
+namespace ToDoList_MVC.Controllers.API;
+
+[ApiController]
+[Route("api/lists")]
+public class ToDoListsController : ControllerBase
 {
-    [ApiController]
-    [Route("api/lists")]
-    public class ToDoListsController : ControllerBase
+    private readonly IToDoListService _todoListService;
+    private readonly IToDoService _toDoService;
+
+    public ToDoListsController(IToDoListService todoListService, IToDoService toDoService)
     {
-        private readonly IToDoListService _todoListService;
-        private readonly IToDoService _toDoService;
+        _todoListService = todoListService;
+        _toDoService = toDoService;
+    }
 
-        public ToDoListsController(IToDoListService todoListService, IToDoService toDoService)
-        {
-            _todoListService = todoListService;
-            _toDoService = toDoService;
-        }
+    private string? GetUserID()
+    {
+        return User.FindFirstValue(ClaimTypes.NameIdentifier);
+    }
 
-        private string? GetUserID()
-        {
-            return User.FindFirstValue(ClaimTypes.NameIdentifier);
-        }
-        
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<ToDoListDTO>>> GetLists()
-        {
-            var userId = GetUserID();
-            if(userId == null) return Unauthorized();
-            
-            var lists = await _todoListService.GetAllListsAsync(userId);
-            return Ok(lists);
-        }
+    [HttpGet]
+    public async Task<ActionResult<IEnumerable<ToDoListDTO>>> GetLists()
+    {
+        var userId = GetUserID();
+        if (userId == null) return Unauthorized();
 
-        [HttpPost]
-        public async Task<ActionResult<ToDoList>> CreateTodoListDto(ToDoListDTO newList)
-        {
-            var userId = GetUserID();
-            if(userId == null) return Unauthorized();
-            
-            var createdList = await _todoListService.CreateListAsync(newList, userId);
+        var lists = await _todoListService.GetAllListsAsync(userId);
+        return Ok(lists);
+    }
 
-            return Ok(createdList);
-        }
+    [HttpPost]
+    public async Task<ActionResult<ToDoList>> CreateTodoListDto(ToDoListDTO newList)
+    {
+        var userId = GetUserID();
+        if (userId == null) return Unauthorized();
 
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteList(int id)
-        {
-            var userId = GetUserID();
-            if(userId == null) return Unauthorized();
-            
-            var deleted = await _todoListService.DeleteListAsync(id, userId);
-            if (!deleted) return NotFound();
+        var createdList = await _todoListService.CreateListAsync(newList, userId);
 
-            return NoContent();
-        }
+        return Ok(createdList);
+    }
 
-        [HttpGet("todos/all")]
-        public async Task<IActionResult> GetAll()
-        {
-            var todos = await _toDoService.GetAllAsync();
-            return Ok(todos);
-        }
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> DeleteList(int id)
+    {
+        var userId = GetUserID();
+        if (userId == null) return Unauthorized();
 
-        [HttpGet("todos/completed")]
-        public async Task<IActionResult> GetCompleted()
-        {
-            var completedTodos = await _toDoService.GetCompleteAsync();
-            return Ok(completedTodos);
-        }
+        var deleted = await _todoListService.DeleteListAsync(id, userId);
+        if (!deleted) return NotFound();
 
-        [HttpPost("{listId}/todos")]
-        public async Task<IActionResult> AddToDoToList(int listId, ToDoDTO newToDo)
-        {
-            var userId = GetUserID();
-            if(userId == null) return Unauthorized();
-            
-            var createdToDo = await _todoListService.AddToDoToListAsync(listId, newToDo,userId);
-            if (createdToDo == null) return BadRequest();
+        return NoContent();
+    }
 
-            return Ok(createdToDo);
-        }
+    [HttpGet("todos/all")]
+    public async Task<IActionResult> GetAll()
+    {
+        var todos = await _toDoService.GetAllAsync();
+        return Ok(todos);
+    }
 
-        [HttpGet("{listId}/todos/{id}")]
-        public async Task<IActionResult> GetById(int listId, int id)
-        {
-            var todo = await _toDoService.GetByIdAsync(id);
-            if (todo == null) return NotFound();
+    [HttpGet("todos/completed")]
+    public async Task<IActionResult> GetCompleted()
+    {
+        var completedTodos = await _toDoService.GetCompleteAsync();
+        return Ok(completedTodos);
+    }
 
-            return Ok(todo);
-        }
+    [HttpPost("{listId}/todos")]
+    public async Task<IActionResult> AddToDoToList(int listId, ToDoDTO newToDo)
+    {
+        var userId = GetUserID();
+        if (userId == null) return Unauthorized();
 
-        [HttpPut("{listId}/todos/{toDoId}")]
-        public async Task<IActionResult> UpdateToDo(int listId, int toDoId, ToDoDTO newToDo)
-        {
-            var updated = await _toDoService.UpdateAsync(listId,toDoId, newToDo);
-            if (updated == null) return BadRequest();
+        var createdToDo = await _todoListService.AddToDoToListAsync(listId, newToDo, userId);
+        if (createdToDo == null) return BadRequest();
 
-            return Ok(updated);
-        }
+        return Ok(createdToDo);
+    }
 
-        [HttpPatch("{listId}/todos/{toDoId}")]
-        public async Task<IActionResult> PatchToDo(int listId, int toDoId, ToDoPatch toDoPatch)
-        {
-            var isPatched = await _toDoService.PatchAsync(listId, toDoId, toDoPatch);
-            if(!isPatched) return BadRequest();
+    [HttpGet("{listId}/todos/{id}")]
+    public async Task<IActionResult> GetById(int listId, int id)
+    {
+        var todo = await _toDoService.GetByIdAsync(id);
+        if (todo == null) return NotFound();
 
-            return NoContent();
-        }
+        return Ok(todo);
+    }
 
-        [HttpDelete("{listId}/todos/{id}")]
-        public async Task<IActionResult> Delete(int listId, int id)
-        {
-            var isDeleted = await _toDoService.DeleteAsync(listId,id);
-            if (!isDeleted) return BadRequest();
+    [HttpPut("{listId}/todos/{toDoId}")]
+    public async Task<IActionResult> UpdateToDo(int listId, int toDoId, ToDoDTO newToDo)
+    {
+        var updated = await _toDoService.UpdateAsync(listId, toDoId, newToDo);
+        if (updated == null) return BadRequest();
 
-            return Ok();
-        }
+        return Ok(updated);
+    }
+
+    [HttpPatch("{listId}/todos/{toDoId}")]
+    public async Task<IActionResult> PatchToDo(int listId, int toDoId, ToDoPatch toDoPatch)
+    {
+        var isPatched = await _toDoService.PatchAsync(listId, toDoId, toDoPatch);
+        if (!isPatched) return BadRequest();
+
+        return NoContent();
+    }
+
+    [HttpDelete("{listId}/todos/{id}")]
+    public async Task<IActionResult> Delete(int listId, int id)
+    {
+        var isDeleted = await _toDoService.DeleteAsync(listId, id);
+        if (!isDeleted) return BadRequest();
+
+        return Ok();
     }
 }

@@ -9,7 +9,8 @@
 
             <div class="text-center mb-4">
                 <h1 class="display-6 fw-bold text-dark mb-2">Importa una Lista da File</h1>
-                <p class="text-muted">Carica un file di testo <code>.txt</code> formattato per aggiungere automaticamente una nuova lista</p>
+                <p class="text-muted">Carica un file di testo <code>.txt</code> formattato per aggiungere
+                    automaticamente una nuova lista</p>
             </div>
 
             <div class="card border-0 shadow-sm rounded-3 mb-4">
@@ -17,27 +18,35 @@
                     <h5 class="fw-bold text-primary mb-3 d-flex align-items-center gap-2">
                         <i class="bi bi-info-circle-fill"></i> Requisiti del File
                     </h5>
-                    
+
                     <p class="text-secondary small mb-3">
-                        Il file <code>.txt</code> deve seguire una struttura specifica per essere interpretato correttamente:
+                        Il file <code>.txt</code> deve seguire una struttura specifica per essere interpretato
+                        correttamente:
                     </p>
 
                     <ul class="list-group list-group-flush small mb-3">
                         <li class="list-group-item bg-transparent px-0 py-2">
-                            <strong>Nome Lista:</strong> La riga che comincia con <code>LISTA DI ATTIVITÀ:</code> definirà il titolo della lista.
+                            <strong>Nome Lista:</strong> La riga che comincia con <code>LISTA DI ATTIVITÀ:</code>
+                            definirà il titolo della lista.
                         </li>
                         <li class="list-group-item bg-transparent px-0 py-2">
-                            <strong>Attività:</strong> Le righe con formato <code>Nome Attività, Completata, ID_CATEGORIA</code> oppure <code>Nome Attività, Non Completata, ID_CATEGORIA</code> popoleranno gli elementi.
+                            <strong>Attività:</strong> Le righe con formato <code>Nome Attività, Completata,
+                                ID_CATEGORIA</code> oppure <code>Nome Attività, Non Completata, ID_CATEGORIA</code>
+                            popoleranno gli elementi.
                         </li>
                         <li class="list-group-item bg-transparent px-0 py-2 text-muted">
-                            <strong>Ignorate:</strong> Verranno ignorate le righe che iniziano con <code>=</code>, <code>DELL'UTENTE:</code>, <code>E-MAIL:</code> e <code>scaricata in data:</code>.
+                            <strong>Ignorate:</strong> Verranno ignorate le righe che iniziano con <code>=</code>,
+                            <code>DELL'UTENTE:</code>, <code>E-MAIL:</code> e <code>scaricata in data:</code>.
                         </li>
                         <li class="list-group-item bg-transparent px-0 py-2 text-muted">
-                            <strong>Categoria:</strong> al posto di ID_CATEGORIA subito dopo "Completata/Non Completata", va inserito l'intero che definisce l'ID della categoria scelta, in sua assenza non verrà assegnata una categoria.
+                            <strong>Categoria:</strong> al posto di ID_CATEGORIA subito dopo "Completata/Non
+                            Completata", va inserito l'intero che definisce l'ID della categoria scelta, in sua assenza
+                            non verrà assegnata una categoria.
                         </li>
                     </ul>
                     <p class="text-secondary small mb-3">
-                        Si prega l'utente di controllare con cura la lista creata, la quale puo' facilmente commettere malinterpretazioni.
+                        Si prega l'utente di controllare con cura la lista creata, la quale puo' facilmente commettere
+                        malinterpretazioni.
                     </p>
 
                     <div class="alert alert-warning border-0 rounded-2 mb-0 d-flex align-items-center gap-2 p-2 px-3">
@@ -51,11 +60,13 @@
             <div class="card border-0 shadow-sm rounded-3 mb-4">
                 <div class="card-body p-4">
                     <h5 class="fw-bold text-dark mb-3">Seleziona il File</h5>
-                    
-                    <form asp-controller="ToDoLists" asp-action="ImportList" method="post" enctype="multipart/form-data">
+
+                    <form asp-controller="ToDoLists" asp-action="ImportList" method="post"
+                          enctype="multipart/form-data">
                         <div class="row g-3 align-items-center">
                             <div class="col-md-8">
-                                <input type="file" name="file" accept=".txt" class="form-control form-control-lg fs-6" required />
+                                <input type="file" name="file" accept=".txt" class="form-control form-control-lg fs-6"
+                                       required/>
                             </div>
                             <div class="col-md-4">
                                 <button type="submit" class="btn btn-primary btn-lg fs-6 w-100 fw-semibold">

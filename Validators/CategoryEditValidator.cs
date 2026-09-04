@@ -9,6 +9,5 @@ public class CategoryEditValidator : AbstractValidator<CategoryEditViewModel>
     {
         RuleFor(x => x.Name).NotEmpty().WithMessage("Campo Richiesto")
             .MaximumLength(50).WithMessage("Massimo 50 caratteri");
-
     }
 }

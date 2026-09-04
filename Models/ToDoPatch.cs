@@ -1,10 +1,8 @@
-﻿namespace ToDoList_MVC.Models
+﻿namespace ToDoList_MVC.Models;
+
+public class ToDoPatch
 {
-    public class ToDoPatch
-    {
-        public string? Name { get; set; }
+    public string? Name { get; set; }
 
-        public bool? IsCompleted { get; set; }
-
-    }
+    public bool? IsCompleted { get; set; }
 }
