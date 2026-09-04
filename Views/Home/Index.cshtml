@@ -4,6 +4,7 @@
 @{
     ViewData["Title"] = "Dashboard";
     Layout = "_Layout";
+    var expiredNumber = Model.Sum(x => x.ExpiredCount);
 }
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
@@ -18,7 +19,7 @@
 
     var totalLists = Model.Count;
     var completedLists = Model.Count(x => x.IsFinished);
-    var pendingLists = Model.Count(x => !x.IsFinished);
+    var pendingLists = Model.Count(x => !x.IsFinished && x.ToDos.Count()!=0);
     var completionPercentage = totalLists > 0 ? (completedLists * 100) / totalLists : 0;
 }
 
@@ -93,20 +94,26 @@
     <div class="p-4 p-md-5 mb-4 bg-white rounded-4 shadow-sm border">
         <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-4 pb-3 border-bottom">
             <div>
-                @switch (ViewData["sesso"])
-                {
-                    case 0: <h1 class="h2 fw-bold text-dark mb-1">Benvenuto, @ViewData["nickname"] </h1>
-                        break;
-                    case 1: <h1 class="h2 fw-bold text-dark mb-1">Benvenuta, @ViewData["nickname"] </h1>
-                        break;
-                    default:<h1 class="h2 fw-bold text-dark mb-1">Benvenuto, @ViewData["nickname"] </h1>
-                        break;
-                }
-                
+                <div class="d-flex align-items-center gap-2 mb-1">
+                    @switch (ViewData["sesso"])
+                    {
+                        case 0: <h1 class="h2 fw-bold text-dark mb-0">Benvenuto, @ViewData["nickname"]</h1>
+                            break;
+                        case 1: <h1 class="h2 fw-bold text-dark mb-0">Benvenuta, @ViewData["nickname"]</h1>
+                            break;
+                        default:<h1 class="h2 fw-bold text-dark mb-0">Benvenuto, @ViewData["nickname"]</h1>
+                            break;
+                    }
+                    @if(expiredNumber>0){
+                        <a asp-controller="Home" asp-action="Calendar" >
+                        <span class="badge bg-warning-subtle text-warning-emphasis border border-warning-subtle px-2.5 py-1.5 rounded-pill d-inline-flex align-items-center">
+                            <i class="bi bi-exclamation-triangle-fill me-1"></i> @expiredNumber task scadute
+                        </span> </a>}
+                </div>
                 
                 <p class="text-muted mb-0">Ecco la panoramica generale delle tue liste e attività.</p>
             </div>
-            
+
             <a asp-controller="ToDoLists" asp-action="Create" 
                class="btn btn-primary fw-medium rounded-3 px-3 shadow-sm d-inline-flex align-items-center gap-2 @(totalLists >= 30 ? "disabled" : "")" 
                aria-disabled="@(totalLists >= 30 ? "true" : "false")" 
@@ -191,57 +198,57 @@
         </div>
     </div>
 
-   <div class="row g-3">
-    <div class="col-12 col-sm-6 col-md-4 col-xl">
-        <a asp-controller="ToDoLists" asp-action="Index" 
-           class="card border-0 shadow-sm rounded-4 text-decoration-none action-card bg-primary text-white p-4 h-100 d-flex flex-column justify-content-center align-items-center text-center">
-            <i class="bi bi-journal-check fs-1 mb-2"></i>
-            <span class="fw-bold fs-5">Le tue Liste</span>
-            <small class="text-white-50">Gestisci le attività</small>
-        </a>
-    </div>
+    <div class="row g-3">
+        <div class="col-12 col-sm-6 col-md-4 col-xl">
+            <a asp-controller="ToDoLists" asp-action="Index" 
+               class="card border-0 shadow-sm rounded-4 text-decoration-none action-card bg-primary text-white p-4 h-100 d-flex flex-column justify-content-center align-items-center text-center">
+                <i class="bi bi-journal-check fs-1 mb-2"></i>
+                <span class="fw-bold fs-5">Le tue Liste</span>
+                <small class="text-white-50">Gestisci le attività</small>
+            </a>
+        </div>
 
-    <div class="col-12 col-sm-6 col-md-4 col-xl">
-        <a asp-controller="Category" asp-action="Index" 
-           class="card border-0 shadow-sm rounded-4 text-decoration-none action-card btn-category-custom p-4 h-100 d-flex flex-column justify-content-center align-items-center text-center">
-            <i class="bi bi-tags-fill fs-1 mb-2"></i>
-            <span class="fw-bold fs-5">Le tue Categorie</span>
-            <small class="text-white-50">Organizza i tag</small>
-        </a>
-    </div>
+        <div class="col-12 col-sm-6 col-md-4 col-xl">
+            <a asp-controller="Category" asp-action="Index" 
+               class="card border-0 shadow-sm rounded-4 text-decoration-none action-card btn-category-custom p-4 h-100 d-flex flex-column justify-content-center align-items-center text-center">
+                <i class="bi bi-tags-fill fs-1 mb-2"></i>
+                <span class="fw-bold fs-5">Le tue Categorie</span>
+                <small class="text-white-50">Organizza i tag</small>
+            </a>
+        </div>
 
-    <div class="col-12 col-sm-6 col-md-4 col-xl">
-        <a asp-controller="Home" asp-action="Calendar" 
-           class="card border-0 shadow-sm rounded-4 text-decoration-none action-card btn-calendar-custom p-4 h-100 d-flex flex-column justify-content-center align-items-center text-center">
-            <i class="bi bi-calendar-event-fill fs-1 mb-2"></i>
-            <span class="fw-bold fs-5">Il Tuo Calendario</span>
-            <small class="text-calendar-sub">Pianifica Le Task</small>
-        </a>
-    </div>
+        <div class="col-12 col-sm-6 col-md-4 col-xl">
+            <a asp-controller="Home" asp-action="Calendar" 
+               class="card border-0 shadow-sm rounded-4 text-decoration-none action-card btn-calendar-custom p-4 h-100 d-flex flex-column justify-content-center align-items-center text-center">
+                <i class="bi bi-calendar-event-fill fs-1 mb-2"></i>
+                <span class="fw-bold fs-5">Il Tuo Calendario</span>
+                <small class="text-calendar-sub">Pianifica Le Task</small>
+            </a>
+        </div>
 
-    <div class="col-12 col-sm-6 col-md-6 col-xl">
-        <a asp-area="Identity" asp-page="/Account/Manage/Index" 
-           class="card border shadow-sm rounded-4 text-decoration-none action-card card-profile-hover p-4 h-100 d-flex flex-column justify-content-center align-items-center text-center">
-            <i class="bi bi-person-gear fs-1 text-secondary mb-2"></i>
-            <span class="fw-bold fs-5">Profilo Utente</span>
-            <small class="text-muted">Impostazioni account</small>
-        </a>
-    </div>
+        <div class="col-12 col-sm-6 col-md-6 col-xl">
+            <a asp-area="Identity" asp-page="/Account/Manage/Index" 
+               class="card border shadow-sm rounded-4 text-decoration-none action-card card-profile-hover p-4 h-100 d-flex flex-column justify-content-center align-items-center text-center">
+                <i class="bi bi-person-gear fs-1 text-secondary mb-2"></i>
+                <span class="fw-bold fs-5">Profilo Utente</span>
+                <small class="text-muted">Impostazioni account</small>
+            </a>
+        </div>
 
-    <div class="col-12 col-sm-6 col-md-6 col-xl">
-        <form class="h-100" 
-              asp-area="Identity" 
-              asp-page="/Account/Logout" 
-              asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })" 
-              method="post">
-            <button type="submit" 
-                    class="card border shadow-sm rounded-4 text-decoration-none action-card card-logout-hover p-4 h-100 w-100 d-flex flex-column justify-content-center align-items-center text-center">
-                <i class="bi bi-box-arrow-right fs-1 mb-2"></i>
-                <span class="fw-bold fs-5">Esci</span>
-                <small class="text-danger-emphasis">Termina sessione</small>
-            </button>
-        </form>
+        <div class="col-12 col-sm-6 col-md-6 col-xl">
+            <form class="h-100" 
+                  asp-area="Identity" 
+                  asp-page="/Account/Logout" 
+                  asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })" 
+                  method="post">
+                <button type="submit" 
+                        class="card border shadow-sm rounded-4 text-decoration-none action-card card-logout-hover p-4 h-100 w-100 d-flex flex-column justify-content-center align-items-center text-center">
+                    <i class="bi bi-box-arrow-right fs-1 mb-2"></i>
+                    <span class="fw-bold fs-5">Esci</span>
+                    <small class="text-danger-emphasis">Termina sessione</small>
+                </button>
+            </form>
+        </div>
     </div>
-</div>
 
 </div>
