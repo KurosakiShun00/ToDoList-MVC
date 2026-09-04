@@ -5,7 +5,7 @@
     ViewData["ActivePage"] = ManageNavPages.TwoFactorAuthentication;
 }
 
-<partial name="_StatusMessage" for="StatusMessage" />
+<partial name="_StatusMessage" for="StatusMessage"/>
 <h3>@ViewData["Title"]</h3>
 <div class="alert alert-warning" role="alert">
     <p>
@@ -16,8 +16,10 @@
         Se perdi sia il tuo dispositivo che questi codici, potresti perdere l'accesso al nostro servizio.
     </p>
     <p>
-        Generare nuovi codici di recupero non cambia la chiave utilizzata sull'app di autenticazione. Se desideri cambiare la chiave
-        utilizzata nell'app di autenticazione dovresti <a asp-page="./ResetAuthenticator">resettare la tua chiave di autenticazione.</a>
+        Generare nuovi codici di recupero non cambia la chiave utilizzata sull'app di autenticazione. Se desideri
+        cambiare la chiave
+        utilizzata nell'app di autenticazione dovresti <a asp-page="./ResetAuthenticator">resettare la tua chiave di
+            autenticazione.</a>
     </p>
 </div>
 <div>

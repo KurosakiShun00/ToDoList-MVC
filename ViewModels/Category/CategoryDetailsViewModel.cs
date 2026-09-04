@@ -7,6 +7,6 @@ public class CategoryDetailsViewModel
     public string Color { get; set; } = "#C8C6C4";
     public int ToDoCompleted { get; set; }
     public int ToDoNotCompleted { get; set; }
-    
+
     public int ToDoTotal => ToDoCompleted + ToDoNotCompleted;
 }

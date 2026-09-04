@@ -5,12 +5,12 @@
     ViewData["ActivePage"] = ManageNavPages.TwoFactorAuthentication;
 }
 
-<partial name="_StatusMessage" for="StatusMessage" />
+<partial name="_StatusMessage" for="StatusMessage"/>
 
 <div class="col-12 p-0">
     <div class="card shadow-sm border-0 rounded-3 my-2 w-100">
         <div class="card-body p-4 p-md-5">
-            
+
             <div class="mb-4">
                 <h3 class="fw-bold text-primary mb-1">Codici di Recupero</h3>
                 <p class="text-muted small">Conserva questi codici in un luogo sicuro ed accessibile solo a te</p>
@@ -20,7 +20,8 @@
                 <i class="bi bi-exclamation-triangle-fill fs-5 text-warning flex-shrink-0"></i>
                 <div>
                     <strong class="d-block mb-1">Attenzione: Salva questi codici ora!</strong>
-                    Se perdi l'accesso al tuo dispositivo e non disponi dei codici di recupero, non potrai più accedere al tuo account.
+                    Se perdi l'accesso al tuo dispositivo e non disponi dei codici di recupero, non potrai più accedere
+                    al tuo account.
                 </div>
             </div>
 
@@ -37,7 +38,8 @@
                 </div>
             </div>
 
-            <a asp-page="./TwoFactorAuthentication" class="w-100 btn btn-primary rounded-3 py-2 fw-semibold d-flex align-items-center justify-content-center gap-2">
+            <a asp-page="./TwoFactorAuthentication"
+               class="w-100 btn btn-primary rounded-3 py-2 fw-semibold d-flex align-items-center justify-content-center gap-2">
                 <i class="bi bi-shield-check"></i> Ho salvato i codici
             </a>
 

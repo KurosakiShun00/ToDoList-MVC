@@ -6,7 +6,7 @@
     ViewData["ActivePage"] = ManageNavPages.TwoFactorAuthentication;
 }
 
-<partial name="_StatusMessage" for="StatusMessage" />
+<partial name="_StatusMessage" for="StatusMessage"/>
 <h3 class="mb-4">@ViewData["Title"]</h3>
 
 @{
@@ -19,21 +19,24 @@
             {
                 <div class="alert alert-danger" role="alert">
                     <strong>Non hai più codici di recupero disponibili.</strong>
-                    <p class="mb-0">Devi <a asp-page="./GenerateRecoveryCodes" class="alert-link">generare un nuovo set di codici</a> prima di poter accedere con un codice di recupero.</p>
+                    <p class="mb-0">Devi <a asp-page="./GenerateRecoveryCodes" class="alert-link">generare un nuovo set
+                            di codici</a> prima di poter accedere con un codice di recupero.</p>
                 </div>
             }
             else if (Model.RecoveryCodesLeft == 1)
             {
                 <div class="alert alert-danger" role="alert">
                     <strong>Ti è rimasto solo 1 codice di recupero.</strong>
-                    <p class="mb-0">Puoi <a asp-page="./GenerateRecoveryCodes" class="alert-link">generare un nuovo set di codici di recupero</a>.</p>
+                    <p class="mb-0">Puoi <a asp-page="./GenerateRecoveryCodes" class="alert-link">generare un nuovo set
+                            di codici di recupero</a>.</p>
                 </div>
             }
             else if (Model.RecoveryCodesLeft <= 3)
             {
                 <div class="alert alert-warning" role="alert">
                     <strong>Ti rimangono @Model.RecoveryCodesLeft codici di recupero.</strong>
-                    <p class="mb-0">Dovresti <a asp-page="./GenerateRecoveryCodes" class="alert-link">generare un nuovo set di codici di recupero</a>.</p>
+                    <p class="mb-0">Dovresti <a asp-page="./GenerateRecoveryCodes" class="alert-link">generare un nuovo
+                            set di codici di recupero</a>.</p>
                 </div>
             }
 
@@ -54,13 +57,16 @@
                 <h4 class="card-title h5 mb-3">App autenticatore</h4>
                 @if (!Model.HasAuthenticator)
                 {
-                    <a id="enable-authenticator" asp-page="./EnableAuthenticator" class="btn btn-primary">Aggiungi app autenticatore</a>
+                    <a id="enable-authenticator" asp-page="./EnableAuthenticator" class="btn btn-primary">Aggiungi app
+                        autenticatore</a>
                 }
                 else
                 {
                     <div class="d-flex flex-wrap gap-2">
-                        <a id="enable-authenticator" asp-page="./EnableAuthenticator" class="btn btn-primary">Configura app autenticatore</a>
-                        <a id="reset-authenticator" asp-page="./ResetAuthenticator" class="btn btn-outline-danger">Reimposta app autenticatore</a>
+                        <a id="enable-authenticator" asp-page="./EnableAuthenticator" class="btn btn-primary">Configura
+                            app autenticatore</a>
+                        <a id="reset-authenticator" asp-page="./ResetAuthenticator" class="btn btn-outline-danger">Reimposta
+                            app autenticatore</a>
                     </div>
                 }
             </div>
@@ -70,11 +76,12 @@
     {
         <div class="alert alert-danger" role="alert">
             <strong>Informativa sulla privacy e sui cookie non accettata.</strong>
-            <p class="mb-0">È necessario accettare l'informativa prima di poter abilitare l'autenticazione a due fattori.</p>
+            <p class="mb-0">È necessario accettare l'informativa prima di poter abilitare l'autenticazione a due
+                fattori.</p>
         </div>
     }
 }
 
 @section Scripts {
-    <partial name="_ValidationScriptsPartial" />
+    <partial name="_ValidationScriptsPartial"/>
 }

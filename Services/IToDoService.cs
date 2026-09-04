@@ -1,17 +1,14 @@
 ﻿using ToDoList_MVC.Models;
 
-namespace ToDoList_MVC.Services
+namespace ToDoList_MVC.Services;
+
+public interface IToDoService
 {
-    public interface IToDoService
-    {
-
-        Task<IEnumerable<ToDoDTO>> GetAllAsync();
-        Task<IEnumerable<ToDoDTO>> GetCompleteAsync();
-        Task<ToDoDTO?> GetByIdAsync(int id);
-        Task<ToDoDTO> CreateAsync(ToDoDTO to_do_dto);
-        Task<ToDoDTO?> UpdateAsync(int listId, int id, ToDoDTO to_do_dto);
-        Task<bool>PatchAsync(int listId, int id, ToDoPatch toDoPatch);
-        Task<bool> DeleteAsync(int listId, int id);
-
-    }
+    Task<IEnumerable<ToDoDTO>> GetAllAsync();
+    Task<IEnumerable<ToDoDTO>> GetCompleteAsync();
+    Task<ToDoDTO?> GetByIdAsync(int id);
+    Task<ToDoDTO> CreateAsync(ToDoDTO to_do_dto);
+    Task<ToDoDTO?> UpdateAsync(int listId, int id, ToDoDTO to_do_dto);
+    Task<bool> PatchAsync(int listId, int id, ToDoPatch toDoPatch);
+    Task<bool> DeleteAsync(int listId, int id);
 }

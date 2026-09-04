@@ -24,7 +24,7 @@
                 <span class="badge bg-light text-dark border fs-6 px-3 py-2 shadow-sm rounded-pill">
                     <span class="fw-bold text-primary">@Model.Count</span> / 30 liste
                 </span>
-                
+
                 <a asp-controller="ToDoLists" asp-action="Create"
                    class="btn btn-primary fw-medium rounded-3 px-3 @(Model.Count >= 30 ? "disabled" : "")"
                    aria-disabled="@(Model.Count >= 30 ? "true" : "false")"
@@ -43,7 +43,7 @@
             </div>
         </div>
 
-        <hr class="my-3 text-muted opacity-25" />
+        <hr class="my-3 text-muted opacity-25"/>
 
         <div class="d-flex flex-wrap align-items-center justify-content-between gap-2">
             <div class="btn-group p-1 bg-light rounded-3 border" role="group">
@@ -52,23 +52,25 @@
                     Tutti
                 </a>
                 <a asp-controller="ToDoLists" asp-action="Index" asp-route-filter="Finished"
-                   class="btn btn-sm rounded-2 border-0 fw-medium @((ViewData["Filter"] != null && ViewData["Filter"]!.Equals("Finished")) ? "bg-white shadow-sm text-primary" : "text-muted")">
+                   class="btn btn-sm rounded-2 border-0 fw-medium @(ViewData["Filter"] != null && ViewData["Filter"]!.Equals("Finished") ? "bg-white shadow-sm text-primary" : "text-muted")">
                     Completate
                 </a>
                 <a asp-controller="ToDoLists" asp-action="Index" asp-route-filter="Not Finished"
-                   class="btn btn-sm rounded-2 border-0 fw-medium @((ViewData["Filter"] != null && !ViewData["Filter"]!.Equals("Finished")) ? "bg-white shadow-sm text-primary" : "text-muted")">
+                   class="btn btn-sm rounded-2 border-0 fw-medium @(ViewData["Filter"] != null && !ViewData["Filter"]!.Equals("Finished") ? "bg-white shadow-sm text-primary" : "text-muted")">
                     In Corso
                 </a>
             </div>
 
             <div id="batchActionButtons" class="d-none d-flex gap-2">
-                <button type="submit" formaction="@Url.Action("MultipleFinished", "ToDoLists")" class="btn btn-sm btn-success rounded-3">
+                <button type="submit" formaction="@Url.Action("MultipleFinished", "ToDoLists")"
+                        class="btn btn-sm btn-success rounded-3">
                     <i class="bi bi-check2-all me-1"></i> Segna Completate
                 </button>
-                <button type="submit" formaction="@Url.Action("MultipleNotFinished", "ToDoLists")" class="btn btn-sm btn-warning rounded-3">
+                <button type="submit" formaction="@Url.Action("MultipleNotFinished", "ToDoLists")"
+                        class="btn btn-sm btn-warning rounded-3">
                     <i class="bi bi-arrow-counterclockwise me-1"></i> Ripristina
                 </button>
-                <button type="submit" id="btnDeleteSelected" class="btn btn-sm btn-danger rounded-3" 
+                <button type="submit" id="btnDeleteSelected" class="btn btn-sm btn-danger rounded-3"
                         onclick="return confirm('Sei sicuro di voler eliminare le liste selezionate?');">
                     <i class="bi bi-trash me-1"></i> Elimina
                 </button>
@@ -92,20 +94,23 @@
             @foreach (var ToDoList in filteredModel)
             {
                 <div class="col d-flex">
-                    <div class="card border border-light-subtle shadow-sm rounded-4 w-100 h-100 d-flex flex-column transition-all">
-                        
-                        <div class="card-header bg-transparent border-0 pt-4 px-4 pb-2 d-flex align-items-center justify-content-between">
+                    <div
+                        class="card border border-light-subtle shadow-sm rounded-4 w-100 h-100 d-flex flex-column transition-all">
+
+                        <div
+                            class="card-header bg-transparent border-0 pt-4 px-4 pb-2 d-flex align-items-center justify-content-between">
                             <div class="d-flex align-items-center gap-2 text-truncate me-2">
-                                <input type="checkbox" name="selectedListIds" value="@ToDoList.Id" 
-                                       class="form-check-input list-checkbox me-1" style="cursor: pointer;" 
-                                       title="Seleziona lista" />
+                                <input type="checkbox" name="selectedListIds" value="@ToDoList.Id"
+                                       class="form-check-input list-checkbox me-1" style="cursor: pointer;"
+                                       title="Seleziona lista"/>
                                 <h5 class="fw-bold text-dark mb-0 text-truncate" title="@ToDoList.Name">
                                     @ToDoList.Name
                                 </h5>
                             </div>
-                            
+
                             <a asp-controller="ToDoLists" asp-action="Edit" asp-route-id="@ToDoList.Id"
-                               class="btn btn-sm btn-light rounded-circle text-muted p-2 lh-1 flex-shrink-0" title="Modifica">
+                               class="btn btn-sm btn-light rounded-circle text-muted p-2 lh-1 flex-shrink-0"
+                               title="Modifica">
                                 <i class="bi bi-pencil"></i>
                             </a>
                         </div>
@@ -113,22 +118,26 @@
                         <div class="px-4 pb-2">
                             @if (!ToDoList.IsFinished && ToDoList.ToDos.Count() > 0)
                             {
-                                <span class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill">In corso</span>
+                                <span
+                                    class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill">In corso</span>
                             }
                             else if (ToDoList.ToDos.Any())
                             {
-                                <span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill">Completata</span>
+                                <span
+                                    class="badge bg-success-subtle text-success border border-success-subtle rounded-pill">Completata</span>
                             }
                             else
                             {
-                                <span class="badge bg-secondary-subtle text-secondary border border-secondary-subtle rounded-pill">Vuota</span>
+                                <span
+                                    class="badge bg-secondary-subtle text-secondary border border-secondary-subtle rounded-pill">Vuota</span>
                             }
                         </div>
 
                         <div class="card-body px-4 py-2 flex-grow-1 d-flex flex-column justify-content-center">
                             @if (ToDoList.ToDos.Count == 0)
                             {
-                                <div class="text-center text-muted small py-4 bg-light rounded-3 border border-dashed my-auto">
+                                <div
+                                    class="text-center text-muted small py-4 bg-light rounded-3 border border-dashed my-auto">
                                     Nessuna attività presente
                                 </div>
                             }
@@ -136,18 +145,20 @@
                             {
                                 var totalToDos = ToDoList.ToDos.Count;
                                 var completedToDos = ToDoList.ToDos.Count(t => t.IsCompleted);
-                                var progressPct = totalToDos > 0 ? (completedToDos * 100) / totalToDos : 0;
+                                var progressPct = totalToDos > 0 ? completedToDos * 100 / totalToDos : 0;
 
                                 <div class="w-100 my-auto">
                                     <div class="d-flex justify-content-between align-items-center mb-1">
-                                        <span class="text-uppercase fw-semibold text-muted" style="font-size: 0.65rem; letter-spacing: 0.5px;">Progresso</span>
+                                        <span class="text-uppercase fw-semibold text-muted"
+                                              style="font-size: 0.65rem; letter-spacing: 0.5px;">Progresso</span>
                                         <span class="small fw-bold text-dark" style="font-size: 0.75rem;">
                                             @completedToDos / @totalToDos
                                         </span>
                                     </div>
 
                                     <div class="progress mb-3" style="height: 4px;">
-                                        <div class="progress-bar bg-primary" role="progressbar" style="width: @progressPct%" 
+                                        <div class="progress-bar bg-primary" role="progressbar"
+                                             style="width: @progressPct%"
                                              aria-valuenow="@progressPct" aria-valuemin="0" aria-valuemax="100"></div>
                                     </div>
 
@@ -156,7 +167,8 @@
                                         {
                                             <li class="list-group-item px-0 py-1 bg-transparent border-0 d-flex align-items-center text-truncate">
                                                 <i class="bi @(toDo.IsCompleted ? "bi-check-square-fill text-primary" : "bi-square text-muted") me-2"></i>
-                                                <span class="@(toDo.IsCompleted ? "text-muted text-decoration-line-through" : "text-dark") text-truncate">
+                                                <span
+                                                    class="@(toDo.IsCompleted ? "text-muted text-decoration-line-through" : "text-dark") text-truncate">
                                                     @toDo.Name
                                                 </span>
                                             </li>
@@ -166,7 +178,8 @@
                                     @if (ToDoList.ToDos.Count > 3)
                                     {
                                         <div class="text-end pt-1">
-                                            <small class="text-muted fst-italic" style="font-size: 0.75rem;">+ altri @(ToDoList.ToDos.Count - 3)...</small>
+                                            <small class="text-muted fst-italic" style="font-size: 0.75rem;">+
+                                                altri @(ToDoList.ToDos.Count - 3)...</small>
                                         </div>
                                     }
                                 </div>
@@ -178,13 +191,13 @@
                                class="btn btn-sm btn-primary rounded-3 flex-fill fw-medium" role="button">
                                 Visualizza
                             </a>
-                            <button type="submit" 
-                                    formaction="@Url.Action("DuplicateList", "ToDoLists", new { id = ToDoList.Id })" 
+                            <button type="submit"
+                                    formaction="@Url.Action("DuplicateList", "ToDoLists", new { id = ToDoList.Id })"
                                     class="btn btn-sm btn-outline-secondary rounded-3 flex-fill fw-medium">
                                 Duplica
                             </button>
-                            <button type="button" 
-                                    class="btn btn-sm btn-outline-danger rounded-3 px-3 lh-1" 
+                            <button type="button"
+                                    class="btn btn-sm btn-outline-danger rounded-3 px-3 lh-1"
                                     data-bs-toggle="modal"
                                     data-bs-target="#deleteModal-@ToDoList.Id" title="Elimina">
                                 <i class="bi bi-trash"></i>
@@ -197,17 +210,21 @@
                         <div class="modal-dialog modal-dialog-centered">
                             <div class="modal-content border-0 shadow-lg rounded-4">
                                 <div class="modal-header border-0 pb-0">
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body text-center py-4">
                                     <i class="bi bi-exclamation-circle text-danger fs-1 d-block mb-2"></i>
                                     <h5 class="fw-bold mb-2">Conferma Eliminazione</h5>
-                                    <p class="text-muted mb-0">Sei sicuro di voler eliminare la lista <br/><b>"@ToDoList.Name"</b>?</p>
+                                    <p class="text-muted mb-0">Sei sicuro di voler eliminare la lista
+                                        <br/><b>"@ToDoList.Name"</b>?</p>
                                 </div>
                                 <div class="modal-footer border-0 pt-0 justify-content-center gap-2">
-                                    <button type="button" class="btn btn-light rounded-3 px-4" data-bs-dismiss="modal">Annulla</button>
-                                    <button type="submit" 
-                                            formaction="@Url.Action("Delete", "ToDoLists", new { id = ToDoList.Id })" 
+                                    <button type="button" class="btn btn-light rounded-3 px-4" data-bs-dismiss="modal">
+                                        Annulla
+                                    </button>
+                                    <button type="submit"
+                                            formaction="@Url.Action("Delete", "ToDoLists", new { id = ToDoList.Id })"
                                             class="btn btn-danger rounded-3 px-4">
                                         Elimina
                                     </button>
@@ -231,7 +248,7 @@
             checkboxes.forEach(box => {
                 box.addEventListener('change', function () {
                     const checkedCount = document.querySelectorAll('.list-checkbox:checked').length;
-                    
+
                     if (checkedCount > 0) {
                         batchActionButtons.classList.remove('d-none');
                     } else {

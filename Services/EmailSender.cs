@@ -4,12 +4,12 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 
 namespace ToDoList_MVC.Services;
 
-public class EmailSender:IEmailSender
+public class EmailSender : IEmailSender
 {
     private readonly IConfiguration _configuration;
-    private readonly ILogger<EmailSender> _logger;
     private readonly IWebHostEnvironment _env;
-    
+    private readonly ILogger<EmailSender> _logger;
+
     public EmailSender(IConfiguration configuration, ILogger<EmailSender> logger, IWebHostEnvironment env)
     {
         _configuration = configuration;
@@ -26,11 +26,11 @@ public class EmailSender:IEmailSender
             _logger.LogInformation("Oggetto: {Subject}", subject);
             _logger.LogInformation("Messaggio HTML:\n{Body}", htmlMessage);
             _logger.LogInformation("====================================================");
-            
+
             await Task.CompletedTask;
             return;
         }
-        
+
         var host = _configuration["Smtp:Host"];
         var port = int.Parse(_configuration["Smtp:Port"] ?? "587");
         var username = _configuration["Smtp:Username"];
@@ -54,8 +54,5 @@ public class EmailSender:IEmailSender
 
             await client.SendMailAsync(mailMessage);
         }
-        
-        
-        
     }
 }

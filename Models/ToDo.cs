@@ -1,19 +1,17 @@
-﻿
-namespace ToDoList_MVC.Models
+﻿namespace ToDoList_MVC.Models;
+
+public class ToDo
 {
-    public class ToDo
-    {
-        public int Id { get; set; }
+    public int Id { get; set; }
 
-        public string? Name { get; set; }
+    public string? Name { get; set; }
 
-        public bool IsCompleted { get; set; }
+    public bool IsCompleted { get; set; }
 
-        public DateTime? Deadline { get; set; }
-        //fk
+    public DateTime? Deadline { get; set; }
+    //fk
 
-        public int ToDoListId { get; set; }
-        public int? CategoryId { get; set; }
-        public Category? Category { get; set; }
-    }
+    public int ToDoListId { get; set; }
+    public int? CategoryId { get; set; }
+    public Category? Category { get; set; }
 }

@@ -1,6 +1,5 @@
 @using Microsoft.AspNetCore.Identity
 @using ToDoList_MVC.User
-
 @inject SignInManager<AppUser> SignInManager
 @inject UserManager<AppUser> UserManager
 
@@ -9,17 +8,20 @@
     {
         var currentUser = await UserManager.GetUserAsync(User);
         var displayName = currentUser?.NickName ?? currentUser?.Nome ?? User.Identity?.Name ?? "Profilo";
-        
+
 
         <li class="nav-item me-2">
-            <a id="manage" class="nav-link text-dark fw-medium d-flex align-items-center gap-1" asp-area="Identity" asp-page="/Account/Manage/Index" title="Gestisci Profilo">
+            <a id="manage" class="nav-link text-dark fw-medium d-flex align-items-center gap-1" asp-area="Identity"
+               asp-page="/Account/Manage/Index" title="Gestisci Profilo">
                 <i class="bi bi-person-circle text-primary fs-5"></i>
                 <span>@displayName</span>
             </a>
         </li>
         <li class="nav-item">
-            <form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-                <button id="logout" type="submit" class="btn btn-outline-danger btn-sm rounded-pill px-3 ms-1 d-flex align-items-center gap-1">
+            <form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout"
+                  asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                <button id="logout" type="submit"
+                        class="btn btn-outline-danger btn-sm rounded-pill px-3 ms-1 d-flex align-items-center gap-1">
                     <i class="bi bi-box-arrow-right"></i> Logout
                 </button>
             </form>

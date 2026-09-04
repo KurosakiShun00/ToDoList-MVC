@@ -5,7 +5,7 @@
     ViewData["ActivePage"] = ManageNavPages.Email;
 }
 
-<partial name="_StatusMessage" for="StatusMessage" />
+<partial name="_StatusMessage" for="StatusMessage"/>
 
 <div class="col-12 p-0">
     <div class="card shadow-sm border-0 rounded-3 my-2 w-100">
@@ -22,7 +22,9 @@
                     <div class="form-floating mb-3 position-relative">
                         <input asp-for="Email" class="form-control" placeholder="Email attuale" disabled/>
                         <label asp-for="Email" class="form-label">Email attuale</label>
-                        <span class="position-absolute top-50 end-0 translate-middle-y me-3 text-success fw-bold d-flex align-items-center gap-1" title="Email verificata">
+                        <span
+                            class="position-absolute top-50 end-0 translate-middle-y me-3 text-success fw-bold d-flex align-items-center gap-1"
+                            title="Email verificata">
                             <i class="bi bi-patch-check-fill fs-5"></i>
                         </span>
                     </div>
@@ -34,25 +36,29 @@
                         <label asp-for="Email" class="form-label">Email attuale</label>
                     </div>
                     <div class="mb-3">
-                        <button id="email-verification" type="submit" asp-page-handler="SendVerificationEmail" class="btn btn-link p-0 text-decoration-none small">
+                        <button id="email-verification" type="submit" asp-page-handler="SendVerificationEmail"
+                                class="btn btn-link p-0 text-decoration-none small">
                             <i class="bi bi-envelope-check"></i> Invia email di verifica
                         </button>
                     </div>
                 }
 
                 <div class="form-floating mb-3">
-                    <input asp-for="Input.NewEmail" class="form-control" autocomplete="email" aria-required="true" placeholder="Nuova Email"/>
+                    <input asp-for="Input.NewEmail" class="form-control" autocomplete="email" aria-required="true"
+                           placeholder="Nuova Email"/>
                     <label asp-for="Input.NewEmail" class="form-label">Nuova Email</label>
                     <span asp-validation-for="Input.NewEmail" class="text-danger small"></span>
                 </div>
 
-                <button id="change-email-button" type="submit" asp-page-handler="ChangeEmail" class="w-100 btn btn-primary rounded-3 py-2 fw-semibold d-flex align-items-center justify-content-center gap-2">
+                <button id="change-email-button" type="submit" asp-page-handler="ChangeEmail"
+                        class="w-100 btn btn-primary rounded-3 py-2 fw-semibold d-flex align-items-center justify-content-center gap-2">
                     <i class="bi bi-arrow-repeat"></i> Cambia Email
                 </button>
             </form>
         </div>
     </div>
 </div>
+
 @section Scripts {
-    <partial name="_ValidationScriptsPartial" />
+    <partial name="_ValidationScriptsPartial"/>
 }

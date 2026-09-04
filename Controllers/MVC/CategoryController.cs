@@ -1,7 +1,6 @@
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using ToDoList_MVC.Models;
 using ToDoList_MVC.Services;
 using ToDoList_MVC.ViewModels.Category;
@@ -16,65 +15,65 @@ public class CategoryController : Controller
     {
         _service = service;
     }
-    
+
     private string? GetUserID()
     {
         return User.FindFirstValue(ClaimTypes.NameIdentifier);
     }
-    
+
     [Authorize]
     public async Task<IActionResult> Index()
     {
         var userId = GetUserID();
-        if(userId == null) return Unauthorized();
+        if (userId == null) return Unauthorized();
 
         var items = (await _service.GetAllCategories(userId)).ToList();
 
-        
-        
+
         var result = new List<CategoryDetailsViewModel>();
 
-        
+
         foreach (var item in items)
-        {
             result.Add(new CategoryDetailsViewModel
                 {
-                  Id = item.Id,
-                  Name = item.Name,
-                  Color = item.Color,
-                  ToDoCompleted = await _service.ToDoCompletedCount(item.Id, userId),
-                  ToDoNotCompleted = await _service.ToDoNotCompletedCount(item.Id, userId)
+                    Id = item.Id,
+                    Name = item.Name,
+                    Color = item.Color,
+                    ToDoCompleted = await _service.ToDoCompletedCount(item.Id, userId),
+                    ToDoNotCompleted = await _service.ToDoNotCompletedCount(item.Id, userId)
                 }
             );
-        }
-        
+
         return View(result);
     }
 
     [Authorize]
-    public IActionResult Create() => View();
-    
+    public IActionResult Create()
+    {
+        return View();
+    }
+
     [Authorize]
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(CategoryCreateViewModel viewModel)
-    {   
+    {
         var userId = GetUserID();
-        if(userId == null) return Unauthorized();
-            
+        if (userId == null) return Unauthorized();
+
         var new_category = new Category(viewModel);
 
         new_category.UserId = userId;
-        
+
         await _service.CreateCategoryAsync(new_category);
         return RedirectToAction(nameof(Index));
     }
 
     [Authorize]
     public async Task<IActionResult> Edit(int id)
-    {  
+    {
         var userId = GetUserID();
-        if(userId  == null) return Unauthorized();
+        if (userId == null) return Unauthorized();
         var item = await _service.GetCategoryById(id, userId);
         if (item == null) return NotFound();
         var viewModel = new CategoryEditViewModel
@@ -92,33 +91,30 @@ public class CategoryController : Controller
     public async Task<IActionResult> Edit(int id, CategoryEditViewModel viewModel)
     {
         var userId = GetUserID();
-        if(userId  == null) return Unauthorized();
-        
+        if (userId == null) return Unauthorized();
+
         var newCategory = new Category(viewModel);
-        
+
         await _service.UpdateCategoryAsync(id, newCategory, userId);
         return RedirectToAction(nameof(Index));
-        
     }
-    
+
     [Authorize]
-    [HttpPost, ActionName("Delete")]
+    [HttpPost]
+    [ActionName("Delete")]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Delete(int id)
     {
         var userId = GetUserID();
-        if(userId  == null) return Unauthorized();
+        if (userId == null) return Unauthorized();
 
-        bool isDeleted = await _service.DeleteCategoryAsync(id, userId);
+        var isDeleted = await _service.DeleteCategoryAsync(id, userId);
 
-        if (!isDeleted)
-        {
-            return NotFound();
-        }
+        if (!isDeleted) return NotFound();
 
         return RedirectToAction(nameof(Index));
     }
-    
+
     [Authorize]
     [HttpPost]
     [ValidateAntiForgeryToken]
@@ -127,20 +123,14 @@ public class CategoryController : Controller
         var userId = GetUserID();
         if (userId == null) return Unauthorized();
 
-        if ( SelectedIds.Length == 0)
-        {
-            return RedirectToAction(nameof(Index));
-        }
+        if (SelectedIds.Length == 0) return RedirectToAction(nameof(Index));
 
         foreach (var id in SelectedIds)
         {
             var isDeleted = await _service.DeleteCategoryAsync(id, userId);
-            if (!isDeleted)
-            {
-                return NotFound();
-            }
+            if (!isDeleted) return NotFound();
         }
-    
+
         return RedirectToAction(nameof(Index));
     }
 }
