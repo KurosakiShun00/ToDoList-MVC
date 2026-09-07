@@ -52,7 +52,7 @@ public class ToDoListsController : Controller
 
     [Authorize]
     public async Task<IActionResult> Details(int id, string? CategorySortOrder = null,
-        string? CompletedSortOrder = null, int sortType = 0)
+        string? CompletedSortOrder = null, string? DeadlineSortOrder = null , int sortType = 0)
     {
         var userId = GetUserID();
         if (userId == null) return Unauthorized();
@@ -66,6 +66,7 @@ public class ToDoListsController : Controller
 
         ViewData["CurrentCategorySortOrder"] = CategorySortOrder; //1
         ViewData["CurrentCompletedSortOrder"] = CompletedSortOrder; //2
+        ViewData["CurrentDeadlineSortOrder"] = DeadlineSortOrder; //3
 
         foreach (var ToDo in item.ToDos)
             ToDos.Add(new ToDoListLineViewModel
@@ -102,7 +103,11 @@ public class ToDoListsController : Controller
                 if (CompletedSortOrder == "ASC")
                     viewModel.ToDos = viewModel.ToDos.OrderBy(x => x.IsCompleted).ToList();
                 else viewModel.ToDos = viewModel.ToDos.OrderByDescending(x => x.IsCompleted).ToList();
-
+                break;
+            case 3:
+                if(DeadlineSortOrder == "ASC") 
+                    viewModel.ToDos = viewModel.ToDos.OrderBy(x => x.Deadline).ToList();
+                else viewModel.ToDos = viewModel.ToDos.OrderByDescending(x => x.Deadline).ToList();
                 break;
         }
 
